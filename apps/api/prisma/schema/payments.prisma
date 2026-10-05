@@ -21,7 +21,7 @@ model Payment {
   status   PaymentStatus @default(PENDING)
   /// Amount in paisa.
   amount   Int
-  currency String        @default("PKR")
+  currency String        @default("AED")
 
   /// Our reference sent to the gateway, and whatever it sends back.
   reference     String? @unique

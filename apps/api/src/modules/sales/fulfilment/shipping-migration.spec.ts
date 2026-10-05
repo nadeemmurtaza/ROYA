@@ -1,15 +1,21 @@
 import { Test } from '@nestjs/testing';
+import { BRAND, toMinor } from '@newax/shared';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { ShippingService, computeRateFee } from './shipping.service';
 
 /**
- * WO-6.1's own acceptance test: "the new module must produce byte-identical
- * fees for the existing zones on day one." Asserts ShippingService.quote()
- * against the migration's own backfill (20260924220000_add_fulfilment_
- * shipping_returns/migration.sql), which seeded exactly the three zones
- * settings.defaults.ts used to ship as a JSON Setting.
+ * ROYA's acceptance test for the shipping the seed creates (prisma/seed.ts):
+ * the design's three delivery methods, white-glove and collection inside the
+ * UAE and an insured courier outside it.
+ *
+ * It replaces the Blueprint's version of this file, which asserted the Blueprint's
+ * own home-market zones (and a backfill from an old Setting). Those rows are still
+ * in the schema's history, so what is worth pinning here is that they are inert
+ * (migration 20261005120000_roya_deactivate_inherited_shipping) and that ROYA's own
+ * zones quote correctly. Runs against a seeded database, like the other
+ * DB-backed specs.
  */
-describe('ShippingService — migrated zones produce the old fees', () => {
+describe('ShippingService, ROYA zones', () => {
   let service: ShippingService;
   let prisma: PrismaService;
 
@@ -22,38 +28,56 @@ describe('ShippingService — migrated zones produce the old fees', () => {
     prisma = module.get(PrismaService);
   });
 
-  it('karachi: Rs 150 flat, free above Rs 3,000 — exactly the old Setting default', async () => {
-    const below = await service.quote('Karachi', 100_000);
-    expect(below.fee).toBe(15_000);
-    expect(below.zoneKey).toBe('karachi');
+  const BASKET = toMinor(21_050);
 
-    const above = await service.quote('karachi', 500_000);
-    expect(above.fee).toBe(0);
-  });
-
-  it('punjab: matches on any of its six cities, Rs 200 flat, free above Rs 4,000', async () => {
-    for (const city of ['Lahore', 'islamabad', 'Rawalpindi', 'faisalabad', 'Multan', 'GUJRANWALA']) {
-      const quote = await service.quote(city, 100_000);
-      expect(quote.zoneKey).toBe('punjab');
-      expect(quote.fee).toBe(20_000);
+  it('resolves every emirate to the UAE zone, whatever the casing', async () => {
+    for (const emirate of BRAND.locale.regions) {
+      for (const spelling of [emirate, emirate.toUpperCase(), ` ${emirate.toLowerCase()} `]) {
+        const zone = await service.resolveZone(spelling);
+        expect(zone.key).toBe('uae');
+      }
     }
-
-    const above = await service.quote('lahore', 450_000);
-    expect(above.fee).toBe(0);
   });
 
-  it('an unlisted city falls back to the catch-all rest_of_pakistan zone, Rs 250 flat, free above Rs 5,000', async () => {
-    const quote = await service.quote('Gwadar', 100_000);
-    expect(quote.zoneKey).toBe('rest_of_pakistan');
-    expect(quote.fee).toBe(25_000);
-
-    const above = await service.quote('Gwadar', 600_000);
-    expect(above.fee).toBe(0);
+  it('delivers white-glove inside the UAE for free, at any basket size', async () => {
+    for (const subtotal of [toMinor(950), BASKET, toMinor(250_000)]) {
+      const quote = await service.quote('Dubai', subtotal, { methodKey: 'white_glove' });
+      expect(quote.zoneKey).toBe('uae');
+      expect(quote.fee).toBe(0);
+    }
   });
 
-  it('resolveZone matches case-insensitively, same as the old resolveShippingZone()', async () => {
-    const zone = await service.resolveZone('KARACHI');
-    expect(zone.key).toBe('karachi');
+  it('lets a client collect at the atelier for free', async () => {
+    const quote = await service.quote('Abu Dhabi', BASKET, { methodKey: 'atelier_collection' });
+    expect(quote.methodKey).toBe('atelier_collection');
+    expect(quote.fee).toBe(0);
+  });
+
+  it('sends everywhere else to the catch-all and charges the insured courier: AED 950 flat, 3 to 5 days', async () => {
+    const quote = await service.quote('London', BASKET, { methodKey: 'international_courier' });
+    expect(quote.zoneKey).toBe('international');
+    expect(quote.fee).toBe(toMinor(950));
+    expect(quote.etaMinDays).toBe(3);
+    expect(quote.etaMaxDays).toBe(5);
+  });
+
+  it('refuses a method that has no rate in the zone, rather than quoting zero', async () => {
+    await expect(service.quote('Dubai', BASKET, { methodKey: 'international_courier' })).rejects.toThrow(/No shipping rate/);
+    await expect(service.quote('London', BASKET, { methodKey: 'white_glove' })).rejects.toThrow(/No shipping rate/);
+  });
+
+  it("keeps the schema's inherited home-market zones inert: a city they list does not match them", async () => {
+    // "Karachi" and "Lahore" are in the inherited zones' city lists. With those
+    // zones deactivated they fall through to ROYA's one catch-all.
+    for (const city of ['Karachi', 'Lahore', 'Multan']) {
+      const zone = await service.resolveZone(city);
+      expect(zone.key).toBe('international');
+    }
+    const inherited = await prisma.shippingZone.findMany({
+      where: { key: { in: ['karachi', 'punjab', 'rest_of_pakistan'] } },
+      select: { key: true, isActive: true },
+    });
+    for (const zone of inherited) expect(zone.isActive).toBe(false);
   });
 
   afterAll(async () => {

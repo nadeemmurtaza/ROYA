@@ -12,7 +12,7 @@ model Supplier {
   /// ISO 4217 — the currency their bills are raised in. Defaults to the
   /// deployment's own base currency; only an international supplier's bills
   /// actually carry FX (see SupplierBill.fxRateScaled).
-  currency        String   @default("PKR")
+  currency        String   @default("AED")
   /// Their tax registration number — NTN, TRN, VAT id, whatever the
   /// jurisdiction calls it. Free text: the label is locale policy, not a
   /// column (see brand.ts), and a supplier's own paperwork is what the
@@ -104,7 +104,7 @@ model PurchaseOrder {
   number     String              @unique
   supplierId String
   status     PurchaseOrderStatus @default(DRAFT)
-  currency   String              @default("PKR")
+  currency   String              @default("AED")
 
   subtotal    Int @default(0)
   freightCost Int @default(0)
@@ -238,7 +238,7 @@ model SupplierBill {
   amountPaid      Int                @default(0)
   /// ISO 4217. Defaults to the deployment's own base currency; set from the
   /// supplier's own `currency` when raised.
-  currency        String             @default("PKR")
+  currency        String             @default("AED")
   /// rate * 1_000_000 (House Rule 5 / R16) at the moment this bill was
   /// raised — the "booked" rate a later payment's settlement rate is
   /// compared against to post a realised FX gain/loss. 1_000_000 for a

@@ -46,7 +46,7 @@ model Expense {
   categoryId  String
   /// Paisa. Always positive - an expense is not a negative income.
   amount      Int
-  currency    String @default("PKR")
+  currency    String @default("AED")
   description String
 
   /// The date the cost BELONGS TO, which is not always when it was entered.

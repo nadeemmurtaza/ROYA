@@ -62,7 +62,7 @@ model WalletAccount {
   /// uniqueness key below — see that field's own comment.
   organizationId String?
   customerId     String              @unique
-  currency       String              @default("PKR")
+  currency       String              @default("AED")
   status         WalletAccountStatus @default(ACTIVE)
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt

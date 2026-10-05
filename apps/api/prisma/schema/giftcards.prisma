@@ -24,7 +24,7 @@ model GiftCard {
   /// DERIVED from `transactions` below. Never written directly outside GiftCardsService's own conditional updates.
   balance      Int
   status       GiftCardStatus @default(ACTIVE)
-  currency     String         @default("PKR")
+  currency     String         @default("AED")
 
   purchasedByUserId String?
   /// Who it was bought for.

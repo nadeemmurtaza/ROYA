@@ -38,7 +38,7 @@ model Order {
   userId    String?
   contactId String?
   status    OrderStatus @default(PENDING)
-  currency  String      @default("PKR")
+  currency  String      @default("AED")
 
   /// R11's additive scalar columns. Bare scalars, not relations — `pos` and
   /// `organization` are separate modules from `orders` (module-boundary
