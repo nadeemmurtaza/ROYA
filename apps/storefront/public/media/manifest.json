@@ -1,0 +1,361 @@
+{
+  "source": "claude.ai design canvas 6DdK777jxR6JdSESLJePx8 (“ROYA — Couture Storefront”)",
+  "images": [
+    {
+      "name": "mehr-front",
+      "path": "/media/images/mehr-front.jpg",
+      "role": "Mehr, front view (also the Bag/Checkout/Dashboard thumbnail)",
+      "sourceBlob": "71d1d416c77f7633d26983790f89f3aa",
+      "sha256": "01bf8e6829ba9d0e7b80682f44895803232be45ef05075026997b79ccf17be34",
+      "bytes": 145754,
+      "width": 1440,
+      "height": 1919
+    },
+    {
+      "name": "mehr-walking-veil",
+      "path": "/media/images/mehr-walking-veil.jpg",
+      "role": "Bride walking, veil lifted (Home “MEHR” full-bleed, Mehr Veil alt)",
+      "sourceBlob": "e1cbad43f63378bf9ab1b22df13aac76",
+      "sha256": "4a16b4977ead83f842048dca22aacdd96041731c4727e8660d65e5b5ac71f555",
+      "bytes": 156296,
+      "width": 1440,
+      "height": 1919
+    },
+    {
+      "name": "mehr-back-veil",
+      "path": "/media/images/mehr-back-veil.jpg",
+      "role": "Mehr from behind with cathedral veil (Collection header, Mehr back view)",
+      "sourceBlob": "0f5809497c462d079996974fcc85ead3",
+      "sha256": "de47c3975f95cc1058b539107b321988b8b89743370091f32ddb0fa919d2fc9a",
+      "bytes": 156444,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "mehr-portrait",
+      "path": "/media/images/mehr-portrait.jpg",
+      "role": "Bride portrait (Sign-in panel, Collection appointment banner)",
+      "sourceBlob": "9817860128c260e3dba8aa267b81827e",
+      "sha256": "b64dc9fe14cfb75c02a68e5d6d71d98030a95f906e38963c55130efdb5206efe",
+      "bytes": 107581,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "noir-on-form",
+      "path": "/media/images/noir-on-form.jpg",
+      "role": "Noir on the form",
+      "sourceBlob": "68f71fe01185b376d372f1094e32f26e",
+      "sha256": "4421bc5bc93c30577542ffc66e2e3ecf6dfe65726c90e0761243c210346dcebe",
+      "bytes": 75497,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "noir-pearl-waist",
+      "path": "/media/images/noir-pearl-waist.jpg",
+      "role": "Noir bodice and pearl waist (hover alt)",
+      "sourceBlob": "7f2f4083008200b207eb338b4c539e71",
+      "sha256": "ab651f58efe41d607d71fd1c7b4b769b1cfc070651507cfaa2c43bef59757569",
+      "bytes": 117241,
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "name": "noir-corset-inside",
+      "path": "/media/images/noir-corset-inside.jpg",
+      "role": "Inside the Noir corset: boning and pearl waistline",
+      "sourceBlob": "0ce4f9dd58e8d2b642634662c0a04ee9",
+      "sha256": "ac1121ded213185adb0ebad7770103f4da6dfd0bf61386cacf05881813d775c2",
+      "bytes": 205726,
+      "width": 1440,
+      "height": 1440
+    },
+    {
+      "name": "opera-gloves",
+      "path": "/media/images/opera-gloves.jpg",
+      "role": "Opera gloves, black floral lace",
+      "sourceBlob": "3c6ec80d8cceea9c51943c831667dce3",
+      "sha256": "eacd853dbe917588e08431b97dec76fa96ded66f7685cd424b6c7d451bf93d2f",
+      "bytes": 129285,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "roya-box",
+      "path": "/media/images/roya-box.jpg",
+      "role": "The black ROYA box tied with satin ribbon",
+      "sourceBlob": "655d57ba189e59d2e1755b300e4dde43",
+      "sha256": "75d7b1285ac261ffa5f8f4d4b5fa25697ce73f097efa8d9c52daf6d9fcaa3752",
+      "bytes": 117520,
+      "width": 1440,
+      "height": 1912
+    },
+    {
+      "name": "veil-from-behind",
+      "path": "/media/images/veil-from-behind.jpg",
+      "role": "Mehr Veil from behind",
+      "sourceBlob": "ad3489fb8410d286e3a4c3002a5a382e",
+      "sha256": "b4ac6320708e62fa5a5b3909b1d7bc552eee6464dbb0dc0c9a2c9996acb4b610",
+      "bytes": 175774,
+      "width": 1440,
+      "height": 1919
+    },
+    {
+      "name": "lilas-blossom",
+      "path": "/media/images/lilas-blossom.jpg",
+      "role": "Lilas: hand-sewn organza blossom",
+      "sourceBlob": "eb6de249b43565fb5dc4d24718e600d4",
+      "sha256": "bd6b0c0ea67fa978066be03977431f412e8fbf6d1b013e8ae42c1fe9bc3f3928",
+      "bytes": 171922,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "lilas-in-box",
+      "path": "/media/images/lilas-in-box.jpg",
+      "role": "Lilas folded in tissue with ROYA label",
+      "sourceBlob": "3374e27e6e7a5d785451dccce8d5576b",
+      "sha256": "768c42d4f2c5c6d513dba0d6fcabc90bdf3f3a28d5c28b26cdc72ffe8ede6d10",
+      "bytes": 273127,
+      "width": 1440,
+      "height": 1920
+    },
+    {
+      "name": "wear-your-dream-foil",
+      "path": "/media/images/wear-your-dream-foil.jpg",
+      "role": "“Wear Your Dream” silver foil on black (Home closing banner)",
+      "sourceBlob": "3121c0bae25e9a3b117c9aeb1009f55b",
+      "sha256": "5dc8af0ed130c528c9d2e0edc0b26f1f9db87636034037d509e67488b1f13134",
+      "bytes": 93591,
+      "width": 1440,
+      "height": 1919
+    }
+  ],
+  "video": [
+    {
+      "name": "hero-desktop",
+      "role": "Home hero centre panel + “The house” portrait, desktop cut (1080p)",
+      "files": {
+        "mp4": {
+          "path": "/media/video/hero-desktop.mp4",
+          "sourceBlob": "ec7b27e0d69ab01344d368a98e967f34",
+          "sha256": "752f2f802695c2c6d4aa66c129b3eeb68a930fdc099c6ff29df2bb9d0a3913f2",
+          "bytes": 10422012,
+          "width": 1080,
+          "height": 1920,
+          "durationSec": 17.2
+        },
+        "webm": {
+          "path": "/media/video/hero-desktop.webm",
+          "sourceBlob": "82ef4f3bf1022a83df8ae8dcd3bbdd30",
+          "sha256": "2b52f2cf4a538cff4a3f5594b0e311b9e4c0af9f8d990e4148632cc55901a958",
+          "bytes": 4100422,
+          "width": 1080,
+          "height": 1920,
+          "durationSec": 17.2
+        },
+        "poster": {
+          "path": "/media/posters/hero-desktop.jpg",
+          "sourceBlob": "96e4101d89c66925966be577b5584b12",
+          "sha256": "72d8dc467d2a1d27f2d226424df97536670e9836ee33f8632e814230f5e406df",
+          "bytes": 99354,
+          "width": 1080,
+          "height": 1920
+        }
+      }
+    },
+    {
+      "name": "hero-mobile",
+      "role": "Same film, phone cut (viewport < 768px)",
+      "files": {
+        "mp4": {
+          "path": "/media/video/hero-mobile.mp4",
+          "sourceBlob": "1eaebbea5c73d5660e83f8128d003c53",
+          "sha256": "b3a2e0735bb8bf61c66a93dada7cefaab466f6f54026e14abc306cbd6e7874b3",
+          "bytes": 1900158,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 18.0
+        },
+        "webm": {
+          "path": "/media/video/hero-mobile.webm",
+          "sourceBlob": "c69a196ea206c0c19a879922868973c9",
+          "sha256": "6fd84b5443c738e074d44e238265028ef8eaac4a7ea49510d7155528a512e054",
+          "bytes": 1400622,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 18.0
+        },
+        "poster": {
+          "path": "/media/posters/hero-mobile.jpg",
+          "sourceBlob": "aeb975b425db75a63963c25d56eff6ba",
+          "sha256": "5486c634a5b7ead7aed747a17e1c0dd15fc2e82e3715a2c3ad6e1b900102667f",
+          "bytes": 49510,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    },
+    {
+      "name": "sculpting-florals",
+      "role": "Hero left panel; atelier “Sculpted florals”; Mehr film #2",
+      "files": {
+        "mp4": {
+          "path": "/media/video/sculpting-florals.mp4",
+          "sourceBlob": "4594cd9df28d1309752a240bdb9c0182",
+          "sha256": "e485e787b620fa3f764c913104bc9d0ea7ef6bc2121fc52c14f0d0d2490dc466",
+          "bytes": 1926354,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 17.4
+        },
+        "webm": {
+          "path": "/media/video/sculpting-florals.webm",
+          "sourceBlob": "a6e94c07d14fe9951ac04826a5e44829",
+          "sha256": "537f457449fe749ca5434c8e65a75ead2caedf06677ace457af35b2d2cf90ceb",
+          "bytes": 1327668,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 17.4
+        },
+        "poster": {
+          "path": "/media/posters/sculpting-florals.jpg",
+          "sourceBlob": "f9bd9facadabe43e776561ecaefcacfe",
+          "sha256": "de2b78b018068bd86195fe2e10e4935674cddf576d32e5a06ac3a69046723e5e",
+          "bytes": 40099,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    },
+    {
+      "name": "mehr-film",
+      "role": "Hero right panel; Mehr product “Watch the film”",
+      "files": {
+        "mp4": {
+          "path": "/media/video/mehr-film.mp4",
+          "sourceBlob": "53baa82bf75e3c98675ce768ea563bb8",
+          "sha256": "36cfb37a1b9263afdbab24eb5df6c5d4ff13b7e138042c84dab05b241043b1c4",
+          "bytes": 3439766,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 20.7
+        },
+        "webm": {
+          "path": "/media/video/mehr-film.webm",
+          "sourceBlob": "c091e547eeb7256130e6c0dd71c31173",
+          "sha256": "95bdac51eaa67149099c64854c2a02219953f2e8128ce83c71ffd9adb1db80c6",
+          "bytes": 2908388,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 20.7
+        },
+        "poster": {
+          "path": "/media/posters/mehr-film.jpg",
+          "sourceBlob": "4694e6b0da951e4a45bcf7c42d48478e",
+          "sha256": "06e56abff48ab103b4b7bc1ee89bb80fceee2e79da5b8e0097c36e8faea5ee1d",
+          "bytes": 88401,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    },
+    {
+      "name": "the-making",
+      "role": "Atelier “The making of a ROYA gown”",
+      "files": {
+        "mp4": {
+          "path": "/media/video/the-making.mp4",
+          "sourceBlob": "c17083147616ff325b5be94d17214e5a",
+          "sha256": "dce7468c497fca8bee066c8adabb81892e9163f5f08d290a9f079ab48b4ad5e4",
+          "bytes": 2839365,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 29.2
+        },
+        "webm": {
+          "path": "/media/video/the-making.webm",
+          "sourceBlob": "45536a8cf15aa4da7c22c2ac1871c160",
+          "sha256": "5bb29f85a153fc9d27551f3157fe54174bdaac77ee22bd5fd9d07b7042d56387",
+          "bytes": 1902484,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 29.2
+        },
+        "poster": {
+          "path": "/media/posters/the-making.jpg",
+          "sourceBlob": "d9800d89671dd8d3f830703c1a6d08b1",
+          "sha256": "881f41e84edf925a64d3057f3609c90918e4a0f86bd2a75d78ed483ecf2ba2be",
+          "bytes": 50872,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    },
+    {
+      "name": "atelier-update-corset",
+      "role": "Private-client dashboard: “Corset, phase two: done.”",
+      "files": {
+        "mp4": {
+          "path": "/media/video/atelier-update-corset.mp4",
+          "sourceBlob": "b5293687a61a4a3fa883d08924fbecc5",
+          "sha256": "d48aba268472520df482479a32319a29f0f5e3359270c12338da10d5404db6bc",
+          "bytes": 522001,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 6.8
+        },
+        "webm": {
+          "path": "/media/video/atelier-update-corset.webm",
+          "sourceBlob": "8a4c4167a87125f28ccd6cd25163ecfa",
+          "sha256": "ca92805f7e13b171100ef212c4a1c9d861aeb857de90b1b79ae9116a785c6284",
+          "bytes": 274591,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 6.8
+        },
+        "poster": {
+          "path": "/media/posters/atelier-update-corset.jpg",
+          "sourceBlob": "4eb60744a2d2dbf5bb19bb212594e56e",
+          "sha256": "cabeffb39606f4ec7352b661f893a61f5d3cb20584d38b87af9fe80a9e179102",
+          "bytes": 60661,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    },
+    {
+      "name": "a-new-chapter",
+      "role": "V1 Home intro only. Not used by V2; kept so nothing imported is lost",
+      "files": {
+        "mp4": {
+          "path": "/media/video/a-new-chapter.mp4",
+          "sourceBlob": "7c88201457b976f8bf1199a034a4060e",
+          "sha256": "b6b47da6ac8dc43bcc6d8e703036f06fabef36902e83e405d63fddc0ba041b87",
+          "bytes": 733492,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 11.3
+        },
+        "webm": {
+          "path": "/media/video/a-new-chapter.webm",
+          "sourceBlob": "0a8b15b322e4802bb75fb8ca147eae81",
+          "sha256": "eabf333fb58d8fa352b33d383cecac982e95ba0775cbdaf648cbe960dbfb50e4",
+          "bytes": 494113,
+          "width": 720,
+          "height": 1280,
+          "durationSec": 11.3
+        },
+        "poster": {
+          "path": "/media/posters/a-new-chapter.jpg",
+          "sourceBlob": "ee4326c5db4c217fd19b090e7fda21a4",
+          "sha256": "9fdbaacaf92411dce0f88857b4ceac46a371156c08f58e3a905efb62a1e563f2",
+          "bytes": 23235,
+          "width": 720,
+          "height": 1280
+        }
+      }
+    }
+  ]
+}

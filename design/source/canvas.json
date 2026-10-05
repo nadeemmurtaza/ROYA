@@ -1,0 +1,679 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Account-Light.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "light",
+      "title": "04 · Sign in / Join · Light",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Account-v2-Light-M.dc.html": {
+      "h": 1510,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "05 · Sign in · Light · 390",
+      "w": 390,
+      "x": 1880,
+      "y": 0
+    },
+    "Account-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "04 · Sign in / Join · V2 Light",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Account-v2-M.dc.html": {
+      "h": 1510,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "05 · Sign in · 390",
+      "w": 390,
+      "x": 1880,
+      "y": 0
+    },
+    "Account-v2.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "04 · Sign in / Join · V2",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Account.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "title": "04 · Sign in / Join",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Bag-Light.dc.html": {
+      "expand": "fill",
+      "h": 1500,
+      "is_interactive": true,
+      "page": "light",
+      "title": "05 · Bag · Light",
+      "w": 1440,
+      "x": 0,
+      "y": 7840
+    },
+    "Bag-v2-Light-M.dc.html": {
+      "h": 2321,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "06 · Bag · Light · 390",
+      "w": 390,
+      "x": 2350,
+      "y": 0
+    },
+    "Bag-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 1381,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "05 · Bag · V2 Light",
+      "w": 1440,
+      "x": 0,
+      "y": 10608
+    },
+    "Bag-v2-M.dc.html": {
+      "h": 2321,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "06 · Bag · 390",
+      "w": 390,
+      "x": 2350,
+      "y": 0
+    },
+    "Bag-v2.dc.html": {
+      "expand": "fill",
+      "h": 1381,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "05 · Bag · V2",
+      "w": 1440,
+      "x": 0,
+      "y": 10608
+    },
+    "Bag.dc.html": {
+      "expand": "fill",
+      "h": 1500,
+      "is_interactive": true,
+      "title": "05 · Bag",
+      "w": 1440,
+      "x": 0,
+      "y": 7840
+    },
+    "Checkout-Light.dc.html": {
+      "expand": "fill",
+      "h": 1700,
+      "is_interactive": true,
+      "page": "light",
+      "title": "06 · Checkout & Payment · Light",
+      "w": 1440,
+      "x": 1520,
+      "y": 7840
+    },
+    "Checkout-v2-Light-M.dc.html": {
+      "h": 2586,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "07 · Checkout · Light · 390",
+      "w": 390,
+      "x": 2820,
+      "y": 0
+    },
+    "Checkout-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 1316,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "06 · Checkout & Payment · V2 Light",
+      "w": 1440,
+      "x": 1520,
+      "y": 10608
+    },
+    "Checkout-v2-M.dc.html": {
+      "h": 2586,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "07 · Checkout · 390",
+      "w": 390,
+      "x": 2820,
+      "y": 0
+    },
+    "Checkout-v2.dc.html": {
+      "expand": "fill",
+      "h": 1316,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "06 · Checkout & Payment · V2",
+      "w": 1440,
+      "x": 1520,
+      "y": 10608
+    },
+    "Checkout.dc.html": {
+      "expand": "fill",
+      "h": 1700,
+      "is_interactive": true,
+      "title": "06 · Checkout & Payment",
+      "w": 1440,
+      "x": 1520,
+      "y": 7840
+    },
+    "Collection-Light.dc.html": {
+      "expand": "fill",
+      "h": 2900,
+      "is_interactive": true,
+      "page": "light",
+      "title": "02 · The Collection · Light",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Collection-v2-Light-M.dc.html": {
+      "h": 3209,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "03 · Collection · Light · 390",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "Collection-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 3129,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "02 · The Collection · V2 Light",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Collection-v2-M.dc.html": {
+      "h": 3209,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "03 · Collection · 390",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "Collection-v2.dc.html": {
+      "expand": "fill",
+      "h": 3129,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "02 · The Collection · V2",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Collection.dc.html": {
+      "expand": "fill",
+      "h": 2900,
+      "is_interactive": true,
+      "title": "02 · The Collection",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Confirmation-Light.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "light",
+      "title": "07 · Order confirmed · Light",
+      "w": 1440,
+      "x": 3040,
+      "y": 7840
+    },
+    "Confirmation-v2-Light-M.dc.html": {
+      "h": 1885,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "08 · Confirmed · Light · 390",
+      "w": 390,
+      "x": 3290,
+      "y": 0
+    },
+    "Confirmation-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 1330,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "07 · Order confirmed · V2 Light",
+      "w": 1440,
+      "x": 3040,
+      "y": 10608
+    },
+    "Confirmation-v2-M.dc.html": {
+      "h": 1885,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "08 · Confirmed · 390",
+      "w": 390,
+      "x": 3290,
+      "y": 0
+    },
+    "Confirmation-v2.dc.html": {
+      "expand": "fill",
+      "h": 1330,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "07 · Order confirmed · V2",
+      "w": 1440,
+      "x": 3040,
+      "y": 10608
+    },
+    "Confirmation.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "title": "07 · Order confirmed",
+      "w": 1440,
+      "x": 3040,
+      "y": 7840
+    },
+    "Dashboard-Light.dc.html": {
+      "expand": "fill",
+      "h": 1700,
+      "is_interactive": true,
+      "page": "light",
+      "title": "08 · Private client account · Light",
+      "w": 1440,
+      "x": 4560,
+      "y": 7840
+    },
+    "Dashboard-v2-Light-M.dc.html": {
+      "h": 2868,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "09 · Account · Light · 390",
+      "w": 390,
+      "x": 3760,
+      "y": 0
+    },
+    "Dashboard-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 1580,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "08 · Private client account · V2 Light",
+      "w": 1440,
+      "x": 4560,
+      "y": 10608
+    },
+    "Dashboard-v2-M.dc.html": {
+      "h": 2868,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "09 · Account · 390",
+      "w": 390,
+      "x": 3760,
+      "y": 0
+    },
+    "Dashboard-v2.dc.html": {
+      "expand": "fill",
+      "h": 1580,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "08 · Private client account · V2",
+      "w": 1440,
+      "x": 4560,
+      "y": 10608
+    },
+    "Dashboard.dc.html": {
+      "expand": "fill",
+      "h": 1700,
+      "is_interactive": true,
+      "title": "08 · Private client account",
+      "w": 1440,
+      "x": 4560,
+      "y": 7840
+    },
+    "Main-Light.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "is_interactive": true,
+      "page": "light",
+      "title": "01 · Home · Light",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Main-v2-AR-Light-M.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "02 · Home · العربية · Light · 390",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "Main-v2-AR-Light.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "01 · Home V2 · العربية · Light",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Main-v2-AR-M.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "02 · Home · العربية · 390",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "Main-v2-AR.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "01 · Home V2 · العربية",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Main-v2-Light-M.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "01 · Home · Light · 390",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Main-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "01 · Home V2 · motion · V2 Light",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Main-v2-M.dc.html": {
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "01 · Home · 390",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    },
+    "Main-v2.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "01 · Home V2 · motion · V2",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "is_interactive": true,
+      "title": "01 · Home",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Product-Light.dc.html": {
+      "expand": "fill",
+      "h": 2500,
+      "is_interactive": true,
+      "page": "light",
+      "title": "03 · Product · Light",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Product-v2-Light-M.dc.html": {
+      "h": 2806,
+      "is_interactive": true,
+      "page": "v2ml",
+      "title": "04 · Product · Light · 390",
+      "w": 390,
+      "x": 1410,
+      "y": 0
+    },
+    "Product-v2-Light.dc.html": {
+      "expand": "fill",
+      "h": 2107,
+      "is_interactive": true,
+      "page": "v2l",
+      "title": "03 · Product · V2 Light",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Product-v2-M.dc.html": {
+      "h": 2806,
+      "is_interactive": true,
+      "page": "v2m",
+      "title": "04 · Product · 390",
+      "w": 390,
+      "x": 1410,
+      "y": 0
+    },
+    "Product-v2.dc.html": {
+      "expand": "fill",
+      "h": 2107,
+      "is_interactive": true,
+      "page": "v2d",
+      "title": "03 · Product · V2",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Product.dc.html": {
+      "expand": "fill",
+      "h": 2500,
+      "is_interactive": true,
+      "title": "03 · Product",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-06T10:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "mobv2m": {
+      "kind": "title1",
+      "maxW": 4150,
+      "page": "v2m",
+      "text": "V2 — Mobile · 390 px",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "mobv2ml": {
+      "kind": "title1",
+      "maxW": 4150,
+      "page": "v2ml",
+      "text": "V2 — Mobile · 390 px (Light)",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "t1": {
+      "kind": "title1",
+      "maxW": 6000,
+      "text": "Discover — Home · Collection · Product · Account",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "t1L": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "light",
+      "text": "Discover — Home · Collection · Product · Account (Light)",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "t2": {
+      "kind": "title1",
+      "maxW": 6000,
+      "text": "Purchase — Bag · Checkout · Confirmation · Private client",
+      "w": 240,
+      "x": 0,
+      "y": 7520
+    },
+    "t2L": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "light",
+      "text": "Purchase — Bag · Checkout · Confirmation · Private client (Light)",
+      "w": 240,
+      "x": 0,
+      "y": 7520
+    },
+    "v2av2d": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "v2d",
+      "text": "V2 — Discover · motion study + audit fixes",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "v2av2l": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "v2l",
+      "text": "V2 — Discover · motion study + audit fixes (Light)",
+      "w": 240,
+      "x": 0,
+      "y": -320
+    },
+    "v2bv2d": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "v2d",
+      "text": "V2 — Purchase · Bag · Checkout · Confirmation · Account",
+      "w": 240,
+      "x": 0,
+      "y": 10288
+    },
+    "v2bv2l": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "v2l",
+      "text": "V2 — Purchase · Bag · Checkout · Confirmation · Account (Light)",
+      "w": 240,
+      "x": 0,
+      "y": 10288
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Collection.dc.html",
+    "Product.dc.html",
+    "Account.dc.html",
+    "Bag.dc.html",
+    "Checkout.dc.html",
+    "Confirmation.dc.html",
+    "Dashboard.dc.html",
+    "Main-Light.dc.html",
+    "Collection-Light.dc.html",
+    "Product-Light.dc.html",
+    "Account-Light.dc.html",
+    "Bag-Light.dc.html",
+    "Checkout-Light.dc.html",
+    "Confirmation-Light.dc.html",
+    "Dashboard-Light.dc.html",
+    "Main-v2.dc.html",
+    "Collection-v2.dc.html",
+    "Product-v2.dc.html",
+    "Account-v2.dc.html",
+    "Bag-v2.dc.html",
+    "Checkout-v2.dc.html",
+    "Confirmation-v2.dc.html",
+    "Dashboard-v2.dc.html",
+    "Main-v2-Light.dc.html",
+    "Collection-v2-Light.dc.html",
+    "Product-v2-Light.dc.html",
+    "Account-v2-Light.dc.html",
+    "Bag-v2-Light.dc.html",
+    "Checkout-v2-Light.dc.html",
+    "Confirmation-v2-Light.dc.html",
+    "Dashboard-v2-Light.dc.html",
+    "Main-v2-AR.dc.html",
+    "Main-v2-AR-Light.dc.html",
+    "Main-v2-M.dc.html",
+    "Main-v2-Light-M.dc.html",
+    "Main-v2-AR-M.dc.html",
+    "Main-v2-AR-Light-M.dc.html",
+    "Collection-v2-M.dc.html",
+    "Collection-v2-Light-M.dc.html",
+    "Product-v2-M.dc.html",
+    "Product-v2-Light-M.dc.html",
+    "Account-v2-M.dc.html",
+    "Account-v2-Light-M.dc.html",
+    "Bag-v2-M.dc.html",
+    "Bag-v2-Light-M.dc.html",
+    "Checkout-v2-M.dc.html",
+    "Checkout-v2-Light-M.dc.html",
+    "Confirmation-v2-M.dc.html",
+    "Confirmation-v2-Light-M.dc.html",
+    "Dashboard-v2-M.dc.html",
+    "Dashboard-v2-Light-M.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "dark",
+      "name": "V1 · Dark"
+    },
+    {
+      "id": "light",
+      "name": "V1 · Light"
+    },
+    {
+      "id": "v2d",
+      "name": "V2 · Dark"
+    },
+    {
+      "id": "v2l",
+      "name": "V2 · Light"
+    },
+    {
+      "id": "v2m",
+      "name": "V2 · Mobile Dark"
+    },
+    {
+      "id": "v2ml",
+      "name": "V2 · Mobile Light"
+    }
+  ],
+  "title": "ROYA — Couture Storefront"
+}

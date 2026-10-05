@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ROYA — Checkout · Light</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Cinzel:wght@400;500&amp;family=Jost:wght@300;400;500&amp;family=Amiri:wght@400;700&amp;display=swap">
+<style>
+body{margin:0;background:#F7F4EF}
+*{box-sizing:border-box}
+[data-theme="keep"] .btn-gold{background:#F2EEE8;color:#0B0A09}[data-theme="keep"] .btn-gold:hover{background:#FFFFFF;color:#0B0A09}[data-theme="keep"] .navc{color:#F2EEE8;border-color:rgba(242,238,232,.4)}[data-theme="keep"] .navc:hover{background:rgba(242,238,232,.12);border-color:#F2EEE8}[data-theme="keep"] .scard{border-color:rgba(242,238,232,.18)}[data-theme="keep"] .scard-on{border-color:rgba(242,238,232,.9)}[data-theme="keep"] .scrollcue{background:rgba(242,238,232,.25)}[data-theme="keep"] .scrollcue::after{background:#F2EEE8}[data-theme="keep"] :focus-visible{outline-color:#F2EEE8}[data-theme="keep"] .eyebrow{color:#E6E1D9}
+@media (max-width: 700px){
+section[style*="padding: 160px"],section[style*="padding: 170px"],section[style*="padding: 150px"]{padding-top:88px!important;padding-bottom:88px!important}
+section[style*="min-height: 920px"]{min-height:720px!important}
+section[style*="min-height: 900px"],div[style*="min-height: 900px"]{min-height:640px!important}
+[style*="min-height: 880px"],[style*="min-height: 760px"],[style*="min-height: 820px"]{min-height:440px!important}
+section[style*="min-height: 620px"]{min-height:480px!important}
+aside[style*="min-height: 1250px"]{min-height:520px!important}
+.fspan{grid-column:auto!important}
+main[style*="140px"],section[style*="140px"],main[style*="120px;"]{padding-bottom:64px!important}
+footer[style*="padding: 96px"]{padding-top:52px!important}
+.band > div[style*="padding: 88px"]{padding-top:48px!important}
+.band > div[style*="80px; display: flex; flex-direction: column; align-items: center"]{padding-bottom:56px!important}
+.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 14px!important}
+.pgrid .serif{font-size:20px!important}
+.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px 14px!important}
+.cgrid .card > div:last-child{flex-direction:column!important;gap:6px!important}
+.cgrid .serif{font-size:20px!important}
+.agrid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px!important;padding-bottom:8px;margin:0 -20px;padding-inline:20px}
+.agrid > *{flex:0 0 72%;margin-top:0!important;scroll-snap-align:center}
+.gal{flex-direction:column-reverse!important}
+.gal-thumbs{flex-direction:row!important;overflow-x:auto}
+.gal-thumbs .thumb{flex:0 0 64px;width:64px!important;height:84px!important}
+[style*="grid-template-columns: 120px 1fr auto"]{grid-template-columns:72px minmax(0,1fr)!important;gap:16px!important}
+[style*="grid-template-columns: 120px 1fr auto"] > :last-child{grid-column:2;align-items:flex-start!important}
+.track + div span{font-size:10px!important;letter-spacing:.04em!important}
+h1.serif{word-break:normal;overflow-wrap:anywhere}
+}
+
+:focus-visible{outline:1px solid #2A2723;outline-offset:3px}
+.field:focus-visible{outline:none}
+.nav-mob{display:none;position:relative}
+.nav-mob summary{list-style:none}.nav-mob summary::-webkit-details-marker{display:none}
+@media (max-width: 900px){.nav-desk{display:none!important}.nav-mob{display:block!important}.hide-sm{display:none!important}}
+
+a{color:#4E4943;text-decoration:none}a:hover{color:#000000}
+.serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;font-weight:400}
+.logo{font-family:Cinzel,'Trajan Pro',Georgia,serif;font-weight:400}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.eyebrow{font-family:Jost,Futura,sans-serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#6B655D}
+.btn-gold{display:flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 40px;background:#171512;color:#F7F4EF;border:0;cursor:pointer;font-family:Jost,sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;position:relative;overflow:hidden;transition:background .6s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.btn-gold:hover{background:#3A3631;color:#FFFFFF}.btn-gold:hover::after{transform:translateX(130%)}
+.back{background:none;border:0;min-height:44px;color:#5F5951;font-family:Jost,sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.back:hover{color:#000000}
+.lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#5F5951}
+.field{width:100%;min-height:52px;padding:0 2px;background:transparent;border:0;border-bottom:1px solid rgba(23,21,18,.4);color:#171512;font-family:Jost,sans-serif;font-size:16px;font-weight:300;outline:none;transition:border-color .5s}
+.field:focus{border-bottom-color:#2A2723}
+select.field{background:#F7F4EF}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.opt{display:grid;grid-template-columns:22px 1fr auto;gap:16px;align-items:start;text-align:left;width:100%;padding:22px 24px;background:none;border:1px solid rgba(23,21,18,.22);color:#47423B;font-family:Jost,sans-serif;font-weight:300;font-size:14px;cursor:pointer;transition:all .5s}
+.opt:hover{border-color:rgba(23,21,18,.6)}
+.opt-on{border-color:#2A2723;background:rgba(23,21,18,.08)}
+.dot{width:20px;height:20px;border-radius:50%;border:1px solid rgba(23,21,18,.6);display:grid;place-items:center;margin-top:2px}
+.dot-on::after{content:'';width:10px;height:10px;border-radius:50%;background:#2A2723}
+.step{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8A8379}
+.step-on{color:#171512}
+.step-done{color:#2A2723}
+.num{width:30px;height:30px;border-radius:50%;border:1px solid currentColor;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0}
+.slot{min-height:48px;padding:0 18px;background:none;border:1px solid rgba(23,21,18,.25);color:#47423B;font-family:Jost,sans-serif;font-size:13px;cursor:pointer;transition:all .5s}
+.slot:hover{border-color:#2A2723}
+.slot-on{border-color:#2A2723;background:rgba(23,21,18,.14);color:#000000}
+.pane{animation:pane .9s cubic-bezier(.16,1,.3,1) both}
+@keyframes pane{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.bar{height:1px;background:#2A2723;transition:width 1.2s cubic-bezier(.65,0,.35,1)}
+.shine{background:linear-gradient(100deg,#171512 0%,#8F8A82 45%,#2A2723 55%,#171512 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+.ph{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#EFEBE4 0%,#E2DCD2 58%,#D3CBBF 100%)}
+.ph-iv{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#F7F4EF 0%,#E9E4DC 60%,#D8D1C6 100%)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="background: #F7F4EF; color: #171512; font-family: Jost, Futura, 'Century Gothic', sans-serif; font-weight: 300; min-height: 100vh">
+
+<header style="padding: 22px clamp(20px, 4vw, 56px) 0; display: flex; flex-direction: column; gap: 22px; border-bottom: 1px solid rgba(23,21,18,0.16)">
+<div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px">
+<a href="Bag-v2-Light.dc.html" style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #5F5951; min-height: 44px; display: flex; align-items: center">← Bag</a>
+<a href="Main-v2-Light.dc.html" aria-label="ROYA home"><span class="logo shine" style="font-size: 28px; letter-spacing: 0.5em; padding-left: 0.5em">ROYA</span></a>
+<span style="justify-self: end; font-size: 12px; letter-spacing: 0.16em; color: #5F5951; display: flex; align-items: center; gap: 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10" width="14" height="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>256-bit encrypted</span>
+</div>
+<ol aria-label="Checkout steps" style="list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 56px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+<li class="{{s.cls}}"><span class="num">{{s.n}}</span>{{s.label}}</li>
+</sc-for>
+</ol>
+<div style="height: 1px; background: rgba(23,21,18,0.12)"><div class="bar" style="width: {{progress}}"></div></div>
+</header>
+
+<main style="max-width: 1440px; margin: 0 auto; padding: 64px clamp(20px, 4vw, 56px) 120px; display: flex; flex-wrap: wrap; gap: 72px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0">
+
+<sc-if value="{{s1}}" hint-placeholder-val="{{ true }}">
+<section class="pane" aria-label="Delivery" style="display: flex; flex-direction: column; gap: 40px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Delivery</h1>
+<p style="margin: -16px 0 0; font-size: 14px; color: #5F5951">Checking out as a guest. <a href="Account-v2-Light.dc.html" style="text-decoration: underline; text-underline-offset: 4px">Sign in</a> to use your saved measurements and addresses.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 28px 32px">
+<div class="f"><label class="lbl" for="c0">Email for your receipt</label><input id="c0" class="field" type="email" autocomplete="email" placeholder="you@example.com"></div>
+<div class="f"><label class="lbl" for="c1">Full name</label><input id="c1" class="field" autocomplete="name" value="Mariam Al [Surname]"></div>
+<div class="f"><label class="lbl" for="c2">Mobile</label><input id="c2" class="field" type="tel" autocomplete="tel" value="+971 50 [000 0000]"></div>
+<div class="f"><label class="lbl" for="c3">Emirate</label><select id="c3" class="field"><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option><option>Outside the UAE</option></select></div>
+<div class="f"><label class="lbl" for="c4">Area / community</label><input id="c4" class="field" placeholder="Emirates Hills"></div>
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="c5">Villa, building or residence</label><input id="c5" class="field" placeholder="Villa / tower, street, landmark"></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span class="lbl">Delivery method</span>
+<sc-for list="{{ships}}" as="o" hint-placeholder-count="3">
+<button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">
+<span class="{{o.dot}}"></span>
+<span style="display: flex; flex-direction: column; gap: 6px"><span class="serif" style="font-size: 19px; color: #171512">{{o.name}}</span><span style="line-height: 1.6">{{o.desc}}</span></span>
+<span style="color: #4E4943; white-space: nowrap">{{o.price}}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span class="lbl">Preferred arrival · Noir</span>
+<div role="group" aria-label="Arrival time" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{slots}}" as="t" hint-placeholder-count="4">
+<button type="button" class="{{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="display: flex; justify-content: flex-end"><button type="button" class="btn-gold" onClick="{{next}}">Continue to payment</button></div>
+</section>
+</sc-if>
+
+<sc-if value="{{s2}}" hint-placeholder-val="{{ false }}">
+<section class="pane" aria-label="Payment" style="display: flex; flex-direction: column; gap: 36px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Payment</h1>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<sc-for list="{{pays}}" as="o" hint-placeholder-count="4">
+<button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">
+<span class="{{o.dot}}"></span>
+<span style="display: flex; flex-direction: column; gap: 6px"><span class="serif" style="font-size: 19px; color: #171512">{{o.name}}</span><span style="line-height: 1.6">{{o.desc}}</span></span>
+<span style="color: #5F5951; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap">{{o.tag}}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{payCard}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; padding: 36px; border: 1px solid rgba(23,21,18,0.22)">
+<div aria-hidden="true" style="flex: 0 1 300px; max-width: 100%; height: 186px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #E7E2D9 0%, #FBF9F5 55%, #DED7CB 100%); border: 1px solid rgba(23,21,18,0.45); box-shadow: 0 30px 60px rgba(0,0,0,0.5)">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="logo shine" style="font-size: 16px; letter-spacing: 0.5em">ROYA</span><span style="width: 38px; height: 28px; border: 1px solid rgba(23,21,18,0.6); background: rgba(23,21,18,0.2)"></span></div>
+<span style="font-size: 19px; letter-spacing: 0.18em; color: #2A2723">{{cardMask}}</span>
+<div style="display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #5F5951"><span>{{cardName}}</span><span>{{cardExp}}</span></div>
+</div>
+<div style="flex: 1 1 280px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 24px">
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="p1">Card number</label><input id="p1" class="field" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" value="{{cNum}}" onChange="{{onNum}}" aria-invalid="{{numBad}}" aria-describedby="e1"><span id="e1" style="min-height: 18px; font-size: 12px; color: #E8A598">{{numErr}}</span></div>
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="p2">Name on card</label><input id="p2" class="field" autocomplete="cc-name" value="{{cName}}" onChange="{{onName}}"></div>
+<div class="f"><label class="lbl" for="p3">Expiry</label><input id="p3" class="field" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" value="{{cExp}}" onChange="{{onExp}}" aria-invalid="{{expBad}}" aria-describedby="e3"><span id="e3" style="min-height: 18px; font-size: 12px; color: #E8A598">{{expErr}}</span></div>
+<div class="f"><label class="lbl" for="p4">Security code</label><input id="p4" class="field" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" value="{{cCvc}}" onChange="{{onCvc}}" aria-invalid="{{cvcBad}}" aria-describedby="e4"><span id="e4" style="min-height: 18px; font-size: 12px; color: #E8A598">{{cvcErr}}</span></div>
+</div>
+<span style="flex-basis: 100%; font-size: 13px; color: #6B655D">Visa · Mastercard · American Express. Verified by 3-D Secure with your bank.</span>
+</div>
+</sc-if>
+<sc-if value="{{payBank}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 32px 36px; border: 1px solid rgba(23,21,18,0.22); display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.7; color: #47423B">
+<span class="serif" style="font-size: 20px; color: #171512">Your atelier slot is held for 72 hours.</span>
+<span>Bank details and a reference number are emailed and sent to the designer once you place the order. Production begins when the transfer clears.</span>
+<span style="color: #6B655D">[BANK NAME] · IBAN [AE00 0000 0000 0000 0000 000] · Ref. RY-[ORDER]</span>
+</div>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px"><button type="button" class="back" onClick="{{prev}}">← Delivery</button><sc-if value="{{payOk}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn-gold" onClick="{{next}}">Review order</button></sc-if><sc-if value="{{payNotOk}}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><button type="button" class="btn-gold" disabled="{{ true }}" aria-disabled="true" style="opacity: 0.45; cursor: not-allowed">Review order</button><span style="font-size: 12px; color: #5F5951">Complete your card details to continue.</span></span></sc-if></div>
+</section>
+</sc-if>
+
+<sc-if value="{{s3}}" hint-placeholder-val="{{ false }}">
+<section class="pane" aria-label="Review" style="display: flex; flex-direction: column; gap: 36px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Review</h1>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: rgba(23,21,18,0.2); border: 1px solid rgba(23,21,18,0.2)">
+<div style="background: #F7F4EF; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Deliver to</dt><dd style="margin: 0; line-height: 1.7">Mariam Al [Surname]<br>[Villa], Emirates Hills, Dubai</dd></div>
+<div style="background: #F7F4EF; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Method</dt><dd style="margin: 0; line-height: 1.7">{{shipName}}<br>{{slotName}}</dd></div>
+<div style="background: #F7F4EF; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Payment</dt><dd style="margin: 0; line-height: 1.7">{{payName}}</dd></div>
+</dl>
+<label style="display: flex; gap: 14px; align-items: flex-start; font-size: 14px; line-height: 1.7; color: #47423B"><input type="checkbox" checked="{{agreed}}" onChange="{{toggleAgree}}" style="width: 18px; height: 18px; accent-color: #2A2723; margin-top: 4px">I agree to the terms of sale. I understand the bridal deposit is non-refundable once fabric is cut.</label>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px"><button type="button" class="back" onClick="{{prev}}">← Payment</button><sc-if value="{{agreed}}" hint-placeholder-val="{{ false }}"><a class="btn-gold" href="Confirmation-v2-Light.dc.html">Place order · {{totalLabel}}</a></sc-if><sc-if value="{{notAgreed}}" hint-placeholder-val="{{ true }}"><span style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><button type="button" class="btn-gold" disabled="{{ true }}" aria-disabled="true" style="opacity: 0.45; cursor: not-allowed">Place order · {{totalLabel}}</button><span style="font-size: 12px; color: #5F5951">Accept the terms to place your order.</span></span></sc-if></div>
+</section>
+</sc-if>
+</div>
+
+<aside aria-label="Order summary" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 22px; padding: 36px; border: 1px solid rgba(23,21,18,0.3); background: #FDFBF8">
+<span class="eyebrow">Your order</span>
+<div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center">
+<div class="ph" style="aspect-ratio: 3 / 4"><img class="photo" src="/_blob/71d1d416c77f7633d26983790f89f3aa" alt="" style="object-position: 50% 25%"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="serif" style="font-size: 18px">Mehr</span><span style="font-size: 13px; color: #6B655D">Deposit · 50%</span></div>
+<span style="font-size: 14px">AED 14,250</span>
+</div>
+<div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center">
+<div class="ph" style="aspect-ratio: 3 / 4"><img class="photo" src="/_blob/68f71fe01185b376d372f1094e32f26e" alt=""></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="serif" style="font-size: 18px">Noir</span><span style="font-size: 13px; color: #6B655D">Noir black · FR 38</span></div>
+<span style="font-size: 14px">AED 6,800</span>
+</div>
+<div style="height: 1px; background: rgba(23,21,18,0.25)"></div>
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><dt style="color: #5F5951">Delivery</dt><dd style="margin: 0">{{shipPrice}}</dd></div>
+<div style="display: flex; justify-content: space-between"><dt style="color: #5F5951">{{vatName}}</dt><dd style="margin: 0">{{vatLabel}}</dd></div>
+</dl>
+<div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase">Due today</span><span class="serif" style="font-size: 30px; color: #4E4943">{{totalLabel}}</span></div>
+<span style="font-size: 13px; color: #6B655D; line-height: 1.6">AED 14,250 balance due at your final fitting. All payments are processed in AED.</span>
+<div style="padding-top: 18px; border-top: 1px solid rgba(23,21,18,0.2); display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #5F5951; line-height: 1.6">
+<span class="serif" style="font-size: 17px; color: #171512">Need a hand?</span>
+<span>The designer can complete this order with you. <a href="#" style="text-decoration: underline; text-underline-offset: 4px">WhatsApp the concierge</a></span>
+</div>
+</aside>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1316}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: 1, ship: 0, slot: 1, pay: 0, agree: false, cNum: '', cName: '', cExp: '', cCvc: '', touched: {} }; }
+  renderVals() {
+    var self = this, st = this.state;
+    var digits = (st.cNum || '').replace(/\D/g, '');
+    var amex = /^3[47]/.test(digits);
+    var luhn = function (d) { var sum = 0, alt = false; for (var i = d.length - 1; i >= 0; i--) { var n = +d[i]; if (alt) { n *= 2; if (n > 9) { n -= 9; } } sum += n; alt = !alt; } return d.length > 0 && sum % 10 === 0; };
+    var numOk = (amex ? digits.length === 15 : digits.length === 16) && luhn(digits);
+    var em = /^(\d{2})\s*\/\s*(\d{2})$/.exec(st.cExp || '');
+    var expOk = false;
+    if (em) { var mm = +em[1], yy = 2000 + +em[2]; var now = new Date(); expOk = mm >= 1 && mm <= 12 && (yy > now.getFullYear() || (yy === now.getFullYear() && mm >= now.getMonth() + 1)); }
+    var cvcOk = (st.cCvc || '').length === (amex ? 4 : 3);
+    var nameOk = (st.cName || '').trim().length > 2;
+    var t = st.touched || {};
+    var touch = function (k, v) { var o = {}; o[k] = v; o.touched = Object.assign({}, t); o.touched[k] = true; self.setState(o); };
+    var payOk = st.pay !== 0 || (numOk && expOk && cvcOk && nameOk);
+    var masked = '•••• •••• •••• ' + (digits.length >= 4 ? digits.slice(-4) : '••••');
+    var labels = ['Delivery', 'Payment', 'Review'];
+    var steps = labels.map(function (l, i) {
+      var n = i + 1;
+      return { n: n < st.step ? '✓' : String(n), label: l, cls: n === st.step ? 'step step-on' : (n < st.step ? 'step step-done' : 'step') };
+    });
+    var shipDefs = [
+      { name: 'White-glove delivery', desc: 'Hand-delivered in the black ROYA box. Your bridal gown follows after the final fitting.', price: 'Complimentary' },
+      { name: 'Collect at the ROYA atelier', desc: 'A final press and a try-on with the designer, by appointment.', price: 'Complimentary' },
+      { name: 'International · insured courier', desc: 'Door to door in 3–5 days. Duties and taxes calculated at checkout.', price: 'AED 950' }
+    ];
+    var ships = shipDefs.map(function (o, i) {
+      var on = i === st.ship;
+      return { name: o.name, desc: o.desc, price: o.price, on: on ? 'true' : 'false', cls: on ? 'opt opt-on' : 'opt', dot: on ? 'dot dot-on' : 'dot', pick: function () { self.setState({ ship: i }); } };
+    });
+    var slotDefs = ['Thu 8 Oct · Morning', 'Thu 8 Oct · Evening', 'Fri 9 Oct · Afternoon', 'Sat 10 Oct · Morning'];
+    var slots = slotDefs.map(function (t, i) {
+      var on = i === st.slot;
+      return { label: t, on: on ? 'true' : 'false', cls: on ? 'slot slot-on' : 'slot', pick: function () { self.setState({ slot: i }); } };
+    });
+    var payDefs = [
+      { name: 'Credit or debit card', desc: 'Visa, Mastercard, American Express', tag: '3-D Secure' },
+      { name: 'Apple Pay', desc: 'Confirm with Face ID or Touch ID', tag: 'Fastest' },
+      { name: 'Bank transfer', desc: 'For orders above AED 50,000. Slot held for 72 hours.', tag: 'Preferred for couture' },
+      { name: 'Private payment link', desc: 'The designer sends a secure link to pay later, in full or in parts.', tag: 'Via concierge' }
+    ];
+    var pays = payDefs.map(function (o, i) {
+      var on = i === st.pay;
+      return { name: o.name, desc: o.desc, tag: o.tag, on: on ? 'true' : 'false', cls: on ? 'opt opt-on' : 'opt', dot: on ? 'dot dot-on' : 'dot', pick: function () { self.setState({ pay: i }); } };
+    });
+    return {
+      cNum: st.cNum, cName: st.cName, cExp: st.cExp, cCvc: st.cCvc,
+      onNum: function (e) { var d = e.target.value.replace(/\D/g, '').slice(0, 16); touch('cNum', d.replace(/(.{4})(?=.)/g, '$1 ')); },
+      onName: function (e) { touch('cName', e.target.value.toUpperCase()); },
+      onExp: function (e) { var d = e.target.value.replace(/\D/g, '').slice(0, 4); touch('cExp', d.length > 2 ? d.slice(0, 2) + ' / ' + d.slice(2) : d); },
+      onCvc: function (e) { touch('cCvc', e.target.value.replace(/\D/g, '').slice(0, 4)); },
+      numBad: t.cNum && !numOk ? 'true' : 'false', expBad: t.cExp && !expOk ? 'true' : 'false', cvcBad: t.cCvc && !cvcOk ? 'true' : 'false',
+      numErr: t.cNum && !numOk && digits.length >= (amex ? 15 : 16) ? 'This card number doesn\u2019t look right.' : '',
+      expErr: t.cExp && !expOk && (st.cExp || '').length >= 7 ? 'Check the expiry date.' : '',
+      cvcErr: t.cCvc && !cvcOk && (st.cCvc || '').length >= 3 && !amex && (st.cCvc || '').length > 3 ? 'Three digits for this card.' : '',
+      cardMask: masked, cardName: st.cName || 'NAME ON CARD', cardExp: st.cExp || 'MM / YY',
+      payOk: payOk, payNotOk: !payOk,
+      agreed: st.agree, notAgreed: !st.agree, toggleAgree: function () { self.setState({ agree: !st.agree }); }, totalLabel: 'AED ' + (21050 + (st.ship === 2 ? 950 : 0)).toLocaleString('en-US'), vatName: st.ship === 2 ? 'Import duties' : 'VAT (5%) included', vatLabel: st.ship === 2 ? 'Paid to courier on delivery' : 'AED 1,002',
+      steps: steps, progress: (st.step / 3 * 100) + '%',
+      s1: st.step === 1, s2: st.step === 2, s3: st.step === 3,
+      ships: ships, slots: slots, pays: pays,
+      showSlots: st.ship === 0,
+      payCard: st.pay === 0, payBank: st.pay === 2,
+      shipName: shipDefs[st.ship].name, shipPrice: shipDefs[st.ship].price,
+      slotName: st.ship === 0 ? slotDefs[st.slot] : '',
+      payName: payDefs[st.pay].name + (st.pay === 0 && digits.length >= 4 ? ' · ending ' + digits.slice(-4) : ''),
+      next: function () { self.setState({ step: Math.min(3, st.step + 1) }); },
+      prev: function () { self.setState({ step: Math.max(1, st.step - 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

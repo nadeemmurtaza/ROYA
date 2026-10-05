@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ROYA — Product · Light</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Cinzel:wght@400;500&amp;family=Jost:wght@300;400;500&amp;family=Amiri:wght@400;700&amp;display=swap">
+<style>
+body{margin:0;background:#F7F4EF}
+*{box-sizing:border-box}
+[data-theme="keep"] .btn-gold{background:#F2EEE8;color:#0B0A09}[data-theme="keep"] .btn-gold:hover{background:#FFFFFF;color:#0B0A09}[data-theme="keep"] .navc{color:#F2EEE8;border-color:rgba(242,238,232,.4)}[data-theme="keep"] .navc:hover{background:rgba(242,238,232,.12);border-color:#F2EEE8}[data-theme="keep"] .scard{border-color:rgba(242,238,232,.18)}[data-theme="keep"] .scard-on{border-color:rgba(242,238,232,.9)}[data-theme="keep"] .scrollcue{background:rgba(242,238,232,.25)}[data-theme="keep"] .scrollcue::after{background:#F2EEE8}[data-theme="keep"] :focus-visible{outline-color:#F2EEE8}[data-theme="keep"] .eyebrow{color:#E6E1D9}
+@media (max-width: 700px){
+section[style*="padding: 160px"],section[style*="padding: 170px"],section[style*="padding: 150px"]{padding-top:88px!important;padding-bottom:88px!important}
+section[style*="min-height: 920px"]{min-height:720px!important}
+section[style*="min-height: 900px"],div[style*="min-height: 900px"]{min-height:640px!important}
+[style*="min-height: 880px"],[style*="min-height: 760px"],[style*="min-height: 820px"]{min-height:440px!important}
+section[style*="min-height: 620px"]{min-height:480px!important}
+aside[style*="min-height: 1250px"]{min-height:520px!important}
+.fspan{grid-column:auto!important}
+main[style*="140px"],section[style*="140px"],main[style*="120px;"]{padding-bottom:64px!important}
+footer[style*="padding: 96px"]{padding-top:52px!important}
+.band > div[style*="padding: 88px"]{padding-top:48px!important}
+.band > div[style*="80px; display: flex; flex-direction: column; align-items: center"]{padding-bottom:56px!important}
+.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 14px!important}
+.pgrid .serif{font-size:20px!important}
+.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px 14px!important}
+.cgrid .card > div:last-child{flex-direction:column!important;gap:6px!important}
+.cgrid .serif{font-size:20px!important}
+.agrid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px!important;padding-bottom:8px;margin:0 -20px;padding-inline:20px}
+.agrid > *{flex:0 0 72%;margin-top:0!important;scroll-snap-align:center}
+.gal{flex-direction:column-reverse!important}
+.gal-thumbs{flex-direction:row!important;overflow-x:auto}
+.gal-thumbs .thumb{flex:0 0 64px;width:64px!important;height:84px!important}
+[style*="grid-template-columns: 120px 1fr auto"]{grid-template-columns:72px minmax(0,1fr)!important;gap:16px!important}
+[style*="grid-template-columns: 120px 1fr auto"] > :last-child{grid-column:2;align-items:flex-start!important}
+.track + div span{font-size:10px!important;letter-spacing:.04em!important}
+h1.serif{word-break:normal;overflow-wrap:anywhere}
+}
+
+:focus-visible{outline:1px solid #2A2723;outline-offset:3px}
+.field:focus-visible{outline:none}
+.nav-mob{display:none;position:relative}
+.nav-mob summary{list-style:none}.nav-mob summary::-webkit-details-marker{display:none}
+@media (max-width: 900px){.nav-desk{display:none!important}.nav-mob{display:block!important}.hide-sm{display:none!important}}
+
+a{color:#4E4943;text-decoration:none}a:hover{color:#000000}
+.serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;font-weight:400}
+.logo{font-family:Cinzel,'Trajan Pro',Georgia,serif;font-weight:400}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ar{font-family:Amiri,'Times New Roman',serif}
+.eyebrow{font-family:Jost,Futura,sans-serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#6B655D}
+.navlink{font-family:Jost,Futura,sans-serif;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#2A2723;background:linear-gradient(#2A2723,#2A2723) 0 100%/0 1px no-repeat;padding:6px 0;transition:background-size .7s cubic-bezier(.16,1,.3,1),color .4s}
+.navlink:hover{background-size:100% 1px;color:#000000}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;color:#2A2723;background:none;border:0;cursor:pointer;transition:color .4s}
+.icon-btn:hover{color:#2A2723}
+.btn-gold{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 36px;background:#171512;color:#F7F4EF;font-family:Jost,sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;position:relative;overflow:hidden;transition:background .6s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.btn-gold:hover{background:#3A3631;color:#FFFFFF}.btn-gold:hover::after{transform:translateX(130%)}
+.btn-line{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 36px;border:1px solid rgba(23,21,18,.6);color:#171512;font-family:Jost,sans-serif;font-size:12px;letter-spacing:.26em;text-transform:uppercase;transition:background .6s,border-color .6s}
+.btn-line:hover{background:rgba(23,21,18,.1);border-color:#2A2723;color:#000000}
+.ph{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#EFEBE4 0%,#E2DCD2 58%,#D3CBBF 100%)}
+.ph-iv{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#F7F4EF 0%,#E9E4DC 60%,#D8D1C6 100%)}
+.cap{position:absolute;left:20px;bottom:16px;font-family:Jost,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(60,56,50,.7)}
+.gown{position:absolute;left:50%;top:50%;height:78%;transform:translate(-50%,-48%);color:rgba(110,104,95,.55)}
+.ph .gown{color:rgba(23,21,18,.5)}.ph .cap{color:rgba(60,56,50,.62)}
+.swap{animation:swap 1.2s cubic-bezier(.16,1,.3,1) both}
+@keyframes swap{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+.thumb{width:84px;height:110px;padding:0;border:1px solid rgba(23,21,18,.2);background:none;cursor:pointer;transition:border-color .5s,opacity .5s;opacity:.55}
+.thumb:hover{opacity:1}
+.thumb-on{border-color:#2A2723;opacity:1}
+.opt{min-height:48px;min-width:56px;padding:0 18px;background:none;border:1px solid rgba(23,21,18,.3);color:#47423B;font-family:Jost,sans-serif;font-size:13px;letter-spacing:.08em;cursor:pointer;transition:all .5s}
+.opt:hover{border-color:#2A2723;color:#000000}
+.opt-on{border-color:#2A2723;background:rgba(23,21,18,.14);color:#000000}
+.tab{flex:1;min-height:52px;background:none;border:0;border-bottom:1px solid rgba(23,21,18,.25);color:#5F5951;font-family:Jost,sans-serif;font-size:11px;letter-spacing:.26em;text-transform:uppercase;cursor:pointer;transition:all .5s}
+.tab-on{border-bottom:1px solid #2A2723;color:#171512}
+.sw{width:44px;height:44px;border-radius:50%;border:1px solid rgba(23,21,18,.3);padding:4px;background:none;cursor:pointer;transition:border-color .5s}
+.sw-on{border-color:#2A2723}
+.acc{border-top:1px solid rgba(23,21,18,.2)}
+.acc summary{list-style:none;cursor:pointer;min-height:60px;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#2A2723}
+.acc summary::-webkit-details-marker{display:none}
+.acc[open] .plus{transform:rotate(45deg)}
+.plus{transition:transform .5s;color:#2A2723;font-size:20px}
+.fade{animation:fade 1.2s cubic-bezier(.16,1,.3,1) both}
+@keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.shine{background:linear-gradient(100deg,#171512 0%,#8F8A82 45%,#2A2723 55%,#171512 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+.card .zoom{position:absolute;inset:0;transition:transform 1.8s cubic-bezier(.16,1,.3,1)}
+.card:hover .zoom{transform:scale(1.07)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="background: #F7F4EF; color: #171512; font-family: Jost, Futura, 'Century Gothic', sans-serif; font-weight: 300; min-height: 100vh">
+
+<header style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; padding: 18px clamp(20px, 4vw, 56px); border-bottom: 1px solid rgba(23,21,18, 0.16)">
+<div style="display: flex; align-items: center"><details class="nav-mob"><summary aria-label="Open menu" style="cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: #2A2723"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"></path></svg>Menu</summary><nav aria-label="Mobile" style="position: absolute; left: -20px; top: 56px; width: 100vw; max-width: 420px; background: #F7F4EF; border: 1px solid rgba(23,21,18,0.16); padding: 28px 24px; display: flex; flex-direction: column; gap: 20px; z-index: 60"><a class="navlink" href="Collection-v2-Light.dc.html" style="color: #2A2723">Bridal</a><a class="navlink" href="Collection-v2-Light.dc.html">Evening</a><a class="navlink" href="Main-v2-Light.dc.html#commission">Bespoke</a><a class="navlink" href="Main-v2-Light.dc.html#atelier">The Atelier</a></nav></details><nav class="nav-desk" aria-label="Primary" style="display: flex; flex-wrap: wrap; gap: 4px 30px">
+<a class="navlink" href="Collection-v2-Light.dc.html" style="color: #2A2723">Bridal</a>
+<a class="navlink" href="Collection-v2-Light.dc.html">Evening</a>
+<a class="navlink" href="Main-v2-Light.dc.html#commission">Bespoke</a>
+<a class="navlink" href="Main-v2-Light.dc.html#atelier">The Atelier</a>
+</nav></div>
+<a href="Main-v2-Light.dc.html" aria-label="ROYA home" style="display: flex; flex-direction: column; align-items: stretch; gap: 3px">
+<span class="logo shine" style="display: block; white-space: nowrap; font-size: 30px; line-height: 1; letter-spacing: 0.42em; margin-right: -0.42em">ROYA</span>
+<span class="logo" aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 9px; line-height: 1; color: #7A746C"><span>W</span><span>E</span><span>A</span><span>R</span><span>&nbsp;</span><span>Y</span><span>O</span><span>U</span><span>R</span><span>&nbsp;</span><span>D</span><span>R</span><span>E</span><span>A</span><span>M</span></span>
+</a>
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px">
+<button type="button" class="icon-btn hide-sm" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></button>
+<a class="icon-btn" href="Account-v2-Light.dc.html" aria-label="Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></a>
+<a class="icon-btn hide-sm" href="Dashboard-v2-Light.dc.html" aria-label="Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg></a>
+<a class="icon-btn" href="Bag-v2-Light.dc.html" aria-label="Bag, 2 items" style="position: relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 8h14l-1 13H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span style="position: absolute; top: 6px; right: 4px; font-size: 9px; color: #F7F4EF; background: #2A2723; width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center">2</span></a>
+</div>
+</header>
+
+<main id="top" style="max-width: 1440px; margin: 0 auto; padding: 32px clamp(20px, 4vw, 56px) 120px; display: flex; flex-wrap: wrap; gap: 64px">
+
+<div class="gal" style="flex: 999 1 640px; min-width: 0; display: flex; gap: 16px">
+<div role="group" aria-label="Gallery" class="gal-thumbs" style="display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{thumbs}}" as="t" hint-placeholder-count="5">
+<button type="button" class="{{t.cls}}" aria-label="{{t.label}}" onClick="{{t.pick}}" style="position: relative; overflow: hidden"><img class="photo" src="{{t.thumb}}" alt=""></button>
+</sc-for>
+</div>
+<div style="flex: 1; min-width: 0; position: relative">
+<sc-for list="{{current}}" as="v" hint-placeholder-count="1">
+<div class="ph swap" style="aspect-ratio: 3 / 4; width: 100%">
+<sc-if value="{{v.isVideo}}" hint-placeholder-val="{{ false }}"><video class="photo" src="{{v.src}}" data-webm="{{v.webm}}" poster="{{v.thumb}}" autoplay="" muted="" loop="" playsinline="" aria-label="{{v.label}}" ref="{{vref}}"></video></sc-if>
+<sc-if value="{{v.isImg}}" hint-placeholder-val="{{ true }}"><img class="photo" src="{{v.src}}" alt="{{v.label}}" style="object-position: {{v.pos}}"></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{pr.film}}" hint-placeholder-val="{{ true }}"><button type="button" style="position: absolute; top: 20px; right: 20px; min-height: 44px; padding: 0 18px; background: rgba(247,244,239,0.7); border: 1px solid rgba(23,21,18,0.5); color: #171512; font-family: Jost, sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px" onClick="{{playFilm}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 4l13 8-13 8z"></path></svg>Watch the film</button></sc-if>
+</div>
+</div>
+
+<div class="fade" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+<nav aria-label="Breadcrumb" style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #6B655D; display: flex; gap: 10px"><a href="Main-v2-Light.dc.html" style="color: #6B655D">Home</a><span>/</span><a href="Collection-v2-Light.dc.html" style="color: #6B655D">{{pr.crumb}}</a><span>/</span><span>{{pr.name}}</span></nav>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span class="eyebrow">{{pr.eyebrow}}</span>
+<h1 class="serif" style="margin: 0; font-size: 60px; line-height: 1">{{pr.name}}</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #47423B">{{pr.desc}}</p>
+<span class="serif" style="font-size: 26px; color: #4E4943; margin-top: 6px">{{priceLabel}}</span>
+<span style="font-size: 13px; color: #6B655D">{{priceNote}}</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #5F5951">Shade · <span style="color: #171512">{{shadeName}}</span></span>
+<div role="group" aria-label="Shade" style="display: flex; gap: 12px">
+<sc-for list="{{shades}}" as="s" hint-placeholder-count="3">
+<button type="button" class="{{s.cls}}" aria-label="{{s.name}}" onClick="{{s.pick}}"><span style="display: block; width: 100%; height: 100%; border-radius: 50%; background: {{s.hex}}"></span></button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<sc-if value="{{isBespoke}}" hint-placeholder-val="{{ true }}">
+<div role="tablist" aria-label="Fit" style="display: flex">
+<button type="button" role="tab" class="{{mtmTab}}" aria-selected="{{mtmSel}}" onClick="{{pickMtm}}">Made to measure</button>
+<button type="button" role="tab" class="{{stdTab}}" aria-selected="{{stdSel}}" onClick="{{pickStd}}">Atelier sizes</button>
+</div>
+<sc-if value="{{isMtm}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 15px; line-height: 1.7; color: #47423B">The designer takes your measurements at your first fitting, at the atelier or at home. Fittings are included until it is perfect.</p>
+</sc-if>
+</sc-if>
+<sc-if value="{{isStd}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Size" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{sizes}}" as="z" hint-placeholder-count="6">
+<button type="button" class="{{z.cls}}" aria-pressed="{{z.on}}" onClick="{{z.pick}}">{{z.label}}</button>
+</sc-for>
+</div>
+<a href="#" style="font-size: 13px; color: #5F5951; text-decoration: underline; text-underline-offset: 4px">Size guide · FR / IT / UK</a>
+</sc-if>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<a class="btn-gold" href="Bag-v2-Light.dc.html">{{ctaLabel}}</a>
+<a class="btn-line" href="Main-v2-Light.dc.html#consult">Book a private fitting</a>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding-top: 6px">
+<a href="#" style="font-size: 13px; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; min-height: 44px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h16v11H8l-4 4z"></path></svg>Ask the designer</a>
+<button type="button" aria-pressed="{{wishOn}}" onClick="{{toggleWish}}" style="background: none; border: 0; color: #4E4943; font-family: Jost, sans-serif; font-size: 13px; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg>{{wishLabel}}</button>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(23,21,18,0.2); border: 1px solid rgba(23,21,18,0.2); font-size: 12px; line-height: 1.5; color: #47423B; text-align: center">
+<sc-for list="{{pr.trio}}" as="t" hint-placeholder-count="3"><div style="background: #F7F4EF; padding: 18px 10px">{{t.k}}<br><span class="serif" style="font-size: 20px; color: #171512">{{t.v}}</span></div></sc-for>
+</div>
+
+<div>
+<details class="acc" open>
+<summary>The details <span class="plus" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 22px; font-size: 15px; line-height: 1.75; color: #5F5951">{{pr.details}}</p>
+</details>
+<details class="acc">
+<summary>Craftsmanship <span class="plus" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 22px; font-size: 15px; line-height: 1.75; color: #5F5951">{{pr.craft}}</p>
+</details>
+<details class="acc" style="border-bottom: 1px solid rgba(23,21,18,0.2)">
+<summary>Delivery, fittings &amp; care <span class="plus" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 22px; font-size: 15px; line-height: 1.75; color: #5F5951">{{pr.care}}</p>
+</details>
+</div>
+</div>
+</main>
+
+<section aria-label="Complete the look" style="max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px) 140px; display: flex; flex-direction: column; gap: 40px">
+<h2 class="serif" style="margin: 0; font-size: 44px">Complete the look</h2>
+<div class="pgrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 28px">
+<sc-for list="{{related}}" as="r" hint-placeholder-count="4">
+<a class="card" href="#top" onClick="{{r.go}}" style="display: flex; flex-direction: column; gap: 14px; color: #171512"><div class="ph" style="aspect-ratio: 1 / 1.2"><div class="zoom"><img class="photo" src="{{r.img}}" alt="{{r.name}}"></div></div><span class="serif" style="font-size: 22px">{{r.name}}</span><span style="color: #4E4943; font-size: 14px">{{r.price}}</span></a>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2107}}'>
+class Component extends DCLogic {
+  store(k, v) { try { if (v === undefined) { return window.localStorage.getItem(k); } window.localStorage.setItem(k, v); } catch (e) { return null; } return null; }
+  money(aed, cur) { cur = cur || 'AED'; var r = { AED: 1, USD: 0.2723, SAR: 1.0211, GBP: 0.2040, EUR: 0.2340 }[cur] || 1; var v = aed * r; if (cur !== 'AED') { v = Math.round(v / 10) * 10; } return cur + ' ' + Math.round(v).toLocaleString('en-US'); }
+  constructor(props) { super(props); this.state = { view: 0, shade: 0, mode: 'mtm', size: 'FR 38', saved: false, pid: 'mehr', cur: 'AED' };
+  }
+  componentDidMount() { var id = this.store('roya.product'); var c = this.store('roya.cur'); var u = {}; if (id) { u.pid = id; } if (c) { u.cur = c; } this.setState(u); }
+  renderVals() {
+    var self = this, st = this.state;
+    var B = '/_blob/';
+    var V = function (src, label, pos) { return { src: B + src, thumb: B + src, pos: pos || '50% 30%', label: label, isImg: true, isVideo: false }; };
+    var F = function (src, poster, label) { var WM = { '53baa82bf75e3c98675ce768ea563bb8': 'c091e547eeb7256130e6c0dd71c31173', '4594cd9df28d1309752a240bdb9c0182': 'a6e94c07d14fe9951ac04826a5e44829' }; return { src: B + src, webm: B + (WM[src] || src), thumb: B + poster, pos: '50% 50%', label: label, isImg: false, isVideo: true }; };
+    var CAT = {
+      mehr: { id: 'mehr', name: 'Mehr', crumb: 'Bridal', kind: 'bespoke', aed: 28500, film: true, eyebrow: 'ROYA Bridal · Bespoke',
+        desc: 'Strapless duchess-satin column with a draped sash and sculpted 3D florals, each petal cut, shaped and stitched by hand. Worn with the cathedral tulle veil.',
+        views: [V('71d1d416c77f7633d26983790f89f3aa', 'Front view', '50% 25%'), V('e1cbad43f63378bf9ab1b22df13aac76', 'Walking, veil lifted', '50% 25%'), V('0f5809497c462d079996974fcc85ead3', 'Back view with veil'), V('9817860128c260e3dba8aa267b81827e', 'Portrait'), F('53baa82bf75e3c98675ce768ea563bb8', '4694e6b0da951e4a45bcf7c42d48478e', 'The MEHR film'), F('4594cd9df28d1309752a240bdb9c0182', 'f9bd9facadabe43e776561ecaefcacfe', 'Sculpting the florals')],
+        shades: [['Ivory', '#F3EFE6'], ['Pearl', '#E6E1D8'], ['Lilac', '#D9D0E6']],
+        trio: [{ k: 'Ready in', v: '[X] weeks' }, { k: 'Fittings', v: 'Included' }, { k: 'Inside label', v: 'Your name' }],
+        details: 'Straight strapless neckline on a boned corset. Duchess satin with an asymmetric draped sash. Column skirt with a sweeping train and sculpted floral appliqué at the hem.',
+        craft: 'Every floral is cut, shaped and stitched by hand in our UAE atelier. The corset is built in phases, and you receive films of your gown as it is made. Your name is stitched on the label inside.',
+        care: 'Hand-delivered in the black ROYA box across the UAE. Worldwide by insured courier on request.' },
+      noir: { id: 'noir', name: 'Noir', crumb: 'Evening', kind: 'rtw', aed: 6800, film: false, eyebrow: 'Evening · Ready to wear',
+        desc: 'Strapless sweetheart gown in black satin, built on a boned corset, with a full gathered skirt and a waistline of hand-placed pearls.',
+        views: [V('68f71fe01185b376d372f1094e32f26e', 'On the form', '50% 35%'), V('7f2f4083008200b207eb338b4c539e71', 'Bodice and pearl waist', '50% 50%'), V('0ce4f9dd58e8d2b642634662c0a04ee9', 'Inside the corset', '40% 50%'), V('3c6ec80d8cceea9c51943c831667dce3', 'Styled with opera gloves', '50% 40%')],
+        shades: [['Black', '#111111']],
+        trio: [{ k: 'Ships in', v: '[X] days' }, { k: 'Hem', v: 'Adjusted free' }, { k: 'Inside label', v: 'Your name' }],
+        details: 'Sweetheart neckline on an internally boned corset with moulded cups. Black duchess satin. Gathered skirt with volume. Pearls of three sizes placed by hand along the waist.',
+        craft: 'Corset built by hand in our UAE atelier; every pearl is sewn individually, never glued. Your name is stitched on the label inside.',
+        care: 'Delivered in the black ROYA box. Spot-clean only; store flat in its tissue.' },
+      lilas: { id: 'lilas', name: 'Lilas', crumb: 'Evening', kind: 'rtw', aed: 7400, film: false, eyebrow: 'Evening · New',
+        desc: 'Lilac satin scattered with organza blossoms built petal by petal, each centred with pearls and glass beads.',
+        views: [V('eb6de249b43565fb5dc4d24718e600d4', 'Hand-sewn blossom', '50% 50%'), V('3374e27e6e7a5d785451dccce8d5576b', 'In its ROYA box', '50% 40%')],
+        shades: [['Lilac', '#D9D0E6']],
+        trio: [{ k: 'Ships in', v: '[X] days' }, { k: 'Blossoms', v: 'Hand-built' }, { k: 'Inside label', v: 'Your name' }],
+        details: 'Lilac satin with an organza overlay. Three-dimensional blossoms in satin and organza, centred with pearls and glass seed beads.',
+        craft: 'Each blossom is cut, layered and stitched by hand, then beaded at the centre. No two are identical.',
+        care: 'Delivered folded in tissue in the black ROYA box. Steam gently from the inside.' },
+      veil: { id: 'veil', name: 'Mehr Veil', crumb: 'Bridal', kind: 'acc', aed: 3200, film: false, eyebrow: 'Bridal · Accessories',
+        desc: 'Cathedral-length veil in soft tulle with a raw-cut edge, cut to fall past the train.',
+        views: [V('ad3489fb8410d286e3a4c3002a5a382e', 'From behind'), V('e1cbad43f63378bf9ab1b22df13aac76', 'Lifted in the breeze', '50% 25%'), V('0f5809497c462d079996974fcc85ead3', 'Full length')],
+        shades: [['Ivory', '#F3EFE6']],
+        trio: [{ k: 'Length', v: 'Cathedral' }, { k: 'Edge', v: 'Raw-cut' }, { k: 'Comb', v: 'Included' }],
+        details: 'Soft bridal tulle, single tier, raw-cut edge. Mounted on a clear comb.', craft: 'Cut and finished by hand to the length of your train.', care: 'Delivered rolled in tissue. Steam on low heat.' },
+      corset: { id: 'corset', name: 'Noir Corset', crumb: 'Evening', kind: 'rtw', aed: 4900, film: false, eyebrow: 'Evening',
+        desc: 'Boned black satin corset with sweetheart cups and a waist scattered with pearls.',
+        views: [V('0ce4f9dd58e8d2b642634662c0a04ee9', 'Corset structure', '40% 50%'), V('7f2f4083008200b207eb338b4c539e71', 'Pearl waist', '50% 50%')],
+        shades: [['Black', '#111111']],
+        trio: [{ k: 'Ships in', v: '[X] days' }, { k: 'Boning', v: 'Internal' }, { k: 'Inside label', v: 'Your name' }],
+        details: 'Black satin, fully lined, internally boned with moulded cups. Hidden back zip.', craft: 'Built panel by panel in our UAE atelier.', care: 'Delivered in the black ROYA box.' },
+      gloves: { id: 'gloves', name: 'Opera Gloves', crumb: 'Accessories', kind: 'acc', aed: 950, film: false, eyebrow: 'Accessories',
+        desc: 'Elbow-length gloves in black floral lace.',
+        views: [V('3c6ec80d8cceea9c51943c831667dce3', 'Worn with pearls', '50% 40%'), V('655d57ba189e59d2e1755b300e4dde43', 'In the ROYA box')],
+        shades: [['Black', '#111111']],
+        trio: [{ k: 'Length', v: 'Elbow' }, { k: 'Lace', v: 'Floral' }, { k: 'Size', v: 'One size' }],
+        details: 'Stretch floral lace, elbow length.', craft: 'Finished by hand at the cuff.', care: 'Hand wash cold, dry flat.' }
+    };
+    var pr = CAT[st.pid] || CAT.mehr;
+    var views = pr.views;
+    var thumbs = views.map(function (v, i) {
+      return { label: v.label, thumb: v.thumb, cls: i === st.view ? 'thumb thumb-on' : 'thumb', pick: function () { self.setState({ view: i }); } };
+    });
+    var shadeDefs = pr.shades;
+    var sh = Math.min(st.shade, shadeDefs.length - 1);
+    var shades = shadeDefs.map(function (s, i) {
+      return { name: s[0], hex: s[1], cls: i === sh ? 'sw sw-on' : 'sw', pick: function () { self.setState({ shade: i }); } };
+    });
+    var sizes = (pr.kind === 'acc' ? ['One size'] : ['FR 34', 'FR 36', 'FR 38', 'FR 40', 'FR 42', 'FR 44']).map(function (z) {
+      var on = z === st.size || pr.kind === 'acc';
+      return { label: z, on: on ? 'true' : 'false', cls: on ? 'opt opt-on' : 'opt', pick: function () { self.setState({ size: z }); } };
+    });
+    var mtm = pr.kind === 'bespoke' && st.mode === 'mtm';
+    var cur = st.cur;
+    var dep = Math.round(pr.aed / 2);
+    var related = ['mehr', 'noir', 'lilas', 'veil', 'corset', 'gloves'].filter(function (k) { return k !== pr.id; }).slice(0, 4).map(function (k) { var o = CAT[k]; return { name: o.name, img: o.views[0].src, price: self.money(o.aed, cur), go: function () { self.store('roya.product', k); self.setState({ pid: k, view: 0, shade: 0 }); } }; });
+    return {
+      wishOn: st.saved ? 'true' : 'false', wishLabel: st.saved ? 'Saved to your wishlist' : 'Save to wishlist', toggleWish: function () { self.setState({ saved: !st.saved }); },
+      vref: this.vref || (this.vref = function (el) { if (!el || el.dataset.ready) { return; } el.dataset.ready = '1'; var go = function () { el.muted = true; el.defaultMuted = true; el.loop = true; el.autoplay = true; el.playsInline = true; el.setAttribute('muted', ''); el.setAttribute('playsinline', ''); var w = el.getAttribute('data-webm'); if (w && el.canPlayType('video/webm; codecs="vp9"') && el.getAttribute('src') !== w) { el.setAttribute('src', w); el.load(); } var p = el.play && el.play(); if (p && p.catch) { p.catch(function () {}); } }; go(); el.addEventListener('canplay', function () { if (el.paused) { var q = el.play(); if (q && q.catch) { q.catch(function () {}); } } }); if (window.MutationObserver) { new MutationObserver(function () { if (el.getAttribute('src') !== el.getAttribute('data-webm')) { go(); } }).observe(el, { attributes: true, attributeFilter: ['src'] }); } }),
+      thumbs: thumbs, current: [views[st.view]], shades: shades, shadeName: shadeDefs[sh][0], sizes: sizes,
+      pr: pr, related: related, isBespoke: pr.kind === 'bespoke',
+      priceLabel: (pr.kind === 'bespoke' ? 'From ' : '') + self.money(pr.aed, cur),
+      priceNote: (pr.kind === 'bespoke' ? 'VAT included · 50% deposit begins your commission · final price confirmed at your consultation' : 'VAT included · complimentary delivery in the UAE') + (cur !== 'AED' ? ' · indicative price, charged in AED' : ''),
+      ctaLabel: pr.kind === 'bespoke' ? 'Reserve with deposit · ' + self.money(dep, cur) : 'Add to bag · ' + self.money(pr.aed, cur),
+      isMtm: mtm, isStd: !mtm,
+      mtmTab: mtm ? 'tab tab-on' : 'tab', stdTab: mtm ? 'tab' : 'tab tab-on',
+      mtmSel: mtm ? 'true' : 'false', stdSel: mtm ? 'false' : 'true',
+      pickMtm: function () { self.setState({ mode: 'mtm' }); },
+      pickStd: function () { self.setState({ mode: 'std' }); },
+      playFilm: function () { self.setState({ view: 4 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

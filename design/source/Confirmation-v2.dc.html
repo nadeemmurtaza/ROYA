@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ROYA — Order confirmed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Cinzel:wght@400;500&amp;family=Jost:wght@300;400;500&amp;display=swap">
+<style>
+body{margin:0;background:#0B0A09}
+*{box-sizing:border-box}
+.ph{position:relative;overflow:hidden;background:#161513}
+@media (max-width: 700px){
+section[style*="padding: 160px"],section[style*="padding: 170px"],section[style*="padding: 150px"]{padding-top:88px!important;padding-bottom:88px!important}
+section[style*="min-height: 920px"]{min-height:720px!important}
+section[style*="min-height: 900px"],div[style*="min-height: 900px"]{min-height:640px!important}
+[style*="min-height: 880px"],[style*="min-height: 760px"],[style*="min-height: 820px"]{min-height:440px!important}
+section[style*="min-height: 620px"]{min-height:480px!important}
+aside[style*="min-height: 1250px"]{min-height:520px!important}
+.fspan{grid-column:auto!important}
+main[style*="140px"],section[style*="140px"],main[style*="120px;"]{padding-bottom:64px!important}
+footer[style*="padding: 96px"]{padding-top:52px!important}
+.band > div[style*="padding: 88px"]{padding-top:48px!important}
+.band > div[style*="80px; display: flex; flex-direction: column; align-items: center"]{padding-bottom:56px!important}
+.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 14px!important}
+.pgrid .serif{font-size:20px!important}
+.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px 14px!important}
+.cgrid .card > div:last-child{flex-direction:column!important;gap:6px!important}
+.cgrid .serif{font-size:20px!important}
+.agrid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px!important;padding-bottom:8px;margin:0 -20px;padding-inline:20px}
+.agrid > *{flex:0 0 72%;margin-top:0!important;scroll-snap-align:center}
+.gal{flex-direction:column-reverse!important}
+.gal-thumbs{flex-direction:row!important;overflow-x:auto}
+.gal-thumbs .thumb{flex:0 0 64px;width:64px!important;height:84px!important}
+[style*="grid-template-columns: 120px 1fr auto"]{grid-template-columns:72px minmax(0,1fr)!important;gap:16px!important}
+[style*="grid-template-columns: 120px 1fr auto"] > :last-child{grid-column:2;align-items:flex-start!important}
+.track + div span{font-size:10px!important;letter-spacing:.04em!important}
+h1.serif{word-break:normal;overflow-wrap:anywhere}
+}
+
+:focus-visible{outline:1px solid #D9D2C5;outline-offset:3px}
+.field:focus-visible{outline:none}
+.nav-mob{display:none;position:relative}
+.nav-mob summary{list-style:none}.nav-mob summary::-webkit-details-marker{display:none}
+@media (max-width: 900px){.nav-desk{display:none!important}.nav-mob{display:block!important}.hide-sm{display:none!important}}
+
+a{color:#E4DED3;text-decoration:none}a:hover{color:#FFFFFF}
+.serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;font-weight:400}
+.logo{font-family:Cinzel,'Trajan Pro',Georgia,serif;font-weight:400}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.eyebrow{font-family:Jost,Futura,sans-serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#D9D2C5}
+.btn-gold{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 40px;background:#D9D2C5;color:#0B0A09;font-family:Jost,sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;position:relative;overflow:hidden;transition:background .6s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.btn-gold:hover{background:#F2EEE8;color:#0B0A09}.btn-gold:hover::after{transform:translateX(130%)}
+.btn-line{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 40px;border:1px solid rgba(217,210,197,.6);color:#F2EEE8;font-family:Jost,sans-serif;font-size:12px;letter-spacing:.26em;text-transform:uppercase;transition:background .6s}
+.btn-line:hover{background:rgba(217,210,197,.1);color:#FFFFFF}
+.seal circle{stroke-dasharray:420;stroke-dashoffset:420;animation:ring 2.2s .2s cubic-bezier(.65,0,.35,1) forwards}
+.seal .inner{stroke-dasharray:340;stroke-dashoffset:340;animation:ring 2.2s .6s cubic-bezier(.65,0,.35,1) forwards}
+.seal path{stroke-dasharray:60;stroke-dashoffset:60;animation:ring 1s 1.8s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes ring{to{stroke-dashoffset:0}}
+.rise{opacity:0;transform:translateY(22px);animation:rise 1.5s cubic-bezier(.16,1,.3,1) forwards}
+.d1{animation-delay:1.2s}.d2{animation-delay:1.5s}.d3{animation-delay:1.8s}.d4{animation-delay:2.1s}
+@keyframes rise{to{opacity:1;transform:none}}
+.glow{position:absolute;left:50%;top:180px;width:620px;height:620px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(217,210,197,.16) 0%,rgba(217,210,197,0) 65%);animation:breathe 6s ease-in-out infinite;pointer-events:none}
+@keyframes breathe{50%{transform:translate(-50%,-50%) scale(1.12);opacity:.7}}
+.shine{background:linear-gradient(100deg,#8F8A82 0%,#F7F4EE 45%,#C9C3B9 55%,#8F8A82 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}.seal circle,.seal path{stroke-dashoffset:0}}
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; background: #0B0A09; color: #F2EEE8; font-family: Jost, Futura, 'Century Gothic', sans-serif; font-weight: 300; min-height: 100vh">
+<div class="glow" aria-hidden="true"></div>
+<header style="position: relative; display: flex; justify-content: center; padding: 28px 20px; border-bottom: 1px solid rgba(217,210,197,0.16)">
+<a href="Main-v2.dc.html" aria-label="ROYA home"><span class="logo shine" style="font-size: 28px; letter-spacing: 0.5em; padding-left: 0.5em">ROYA</span></a>
+</header>
+
+<main style="position: relative; max-width: 960px; margin: 0 auto; padding: 72px clamp(20px, 4vw, 56px) 120px; display: flex; flex-direction: column; align-items: center; gap: 40px; text-align: center">
+<svg class="seal" width="132" height="132" viewBox="0 0 140 140" fill="none" stroke="#D9D2C5" aria-hidden="true">
+<circle cx="70" cy="70" r="66" stroke-width="1"></circle>
+<circle class="inner" cx="70" cy="70" r="54" stroke-width="0.6"></circle>
+<path d="M50 71 L64 84 L91 57" stroke-width="1.6"></path>
+</svg>
+<div class="rise d1" style="display: flex; flex-direction: column; gap: 18px; align-items: center">
+<span class="eyebrow">Order RY-[ORDER NO.] · Confirmed</span>
+<h1 class="serif" style="margin: 0; font-size: clamp(48px, 6vw, 84px); line-height: 1">Thank you, <em style="color: #E4DED3">Mariam.</em></h1>
+<p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 1.7; color: #CFC9BF">The designer, [Designer name], will message you on WhatsApp within the hour to arrange your first bridal consultation.</p>
+</div>
+
+<ol class="rise d2" style="list-style: none; margin: 16px 0 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: rgba(217,210,197,0.22); border: 1px solid rgba(217,210,197,0.22); text-align: left">
+<li style="background: #0B0A09; padding: 32px; display: flex; flex-direction: column; gap: 10px"><span class="serif" style="font-size: 15px; color: #D9D2C5">Thu 8 Oct · Evening</span><span class="serif" style="font-size: 22px">Noir arrives</span><span style="font-size: 14px; color: #B3ACA2; line-height: 1.6">In the black ROYA box, at your door.</span></li>
+<li style="background: #0B0A09; padding: 32px; display: flex; flex-direction: column; gap: 10px"><span class="serif" style="font-size: 15px; color: #D9D2C5">Within 7 days</span><span class="serif" style="font-size: 22px">Your Mehr consultation</span><span style="font-size: 14px; color: #B3ACA2; line-height: 1.6">Measurements, satin and floral approval.</span></li>
+<li style="background: #0B0A09; padding: 32px; display: flex; flex-direction: column; gap: 10px"><span class="serif" style="font-size: 15px; color: #D9D2C5">Week [X]</span><span class="serif" style="font-size: 22px">Final fitting &amp; your name inside</span><span style="font-size: 14px; color: #B3ACA2; line-height: 1.6">Balance of AED 14,250 settled here.</span></li>
+</ol>
+
+<div class="rise d3" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px">
+<a class="btn-gold" href="Dashboard-v2.dc.html">Book my consultation</a>
+<a class="btn-line" href="Dashboard-v2.dc.html">View my account</a>
+</div>
+<div class="rise d4" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 0; border: 1px solid rgba(217,210,197,0.22); text-align: left; margin-top: 8px">
+<div class="ph" style="min-height: 280px"><img class="photo" src="/_blob/655d57ba189e59d2e1755b300e4dde43" alt="The black ROYA box tied with ribbon"></div>
+<div style="padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 12px"><span class="eyebrow">Being prepared</span><span class="serif" style="font-size: 28px">Your ROYA box</span><span style="font-size: 15px; line-height: 1.7; color: #B3ACA2">Ribbon-tied and tissue-wrapped, with your note inside. A receipt and VAT invoice are on their way to your email.</span></div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1330}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

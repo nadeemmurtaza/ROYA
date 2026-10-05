@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ROYA — Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Cinzel:wght@400;500&amp;family=Jost:wght@300;400;500&amp;family=Amiri:wght@400;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0A09}
+*{box-sizing:border-box}
+@media (max-width: 700px){
+section[style*="padding: 160px"],section[style*="padding: 170px"],section[style*="padding: 150px"]{padding-top:88px!important;padding-bottom:88px!important}
+section[style*="min-height: 920px"]{min-height:720px!important}
+section[style*="min-height: 900px"],div[style*="min-height: 900px"]{min-height:640px!important}
+[style*="min-height: 880px"],[style*="min-height: 760px"],[style*="min-height: 820px"]{min-height:440px!important}
+section[style*="min-height: 620px"]{min-height:480px!important}
+aside[style*="min-height: 1250px"]{min-height:520px!important}
+.fspan{grid-column:auto!important}
+main[style*="140px"],section[style*="140px"],main[style*="120px;"]{padding-bottom:64px!important}
+footer[style*="padding: 96px"]{padding-top:52px!important}
+.band > div[style*="padding: 88px"]{padding-top:48px!important}
+.band > div[style*="80px; display: flex; flex-direction: column; align-items: center"]{padding-bottom:56px!important}
+.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 14px!important}
+.pgrid .serif{font-size:20px!important}
+.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:36px 14px!important}
+.cgrid .card > div:last-child{flex-direction:column!important;gap:6px!important}
+.cgrid .serif{font-size:20px!important}
+.agrid{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px!important;padding-bottom:8px;margin:0 -20px;padding-inline:20px}
+.agrid > *{flex:0 0 72%;margin-top:0!important;scroll-snap-align:center}
+.gal{flex-direction:column-reverse!important}
+.gal-thumbs{flex-direction:row!important;overflow-x:auto}
+.gal-thumbs .thumb{flex:0 0 64px;width:64px!important;height:84px!important}
+[style*="grid-template-columns: 120px 1fr auto"]{grid-template-columns:72px minmax(0,1fr)!important;gap:16px!important}
+[style*="grid-template-columns: 120px 1fr auto"] > :last-child{grid-column:2;align-items:flex-start!important}
+.track + div span{font-size:10px!important;letter-spacing:.04em!important}
+h1.serif{word-break:normal;overflow-wrap:anywhere}
+}
+
+:focus-visible{outline:1px solid #D9D2C5;outline-offset:3px}
+.field:focus-visible{outline:none}
+.nav-mob{display:none;position:relative}
+.nav-mob summary{list-style:none}.nav-mob summary::-webkit-details-marker{display:none}
+@media (max-width: 900px){.nav-desk{display:none!important}.nav-mob{display:block!important}.hide-sm{display:none!important}}
+
+a{color:#E4DED3;text-decoration:none}a:hover{color:#FFFFFF}
+.serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;font-weight:400}
+.logo{font-family:Cinzel,'Trajan Pro',Georgia,serif;font-weight:400}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ar{font-family:Amiri,'Times New Roman',serif}
+.eyebrow{font-family:Jost,Futura,sans-serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#D9D2C5}
+.btn-gold{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 36px;background:#D9D2C5;color:#0B0A09;border:0;cursor:pointer;font-family:Jost,sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;position:relative;overflow:hidden;transition:background .6s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.btn-gold:hover{background:#F2EEE8;color:#0B0A09}.btn-gold:hover::after{transform:translateX(130%)}
+.btn-line{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:0 24px;background:none;border:1px solid rgba(217,210,197,.4);color:#F2EEE8;cursor:pointer;font-family:Jost,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;transition:background .6s,border-color .6s}
+.btn-line:hover{background:rgba(217,210,197,.1);border-color:#D9D2C5;color:#FFFFFF}
+.ph{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#2B2926 0%,#161513 58%,#0D0C0B 100%)}
+.cap{position:absolute;left:24px;bottom:20px;font-family:Jost,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(230,225,217,.62)}
+.gown{position:absolute;left:50%;top:50%;height:80%;transform:translate(-50%,-48%);color:rgba(217,210,197,.45)}
+.kb{position:absolute;inset:0;animation:kb 26s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.03)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
+.tab{flex:1;min-height:56px;background:none;border:0;border-bottom:1px solid rgba(217,210,197,.25);color:#9E978D;font-family:'Cormorant Garamond',serif;font-size:22px;cursor:pointer;transition:all .5s}
+.tab-on{border-bottom:1px solid #D9D2C5;color:#F2EEE8}
+.seg{min-height:44px;padding:0 18px;background:none;border:1px solid rgba(217,210,197,.3);color:#B3ACA2;font-family:Jost,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .5s}
+.seg-on{background:rgba(217,210,197,.14);border-color:#D9D2C5;color:#FFFFFF}
+.lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#B3ACA2}
+.field{width:100%;min-height:52px;padding:0 2px;background:transparent;border:0;border-bottom:1px solid rgba(217,210,197,.4);color:#F2EEE8;font-family:Jost,sans-serif;font-size:16px;font-weight:300;outline:none;transition:border-color .5s}
+.field:focus{border-bottom-color:#D9D2C5}
+.fade{animation:fade 1.1s cubic-bezier(.16,1,.3,1) both}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.shine{background:linear-gradient(100deg,#8F8A82 0%,#F7F4EE 45%,#C9C3B9 55%,#8F8A82 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="background: #0B0A09; color: #F2EEE8; font-family: Jost, Futura, 'Century Gothic', sans-serif; font-weight: 300; min-height: 100vh; display: flex; flex-wrap: wrap">
+
+<aside class="ph" style="flex: 1 1 520px; min-height: 1250px; display: flex; flex-direction: column; justify-content: space-between; padding: 48px clamp(24px, 4vw, 64px)">
+<div class="kb"><img class="photo" src="/_blob/9817860128c260e3dba8aa267b81827e" alt="A ROYA bride in the MEHR gown" style="object-position: 50% 20%"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,10,9,0.7) 0%, rgba(11,10,9,0) 28%, rgba(11,10,9,0.15) 50%, rgba(11,10,9,0.92) 100%)"></div>
+<a href="Main-v2.dc.html" aria-label="ROYA home" style="position: relative; display: flex; flex-direction: column; gap: 2px; align-self: flex-start">
+<span class="logo shine" style="font-size: 30px; letter-spacing: 0.5em">ROYA</span>
+<span class="logo" style="font-size: 9px; letter-spacing: 0.5em; padding-left: 0.5em; color: #A39C91">WEAR YOUR DREAM</span>
+</a>
+<div style="position: relative; display: flex; flex-direction: column; gap: 26px; max-width: 460px">
+<span class="eyebrow">The Private Client</span>
+<p class="serif" style="margin: 0; font-size: 40px; line-height: 1.15">One account. <em style="color: #E4DED3">Your gown, from first sketch to final stitch.</em></p>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 15px; color: #CFC9BF">
+<li style="display: flex; gap: 14px; align-items: center"><span style="width: 18px; height: 1px; background: #D9D2C5"></span>A direct line to the designer on WhatsApp</li>
+<li style="display: flex; gap: 14px; align-items: center"><span style="width: 18px; height: 1px; background: #D9D2C5"></span>Measurements kept on file for every future order</li>
+<li style="display: flex; gap: 14px; align-items: center"><span style="width: 18px; height: 1px; background: #D9D2C5"></span>Atelier films of your gown as it is made</li>
+<li style="display: flex; gap: 14px; align-items: center"><span style="width: 18px; height: 1px; background: #D9D2C5"></span>First access to new gowns and private appointments</li>
+</ul>
+</div>
+</aside>
+
+<main style="flex: 1 1 520px; display: flex; justify-content: center; padding: 96px clamp(24px, 5vw, 96px)">
+<div class="fade" style="width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<a href="Main-v2.dc.html" style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #B3ACA2; min-height: 44px; display: flex; align-items: center">← Back to the house</a>
+<button type="button" class="ar" lang="ar" style="background: none; border: 0; color: #E4DED3; font-size: 16px; cursor: pointer; min-height: 44px">العربية</button>
+</div>
+
+<div role="tablist" aria-label="Account" style="display: flex">
+<button type="button" role="tab" class="{{inTab}}" aria-selected="{{inSel}}" onClick="{{goIn}}">Sign in</button>
+<button type="button" role="tab" class="{{upTab}}" aria-selected="{{upSel}}" onClick="{{goUp}}">Create account</button>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<button type="button" class="btn-line">Continue with Apple</button>
+<button type="button" class="btn-line">Continue with Google</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 16px; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #9E978D"><span style="flex: 1; height: 1px; background: rgba(217,210,197,0.2)"></span>or<span style="flex: 1; height: 1px; background: rgba(217,210,197,0.2)"></span></div>
+
+<div role="group" aria-label="Sign-in method" style="display: flex; gap: 10px">
+<button type="button" class="{{emailSeg}}" onClick="{{useEmail}}">Email</button>
+<button type="button" class="{{phoneSeg}}" onClick="{{usePhone}}">Mobile · OTP</button>
+</div>
+
+<form style="display: flex; flex-direction: column; gap: 26px">
+<sc-if value="{{isUp}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label class="lbl" for="fn">First name</label><input id="fn" class="field" type="text" autocomplete="given-name"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label class="lbl" for="ln">Last name</label><input id="ln" class="field" type="text" autocomplete="family-name"></div>
+</div>
+</sc-if>
+<sc-if value="{{isEmail}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><label class="lbl" for="em">Email address</label><input id="em" class="field" type="email" autocomplete="email" placeholder="you@example.com"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><div style="display: flex; justify-content: space-between"><label class="lbl" for="pw">Password</label><a href="#" style="font-size: 12px; color: #B3ACA2">Forgotten?</a></div><div style="position: relative"><input id="pw" class="field" type="{{pwType}}" autocomplete="current-password" style="padding-right: 72px"><button type="button" onClick="{{togglePw}}" aria-label="{{pwAria}}" style="position: absolute; right: 0; bottom: 4px; min-height: 44px; background: none; border: 0; color: #B3ACA2; font-family: Jost, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer">{{pwLabel}}</button></div></div>
+</sc-if>
+<sc-if value="{{isPhone}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 4px"><label class="lbl" for="ph">Mobile number</label>
+<div style="display: flex; gap: 14px"><select aria-label="Country code" class="field" style="width: 120px; background: #0B0A09"><option>+971 UAE</option><option>+966 KSA</option><option>+974 QA</option><option>+965 KW</option><option>+973 BH</option><option>+968 OM</option><option>+44 UK</option></select><input id="ph" class="field" type="tel" autocomplete="tel-national" placeholder="50 000 0000"></div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #9E978D">We will send a six-digit code by SMS or WhatsApp.</p>
+</sc-if>
+<sc-if value="{{isUp}}" hint-placeholder-val="{{ false }}">
+<label style="display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CFC9BF; line-height: 1.6"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #D9D2C5; margin-top: 3px">Add me to the private list for new gowns and atelier films.</label>
+</sc-if>
+<a class="btn-gold" href="Dashboard-v2.dc.html">{{cta}}</a>
+</form>
+
+<p style="margin: 0; font-size: 13px; line-height: 1.7; color: #9E978D; text-align: center">Prefer a person? <a href="#" style="text-decoration: underline; text-underline-offset: 4px">Message the concierge</a> and we will open your account for you.</p>
+<a href="Checkout-v2.dc.html" style="align-self: center; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; min-height: 44px; display: flex; align-items: center; text-decoration: underline; text-underline-offset: 6px">Continue as a guest</a>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1250}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { mode: 'in', method: 'email', show: false }; }
+  renderVals() {
+    var self = this, st = this.state;
+    var up = st.mode === 'up', email = st.method === 'email';
+    return {
+      pwType: this.state.show ? 'text' : 'password', pwLabel: this.state.show ? 'Hide' : 'Show', pwAria: this.state.show ? 'Hide password' : 'Show password', togglePw: function () { self.setState({ show: !self.state.show }); },
+      isUp: up, isEmail: email, isPhone: !email,
+      inTab: up ? 'tab' : 'tab tab-on', upTab: up ? 'tab tab-on' : 'tab',
+      inSel: up ? 'false' : 'true', upSel: up ? 'true' : 'false',
+      emailSeg: email ? 'seg seg-on' : 'seg', phoneSeg: email ? 'seg' : 'seg seg-on',
+      goIn: function () { self.setState({ mode: 'in' }); },
+      goUp: function () { self.setState({ mode: 'up' }); },
+      useEmail: function () { self.setState({ method: 'email' }); },
+      usePhone: function () { self.setState({ method: 'phone' }); },
+      cta: email ? (up ? 'Create my account' : 'Sign in') : 'Send my code'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ROYA — Checkout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Cinzel:wght@400;500&amp;family=Jost:wght@300;400;500&amp;family=Amiri:wght@400;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0A09}
+*{box-sizing:border-box}
+a{color:#E4DED3;text-decoration:none}a:hover{color:#FFFFFF}
+.serif{font-family:'Cormorant Garamond',Garamond,'Times New Roman',serif;font-weight:400}
+.logo{font-family:Cinzel,'Trajan Pro',Georgia,serif;font-weight:400}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.eyebrow{font-family:Jost,Futura,sans-serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#D9D2C5}
+.btn-gold{display:flex;align-items:center;justify-content:center;gap:14px;min-height:58px;padding:0 40px;background:#D9D2C5;color:#0B0A09;border:0;cursor:pointer;font-family:Jost,sans-serif;font-size:12px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;position:relative;overflow:hidden;transition:background .6s}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-130%);transition:transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.btn-gold:hover{background:#F2EEE8;color:#0B0A09}.btn-gold:hover::after{transform:translateX(130%)}
+.back{background:none;border:0;min-height:44px;color:#B3ACA2;font-family:Jost,sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.back:hover{color:#FFFFFF}
+.lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#B3ACA2}
+.field{width:100%;min-height:52px;padding:0 2px;background:transparent;border:0;border-bottom:1px solid rgba(217,210,197,.4);color:#F2EEE8;font-family:Jost,sans-serif;font-size:16px;font-weight:300;outline:none;transition:border-color .5s}
+.field:focus{border-bottom-color:#D9D2C5}
+select.field{background:#0B0A09}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.opt{display:grid;grid-template-columns:22px 1fr auto;gap:16px;align-items:start;text-align:left;width:100%;padding:22px 24px;background:none;border:1px solid rgba(217,210,197,.22);color:#CFC9BF;font-family:Jost,sans-serif;font-weight:300;font-size:14px;cursor:pointer;transition:all .5s}
+.opt:hover{border-color:rgba(217,210,197,.6)}
+.opt-on{border-color:#D9D2C5;background:rgba(217,210,197,.08)}
+.dot{width:20px;height:20px;border-radius:50%;border:1px solid rgba(217,210,197,.6);display:grid;place-items:center;margin-top:2px}
+.dot-on::after{content:'';width:10px;height:10px;border-radius:50%;background:#D9D2C5}
+.step{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#7A746C}
+.step-on{color:#F2EEE8}
+.step-done{color:#D9D2C5}
+.num{width:30px;height:30px;border-radius:50%;border:1px solid currentColor;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0}
+.slot{min-height:48px;padding:0 18px;background:none;border:1px solid rgba(217,210,197,.25);color:#CFC9BF;font-family:Jost,sans-serif;font-size:13px;cursor:pointer;transition:all .5s}
+.slot:hover{border-color:#D9D2C5}
+.slot-on{border-color:#D9D2C5;background:rgba(217,210,197,.14);color:#FFFFFF}
+.pane{animation:pane .9s cubic-bezier(.16,1,.3,1) both}
+@keyframes pane{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.bar{height:1px;background:#D9D2C5;transition:width 1.2s cubic-bezier(.65,0,.35,1)}
+.shine{background:linear-gradient(100deg,#8F8A82 0%,#F7F4EE 45%,#C9C3B9 55%,#8F8A82 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+.ph{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#2B2926 0%,#161513 58%,#0D0C0B 100%)}
+.ph-iv{position:relative;overflow:hidden;background:radial-gradient(120% 85% at 50% 18%,#F7F4EF 0%,#E9E4DC 60%,#D8D1C6 100%)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="background: #0B0A09; color: #F2EEE8; font-family: Jost, Futura, 'Century Gothic', sans-serif; font-weight: 300; min-height: 100vh">
+
+<header style="padding: 22px clamp(20px, 4vw, 56px) 0; display: flex; flex-direction: column; gap: 22px; border-bottom: 1px solid rgba(217,210,197,0.16)">
+<div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px">
+<a href="Bag.dc.html" style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #B3ACA2; min-height: 44px; display: flex; align-items: center">← Bag</a>
+<a href="Main.dc.html" aria-label="ROYA home"><span class="logo shine" style="font-size: 28px; letter-spacing: 0.5em; padding-left: 0.5em">ROYA</span></a>
+<span style="justify-self: end; font-size: 12px; letter-spacing: 0.16em; color: #B3ACA2; display: flex; align-items: center; gap: 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10" width="14" height="10"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>256-bit encrypted</span>
+</div>
+<ol aria-label="Checkout steps" style="list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 56px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+<li class="{{s.cls}}"><span class="num">{{s.n}}</span>{{s.label}}</li>
+</sc-for>
+</ol>
+<div style="height: 1px; background: rgba(217,210,197,0.12)"><div class="bar" style="width: {{progress}}"></div></div>
+</header>
+
+<main style="max-width: 1440px; margin: 0 auto; padding: 64px clamp(20px, 4vw, 56px) 120px; display: flex; flex-wrap: wrap; gap: 72px; align-items: flex-start">
+<div style="flex: 999 1 640px; min-width: 0">
+
+<sc-if value="{{s1}}" hint-placeholder-val="{{ true }}">
+<section class="pane" aria-label="Delivery" style="display: flex; flex-direction: column; gap: 40px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Delivery</h1>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 28px 32px">
+<div class="f"><label class="lbl" for="c1">Full name</label><input id="c1" class="field" autocomplete="name" value="Mariam Al [Surname]"></div>
+<div class="f"><label class="lbl" for="c2">Mobile</label><input id="c2" class="field" type="tel" autocomplete="tel" value="+971 50 [000 0000]"></div>
+<div class="f"><label class="lbl" for="c3">Emirate</label><select id="c3" class="field"><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option><option>Outside the UAE</option></select></div>
+<div class="f"><label class="lbl" for="c4">Area / community</label><input id="c4" class="field" placeholder="Emirates Hills"></div>
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="c5">Villa, building or residence</label><input id="c5" class="field" placeholder="Villa / tower, street, landmark"></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span class="lbl">Delivery method</span>
+<sc-for list="{{ships}}" as="o" hint-placeholder-count="3">
+<button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">
+<span class="{{o.dot}}"></span>
+<span style="display: flex; flex-direction: column; gap: 6px"><span class="serif" style="font-size: 19px; color: #F2EEE8">{{o.name}}</span><span style="line-height: 1.6">{{o.desc}}</span></span>
+<span style="color: #E4DED3; white-space: nowrap">{{o.price}}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{showSlots}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<span class="lbl">Preferred arrival · Noir</span>
+<div role="group" aria-label="Arrival time" style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{slots}}" as="t" hint-placeholder-count="4">
+<button type="button" class="{{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="display: flex; justify-content: flex-end"><button type="button" class="btn-gold" onClick="{{next}}">Continue to payment</button></div>
+</section>
+</sc-if>
+
+<sc-if value="{{s2}}" hint-placeholder-val="{{ false }}">
+<section class="pane" aria-label="Payment" style="display: flex; flex-direction: column; gap: 36px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Payment</h1>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<sc-for list="{{pays}}" as="o" hint-placeholder-count="4">
+<button type="button" class="{{o.cls}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}">
+<span class="{{o.dot}}"></span>
+<span style="display: flex; flex-direction: column; gap: 6px"><span class="serif" style="font-size: 19px; color: #F2EEE8">{{o.name}}</span><span style="line-height: 1.6">{{o.desc}}</span></span>
+<span style="color: #B3ACA2; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap">{{o.tag}}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{payCard}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; padding: 36px; border: 1px solid rgba(217,210,197,0.22)">
+<div aria-hidden="true" style="flex: 0 0 300px; height: 186px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #262421 0%, #131211 60%, #262421 100%); border: 1px solid rgba(217,210,197,0.45); box-shadow: 0 30px 60px rgba(0,0,0,0.5)">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="logo shine" style="font-size: 16px; letter-spacing: 0.5em">ROYA</span><span style="width: 38px; height: 28px; border: 1px solid rgba(217,210,197,0.6); background: rgba(217,210,197,0.2)"></span></div>
+<span style="font-size: 19px; letter-spacing: 0.18em; color: #E6E1D9">•••• •••• •••• 4721</span>
+<div style="display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #B3ACA2"><span>M. AL [SURNAME]</span><span>09 / 29</span></div>
+</div>
+<div style="flex: 1 1 280px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 24px">
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="p1">Card number</label><input id="p1" class="field" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000"></div>
+<div class="f" style="grid-column: 1 / -1"><label class="lbl" for="p2">Name on card</label><input id="p2" class="field" autocomplete="cc-name"></div>
+<div class="f"><label class="lbl" for="p3">Expiry</label><input id="p3" class="field" autocomplete="cc-exp" placeholder="MM / YY"></div>
+<div class="f"><label class="lbl" for="p4">Security code</label><input id="p4" class="field" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC"></div>
+</div>
+<span style="flex-basis: 100%; font-size: 13px; color: #9E978D">Visa · Mastercard · American Express. Verified by 3-D Secure with your bank.</span>
+</div>
+</sc-if>
+<sc-if value="{{payBank}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 32px 36px; border: 1px solid rgba(217,210,197,0.22); display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.7; color: #CFC9BF">
+<span class="serif" style="font-size: 20px; color: #F2EEE8">Your atelier slot is held for 72 hours.</span>
+<span>Bank details and a reference number are emailed and sent to the designer once you place the order. Production begins when the transfer clears.</span>
+<span style="color: #9E978D">[BANK NAME] · IBAN [AE00 0000 0000 0000 0000 000] · Ref. RY-[ORDER]</span>
+</div>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px"><button type="button" class="back" onClick="{{prev}}">← Delivery</button><button type="button" class="btn-gold" onClick="{{next}}">Review order</button></div>
+</section>
+</sc-if>
+
+<sc-if value="{{s3}}" hint-placeholder-val="{{ false }}">
+<section class="pane" aria-label="Review" style="display: flex; flex-direction: column; gap: 36px">
+<h1 class="serif" style="margin: 0; font-size: 48px">Review</h1>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: rgba(217,210,197,0.2); border: 1px solid rgba(217,210,197,0.2)">
+<div style="background: #0B0A09; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Deliver to</dt><dd style="margin: 0; line-height: 1.7">Mariam Al [Surname]<br>[Villa], Emirates Hills, Dubai</dd></div>
+<div style="background: #0B0A09; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Method</dt><dd style="margin: 0; line-height: 1.7">{{shipName}}<br>{{slotName}}</dd></div>
+<div style="background: #0B0A09; padding: 28px; display: flex; flex-direction: column; gap: 8px"><dt class="lbl">Payment</dt><dd style="margin: 0; line-height: 1.7">{{payName}}</dd></div>
+</dl>
+<label style="display: flex; gap: 14px; align-items: flex-start; font-size: 14px; line-height: 1.7; color: #CFC9BF"><input type="checkbox" style="width: 18px; height: 18px; accent-color: #D9D2C5; margin-top: 4px">I agree to the terms of sale. I understand the bridal deposit is non-refundable once fabric is cut.</label>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px"><button type="button" class="back" onClick="{{prev}}">← Payment</button><a class="btn-gold" href="Confirmation.dc.html">Place order · AED 21,050</a></div>
+</section>
+</sc-if>
+</div>
+
+<aside aria-label="Order summary" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 22px; padding: 36px; border: 1px solid rgba(217,210,197,0.3); background: #131211">
+<span class="eyebrow">Your order</span>
+<div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center">
+<div class="ph" style="aspect-ratio: 3 / 4"><img class="photo" src="/_blob/71d1d416c77f7633d26983790f89f3aa" alt="" style="object-position: 50% 25%"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="serif" style="font-size: 18px">Mehr</span><span style="font-size: 13px; color: #9E978D">Deposit · 50%</span></div>
+<span style="font-size: 14px">AED 14,250</span>
+</div>
+<div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center">
+<div class="ph" style="aspect-ratio: 3 / 4"><img class="photo" src="/_blob/68f71fe01185b376d372f1094e32f26e" alt=""></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="serif" style="font-size: 18px">Noir</span><span style="font-size: 13px; color: #9E978D">Noir black · FR 38</span></div>
+<span style="font-size: 14px">AED 6,800</span>
+</div>
+<div style="height: 1px; background: rgba(217,210,197,0.25)"></div>
+<dl style="margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px">
+<div style="display: flex; justify-content: space-between"><dt style="color: #B3ACA2">Delivery</dt><dd style="margin: 0">{{shipPrice}}</dd></div>
+<div style="display: flex; justify-content: space-between"><dt style="color: #B3ACA2">VAT (5%) included</dt><dd style="margin: 0">AED 1,002</dd></div>
+</dl>
+<div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase">Due today</span><span class="serif" style="font-size: 30px; color: #E4DED3">AED 21,050</span></div>
+<span style="font-size: 13px; color: #9E978D; line-height: 1.6">AED 14,250 balance due at your final fitting.</span>
+<div style="padding-top: 18px; border-top: 1px solid rgba(217,210,197,0.2); display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #B3ACA2; line-height: 1.6">
+<span class="serif" style="font-size: 17px; color: #F2EEE8">Need a hand?</span>
+<span>The designer can complete this order with you. <a href="#" style="text-decoration: underline; text-underline-offset: 4px">WhatsApp the concierge</a></span>
+</div>
+</aside>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: 1, ship: 0, slot: 1, pay: 0 }; }
+  renderVals() {
+    var self = this, st = this.state;
+    var labels = ['Delivery', 'Payment', 'Review'];
+    var steps = labels.map(function (l, i) {
+      var n = i + 1;
+      return { n: n < st.step ? '✓' : String(n), label: l, cls: n === st.step ? 'step step-on' : (n < st.step ? 'step step-done' : 'step') };
+    });
+    var shipDefs = [
+      { name: 'White-glove delivery', desc: 'Hand-delivered in the black ROYA box. Your bridal gown follows after the final fitting.', price: 'Complimentary' },
+      { name: 'Collect at the ROYA atelier', desc: 'A final press and a try-on with the designer, by appointment.', price: 'Complimentary' },
+      { name: 'International · insured courier', desc: 'Door to door in 3–5 days. Duties and taxes calculated at checkout.', price: 'AED 950' }
+    ];
+    var ships = shipDefs.map(function (o, i) {
+      var on = i === st.ship;
+      return { name: o.name, desc: o.desc, price: o.price, on: on ? 'true' : 'false', cls: on ? 'opt opt-on' : 'opt', dot: on ? 'dot dot-on' : 'dot', pick: function () { self.setState({ ship: i }); } };
+    });
+    var slotDefs = ['Thu 8 Oct · Morning', 'Thu 8 Oct · Evening', 'Fri 9 Oct · Afternoon', 'Sat 10 Oct · Morning'];
+    var slots = slotDefs.map(function (t, i) {
+      var on = i === st.slot;
+      return { label: t, on: on ? 'true' : 'false', cls: on ? 'slot slot-on' : 'slot', pick: function () { self.setState({ slot: i }); } };
+    });
+    var payDefs = [
+      { name: 'Credit or debit card', desc: 'Visa, Mastercard, American Express', tag: '3-D Secure' },
+      { name: 'Apple Pay', desc: 'Confirm with Face ID or Touch ID', tag: 'Fastest' },
+      { name: 'Bank transfer', desc: 'For orders above AED 50,000. Slot held for 72 hours.', tag: 'Preferred for couture' },
+      { name: 'Private payment link', desc: 'The designer sends a secure link to pay later, in full or in parts.', tag: 'Via concierge' }
+    ];
+    var pays = payDefs.map(function (o, i) {
+      var on = i === st.pay;
+      return { name: o.name, desc: o.desc, tag: o.tag, on: on ? 'true' : 'false', cls: on ? 'opt opt-on' : 'opt', dot: on ? 'dot dot-on' : 'dot', pick: function () { self.setState({ pay: i }); } };
+    });
+    return {
+      steps: steps, progress: (st.step / 3 * 100) + '%',
+      s1: st.step === 1, s2: st.step === 2, s3: st.step === 3,
+      ships: ships, slots: slots, pays: pays,
+      showSlots: st.ship === 0,
+      payCard: st.pay === 0, payBank: st.pay === 2,
+      shipName: shipDefs[st.ship].name, shipPrice: shipDefs[st.ship].price,
+      slotName: st.ship === 0 ? slotDefs[st.slot] : '',
+      payName: payDefs[st.pay].name + (st.pay === 0 ? ' · ending 4721' : ''),
+      next: function () { self.setState({ step: Math.min(3, st.step + 1) }); },
+      prev: function () { self.setState({ step: Math.max(1, st.step - 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
