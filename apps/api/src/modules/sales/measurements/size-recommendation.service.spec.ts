@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SizeRecommendationService } from './size-recommendation.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 
+import { SECOND_LOCALE } from '@newax/shared';
 describe('SizeRecommendationService', () => {
   let service: SizeRecommendationService;
   let prisma: any;
@@ -110,7 +111,7 @@ describe('SizeRecommendationService', () => {
     expect(result?.recommendedSize).toBe('L');
   });
 
-  it('returns the Urdu label when asked for the ur locale', async () => {
+  it('returns the second-language label when asked for the second locale', async () => {
     prisma.product.findUnique.mockResolvedValue({
       garmentTypes: [{ garmentTypeId: 'garment1' }],
       variants: [{ size: 'M' }],
@@ -118,7 +119,7 @@ describe('SizeRecommendationService', () => {
     prisma.garmentType.findMany.mockResolvedValue([kameez]);
     prisma.measurementProfile.findFirst.mockResolvedValue({ id: 'profile1', values: { chest: 40 } });
 
-    const result = await service.recommendForProduct('user1', 'prod1', 'ur');
+    const result = await service.recommendForProduct('user1', 'prod1', SECOND_LOCALE);
 
     expect(result?.garmentTypeLabel).toBe('قمیض');
   });

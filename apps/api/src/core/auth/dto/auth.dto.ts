@@ -31,7 +31,7 @@ export class RegisterDto {
   @MaxLength(80)
   lastName?: string;
 
-  @ApiPropertyOptional({ example: '03001234567' })
+  @ApiPropertyOptional({ example: '0501234567' })
   @IsOptional()
   @IsString()
   @MaxLength(20)
@@ -41,7 +41,7 @@ export class RegisterDto {
 export class LoginDto {
   @ApiProperty({
     description: 'Email address or phone number',
-    example: '03001234567',
+    example: '0501234567',
   })
   @IsString()
   @IsNotEmpty({ message: 'Enter your email or phone number.' })
@@ -78,7 +78,7 @@ export class UpdateProfileDto {
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email?: string;
 
-  @ApiPropertyOptional({ description: 'Empty string clears the phone number', example: '03001234567' })
+  @ApiPropertyOptional({ description: 'Empty string clears the phone number', example: '0501234567' })
   @IsOptional()
   @IsString()
   @MaxLength(20)

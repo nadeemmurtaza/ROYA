@@ -1,3 +1,4 @@
+import { Locale } from '@newax/shared';
 /**
  * Extension point: outbound customer messaging.
  *
@@ -17,7 +18,7 @@ export interface NotificationRecipient {
    * than a phone number.
    */
   userId?: string | null;
-  locale?: 'en' | 'ur';
+  locale?: Locale;
 }
 
 export interface NotificationMessage {

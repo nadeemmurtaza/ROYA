@@ -6,15 +6,15 @@ const sha256 = (value: string) => createHash('sha256').update(value).digest('hex
 describe('login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2)', () => {
   it.each([
     ['an email, however it was typed', '  Ayesha@Example.COM ', 'ayesha@example.com'],
-    ['a local phone number', '0300 1234567', '+923001234567'],
-    ['the same number in international form', '+92 300 1234567', '+923001234567'],
+    ['a local phone number', '050 123 4567', '+971501234567'],
+    ['the same number in international form', '+971 50 1234567', '+971501234567'],
     ['something that is neither — still counted, never skipped', '  Not-An-Identifier ', 'not-an-identifier'],
   ])('normalises %s', (_case, typed, normalized) => {
     expect(normalizeLoginIdentifier(typed)).toBe(normalized);
   });
 
   it('every spelling of one identifier shares one bucket', () => {
-    const spellings = ['0300 1234567', '03001234567', '+923001234567', '0092 300 1234567'];
+    const spellings = ['050 123 4567', '0501234567', '+971501234567', '00971 50 1234567'];
     const hashes = new Set(spellings.map((typed) => loginIdentifierHash(typed)));
     expect(hashes.size).toBe(1);
   });
@@ -26,7 +26,7 @@ describe('login identifiers as the rate limiter and the audit trail see them (do
   });
 
   it('an email and a phone number are separate buckets, even for one account — keying by account would leak which number belongs to which email', () => {
-    expect(loginIdentifierHash('ayesha@example.com')).not.toBe(loginIdentifierHash('0300 1234567'));
+    expect(loginIdentifierHash('ayesha@example.com')).not.toBe(loginIdentifierHash('050 123 4567'));
   });
 
   it.each([[undefined], [null], [42], [''], ['   '], [{ identifier: 'x' }]])(

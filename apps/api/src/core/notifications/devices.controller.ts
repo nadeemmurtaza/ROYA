@@ -25,7 +25,7 @@ export class RegisterDeviceDto {
   @MaxLength(32)
   appVersion?: string;
 
-  @ApiPropertyOptional({ example: 'ur' })
+  @ApiPropertyOptional({ example: 'ar' })
   @IsOptional()
   @IsString()
   @MaxLength(8)

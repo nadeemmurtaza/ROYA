@@ -59,7 +59,7 @@ export class BookStitchingDto {
   @MaxLength(120)
   name!: string;
 
-  @ApiProperty({ example: '03001234567' })
+  @ApiProperty({ example: '0501234567' })
   @IsString()
   @IsNotEmpty({ message: 'We need a number to arrange collection.' })
   @MaxLength(20)
@@ -178,7 +178,7 @@ export class CreateStitchingOptionGroupDto {
   @MaxLength(60)
   labelEn!: string;
 
-  @ApiProperty({ description: 'Urdu label — the storefront is bilingual' })
+  @ApiProperty({ description: 'Second-language label (see BRAND.locale) — the storefront is bilingual' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(60)

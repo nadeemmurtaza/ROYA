@@ -9,7 +9,7 @@ import { normalizeEmail, normalizePhone } from '@newax/shared';
  *
  * Normalisation is AuthService.login()'s own: an email is trimmed and
  * lower-cased, a phone number becomes E.164, so "Ayesha@Example.com " and
- * "ayesha@example.com", or "0300 1234567" and "+923001234567", share one
+ * "ayesha@example.com", or "050 123 4567" and "+971501234567", share one
  * bucket. Anything that is neither is trimmed and lower-cased as-is — it can
  * never sign in, but it is still counted, so garbage cannot skip the limit.
  *

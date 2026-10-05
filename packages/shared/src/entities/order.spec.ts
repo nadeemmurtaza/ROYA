@@ -40,7 +40,7 @@ describe('getOrderCustomerName', () => {
 
 describe('getOrderDisplayTotal', () => {
   it('formats the grand total', () => {
-    expect(getOrderDisplayTotal({ grandTotal: toMinor(3499) }).replace(/\s/g, ' ')).toBe('Rs 3,499');
+    expect(getOrderDisplayTotal({ grandTotal: toMinor(3499) }).replace(/\s/g, ' ')).toBe('AED 3,499');
   });
 });
 

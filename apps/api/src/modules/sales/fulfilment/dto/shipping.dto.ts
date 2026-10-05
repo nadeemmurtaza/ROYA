@@ -13,12 +13,12 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES } from '@newax/shared';
+import { LOCALES, Locale } from '@newax/shared';
 
 export class LabelTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty({ example: 'Karachi' })
   @IsString()

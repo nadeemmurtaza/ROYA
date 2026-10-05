@@ -1,4 +1,4 @@
-import { BRAND } from '@newax/shared';
+import { BRAND, LOCALES } from '@newax/shared';
 import 'reflect-metadata';
 // Must come before AppModule: the module registry reads MODULES from the
 // environment while the module graph is being composed.
@@ -70,7 +70,7 @@ async function bootstrap(): Promise<void> {
       new DocumentBuilder()
         .setTitle(`${BRAND.identity.name} API`)
         .setDescription(
-          'Clothing store and stitching services. Money is integer paisa; customer-facing text is bilingual (en/ur).',
+          `Bespoke couture storefront API. Money is integer minor units (1 ${BRAND.locale.currency} = ${BRAND.locale.minorUnitsPerMajor}); customer-facing text is bilingual (${LOCALES.join('/')}).`,
         )
         .setVersion('1.0')
         .addBearerAuth()

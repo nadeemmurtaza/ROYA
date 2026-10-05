@@ -12,14 +12,14 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES } from '@newax/shared';
+import { LOCALES, Locale } from '@newax/shared';
 
 const SORT_STRATEGIES = ['MANUAL', 'BEST_SELLING', 'NEWEST', 'PRICE_ASC', 'PRICE_DESC', 'MARGIN'] as const;
 
 export class CollectionTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty()
   @IsString()

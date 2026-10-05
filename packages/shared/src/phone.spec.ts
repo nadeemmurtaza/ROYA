@@ -1,53 +1,61 @@
-import { isValidPkPhone, normalizeEmail, normalizePkPhone } from './phone';
+import { isValidPhone, normalizeEmail, normalizePhone } from './phone';
 
-describe('normalizePkPhone', () => {
+describe('normalizePhone', () => {
   it.each([
-    ['03001234567', '+923001234567'],
-    ['0300 1234567', '+923001234567'],
-    ['0300-123-4567', '+923001234567'],
-    ['+92 300 1234567', '+923001234567'],
-    ['92 300 1234567', '+923001234567'],
-    ['00923001234567', '+923001234567'],
-    ['3001234567', '+923001234567'],
-    ['(0300) 1234567', '+923001234567'],
+    ['0501234567', '+971501234567'],
+    ['050 1234567', '+971501234567'],
+    ['050-123-4567', '+971501234567'],
+    ['+971 50 1234567', '+971501234567'],
+    ['971 50 1234567', '+971501234567'],
+    ['00971501234567', '+971501234567'],
+    ['501234567', '+971501234567'],
+    ['(050) 1234567', '+971501234567'],
   ])('normalises %s to %s', (input, expected) => {
-    expect(normalizePkPhone(input).e164).toBe(expected);
+    expect(normalizePhone(input).e164).toBe(expected);
   });
 
   it('collapses every written form of one number to a single key', () => {
-    const forms = ['03001234567', '+92 300 1234567', '0092-300-1234567', '92 300 1234 567'];
-    const keys = new Set(forms.map((form) => normalizePkPhone(form).e164));
+    const forms = ['0501234567', '+971 50 1234567', '00971-50-1234567', '971 50 1234 567'];
+    const keys = new Set(forms.map((form) => normalizePhone(form).e164));
     expect(keys.size).toBe(1);
   });
 
-  it('accepts landline numbers and marks them as not mobile', () => {
-    const karachiLandline = normalizePkPhone('021 35678901');
-    expect(karachiLandline.e164).toBe('+922135678901');
-    expect(karachiLandline.isMobile).toBe(false);
+  it('accepts a non-mobile number of the right length and marks it as not mobile', () => {
+    const nonMobile = normalizePhone('041 2345678');
+    expect(nonMobile.e164).toBe('+971412345678');
+    expect(nonMobile.isMobile).toBe(false);
   });
 
-  it('marks 3xx numbers as mobile', () => {
-    expect(normalizePkPhone('03451234567').isMobile).toBe(true);
+  // UAE landlines are 8 digits after the country code and mobiles are 9. The
+  // brand sets nationalNumberLength to 9 because the shop collects MOBILE
+  // numbers (WhatsApp, delivery calls), so a landline is rejected on purpose.
+  it('rejects an 8-digit UAE landline: the shop collects mobiles', () => {
+    expect(normalizePhone('04 123 4567').e164).toBeNull();
+    expect(normalizePhone('+971 4 123 4567').e164).toBeNull();
+  });
+
+  it('marks 5x numbers as mobile', () => {
+    expect(normalizePhone('0521234567').isMobile).toBe(true);
   });
 
   it('produces a readable national form', () => {
-    expect(normalizePkPhone('+923001234567').national).toBe('0300 1234567');
+    expect(normalizePhone('+971501234567').national).toBe('050 123 4567');
   });
 
   it.each([
     ['', 'empty'],
     ['   ', 'blank'],
     ['0300123', 'too short'],
-    ['030012345678', 'too long'],
+    ['05012345678', 'too long'],
     ['abcdefghij', 'not digits'],
   ])('rejects %s (%s)', (input) => {
-    expect(normalizePkPhone(input).e164).toBeNull();
-    expect(isValidPkPhone(input)).toBe(false);
+    expect(normalizePhone(input).e164).toBeNull();
+    expect(isValidPhone(input)).toBe(false);
   });
 
   it('rejects null and undefined', () => {
-    expect(normalizePkPhone(null).e164).toBeNull();
-    expect(normalizePkPhone(undefined).e164).toBeNull();
+    expect(normalizePhone(null).e164).toBeNull();
+    expect(normalizePhone(undefined).e164).toBeNull();
   });
 });
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DEFAULT_LOCALE } from '@newax/shared';
+import { DEFAULT_LOCALE, SECOND_LOCALE } from '@newax/shared';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { checkPublishGate, type PublishGateInput } from './publish-gate';
 
@@ -36,7 +36,7 @@ export class SeoHealthService {
           isPrimary: image.isPrimary,
           altByLocale: {
             en: image.translations.find((t) => t.locale === 'en')?.alt ?? image.alt,
-            ur: image.translations.find((t) => t.locale === 'ur')?.alt ?? null,
+            ur: image.translations.find((t) => t.locale === SECOND_LOCALE)?.alt ?? null,
           },
         })),
         variants: product.variants.map((v) => ({

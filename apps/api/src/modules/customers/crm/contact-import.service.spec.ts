@@ -26,7 +26,7 @@ describe('ContactImportService', () => {
 
   it('creates a new contact for a phone the book has never seen', async () => {
     const { service, crm, audit } = makeService();
-    const csv = header + 'Ayesha Khan,03001234567,,Lahore,,\n';
+    const csv = header + 'Ayesha Khan,0501234567,,Lahore,,\n';
 
     const summary = await service.import('actor1', csv);
 
@@ -38,7 +38,7 @@ describe('ContactImportService', () => {
 
   it('reports updated, not a duplicate, when the phone already matches a contact', async () => {
     const { service, crm } = makeService({ existingContact: { id: 'c1' } });
-    const csv = header + 'Ayesha Khan,03001234567,,Lahore,,\n';
+    const csv = header + 'Ayesha Khan,0501234567,,Lahore,,\n';
 
     const summary = await service.import('actor1', csv);
 
@@ -60,7 +60,7 @@ describe('ContactImportService', () => {
 
   it('writes nothing when dryRun is true', async () => {
     const { service, crm, prisma, audit } = makeService();
-    const csv = header + 'Ayesha Khan,03001234567,,Lahore,Prefers WhatsApp,vip\n';
+    const csv = header + 'Ayesha Khan,0501234567,,Lahore,Prefers WhatsApp,vip\n';
 
     const summary = await service.import('actor1', csv, { dryRun: true });
 

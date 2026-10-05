@@ -26,11 +26,11 @@ interface BankAccount {
 export class BankTransferProvider implements PaymentProvider {
   readonly key = 'bank_transfer';
   readonly labelEn = 'Bank transfer';
-  readonly labelUr = 'بینک ٹرانسفر';
+  readonly labelUr = 'تحويل مصرفي';
   readonly descriptionEn =
-    'Transfer to our account and upload the receipt. We dispatch once it is confirmed.';
+    'Transfer to our account and upload the receipt. We begin your order once it is confirmed.';
   readonly descriptionUr =
-    'ہمارے اکاؤنٹ میں رقم منتقل کریں اور رسید اپلوڈ کریں۔ تصدیق کے بعد پارسل روانہ کر دیا جائے گا۔';
+    'حوّلوا المبلغ إلى حسابنا وارفعوا الإيصال. نبدأ العمل على طلبكم فور تأكيد التحويل.';
 
   constructor(private readonly settings: SettingsService) {}
 

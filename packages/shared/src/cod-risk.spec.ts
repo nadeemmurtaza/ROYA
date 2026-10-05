@@ -4,7 +4,7 @@ const THRESHOLDS = { confirmationCall: 35, advancePayment: 65 };
 
 function baseInput(overrides: Partial<CodRiskInput> = {}): CodRiskInput {
   return {
-    address: { line1: 'House 12, Street 5, Sector G-9', line2: 'Near City Park', postalCode: '44000', phone: '03001234567' },
+    address: { line1: 'House 12, Street 5, Sector G-9', line2: 'Near City Park', postalCode: '44000', phone: '0501234567' },
     orderValue: 500_00,
     hasAccount: true,
     localHour: 14,
@@ -40,7 +40,7 @@ describe('computeCodRiskScore', () => {
         customerHistory: { orderCount: 4, rtoCount: 3 }, // +50, the single dominant signal
         hasAccount: false, // +5
         localHour: 2, // +8
-        address: { ...baseInput().address, phone: '02112345678' }, // +10, non-mobile
+        address: { ...baseInput().address, phone: '0412345678' }, // +10, non-mobile
       }),
     );
 
@@ -111,7 +111,7 @@ describe('computeCodRiskScore', () => {
   it('flags a landline (non-mobile) delivery phone', () => {
     const result = computeCodRiskScore(
       baseInput({
-        address: { ...baseInput().address, phone: '02112345678' },
+        address: { ...baseInput().address, phone: '0412345678' },
         customerHistory: { orderCount: 1, rtoCount: 0 },
       }),
     );
@@ -122,7 +122,7 @@ describe('computeCodRiskScore', () => {
   it('flags a very short street address', () => {
     const result = computeCodRiskScore(
       baseInput({
-        address: { line1: 'abc', line2: null, postalCode: null, phone: '03001234567' },
+        address: { line1: 'abc', line2: null, postalCode: null, phone: '0501234567' },
         customerHistory: { orderCount: 1, rtoCount: 0 },
       }),
     );
@@ -133,7 +133,7 @@ describe('computeCodRiskScore', () => {
   it('gives a mild bump to an address with no landmark or postal code, distinct from a too-short one', () => {
     const result = computeCodRiskScore(
       baseInput({
-        address: { line1: 'House 12, Street 5, Sector G-9', line2: null, postalCode: null, phone: '03001234567' },
+        address: { line1: 'House 12, Street 5, Sector G-9', line2: null, postalCode: null, phone: '0501234567' },
         customerHistory: { orderCount: 1, rtoCount: 0 },
       }),
     );

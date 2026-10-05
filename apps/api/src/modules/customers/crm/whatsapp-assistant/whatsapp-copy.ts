@@ -1,3 +1,4 @@
+import { SECOND_LOCALE } from '@newax/shared';
 import type { Locale } from '@newax/shared';
 
 /**
@@ -13,7 +14,7 @@ import type { Locale } from '@newax/shared';
  * whatsapp-assistant.service.ts) — these two sentences are the ones sent
  * when there is no model call to ask, so language is picked with a cheap,
  * deterministic heuristic instead: whether the customer's own message
- * contains Urdu script. A customer writing Roman Urdu falls back to
+ * contains Arabic script. A customer writing Arabic in Latin letters falls back to
  * English, which is an honest limit of a heuristic, not a silent literal.
  */
 export interface WhatsAppAssistantCopy {
@@ -29,17 +30,18 @@ const COPY: Record<Locale, WhatsAppAssistantCopy> = {
       "We don't have an account on file for this number yet. If you have an order with us, please message from the number you ordered with, or reach out from our website.",
     handoff: "Thanks for reaching out — I've passed this to our team and someone will reply here shortly.",
   },
-  ur: {
+  ar: {
     unrecognisedNumber:
-      'ابھی اس نمبر پر ہمارے پاس کوئی اکاؤنٹ موجود نہیں۔ اگر آپ نے ہم سے آرڈر کیا ہے تو براہ کرم اسی نمبر سے پیغام بھیجیں جس سے آرڈر کیا تھا، یا ہماری ویب سائٹ سے رابطہ کریں۔',
-    handoff: 'رابطہ کرنے کا شکریہ — یہ پیغام ہماری ٹیم کو بھیج دیا گیا ہے اور جلد ہی کوئی جواب دے گا۔',
+      'لا يوجد لدينا حساب مرتبط بهذا الرقم بعد. إن كان لديكم طلب معنا، يرجى مراسلتنا من الرقم الذي استخدمتموه عند الطلب، أو التواصل معنا عبر موقعنا الإلكتروني.',
+    handoff: 'شكرًا لتواصلكم — لقد حوّلنا رسالتكم إلى فريقنا وسيرد عليكم أحدهم هنا قريبًا.',
   },
 };
 
-const URDU_SCRIPT = /[؀-ۿ]/;
+/** The Arabic Unicode block; Urdu and Persian share it, which is fine: this only decides which fixed sentence to send. */
+const SECOND_SCRIPT = /[\u0600-\u06FF]/;
 
 export function detectWhatsAppLocale(text: string): Locale {
-  return URDU_SCRIPT.test(text) ? 'ur' : 'en';
+  return SECOND_SCRIPT.test(text) ? SECOND_LOCALE : 'en';
 }
 
 export function whatsAppAssistantCopy(customerMessage: string): WhatsAppAssistantCopy {

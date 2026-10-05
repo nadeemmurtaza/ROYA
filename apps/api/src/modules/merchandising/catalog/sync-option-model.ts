@@ -1,5 +1,6 @@
 import type { PrismaClient, Prisma } from '../../../core/prisma/client';
 
+import { SECOND_LOCALE } from '@newax/shared';
 /** Whatever Prisma client this runs against — a live request's open transaction, or a standalone script's own instance. */
 type PrismaLike = PrismaClient | Prisma.TransactionClient;
 
@@ -24,7 +25,7 @@ type PrismaLike = PrismaClient | Prisma.TransactionClient;
  * Per product: one "size" option (BUTTON) and one "colour" option (SWATCH,
  * colorHex -> swatchHex), each with one value per DISTINCT size/color found
  * on that product's variants, in the order the variants define them. Value
- * labels are the raw string in both locales — Urdu needs a human pass
+ * labels are the raw string in both locales — the second language needs a human pass
  * afterwards, this does not guess a translation (doc's own instruction).
  * ProductVariant.label is written to match the exact format
  * orders.service.ts already produces for OrderItem.variantLabel:
@@ -48,9 +49,9 @@ export async function syncOptionModel(
     const hasColor = variants.some((v) => v.color);
     if (!hasSize && !hasColor) continue;
 
-    const sizeOptionId = hasSize ? await upsertOption(prisma, product.id, 'size', 'BUTTON', 0, 'Size', 'سائز') : null;
+    const sizeOptionId = hasSize ? await upsertOption(prisma, product.id, 'size', 'BUTTON', 0, 'Size', 'المقاس') : null;
     const colorOptionId = hasColor
-      ? await upsertOption(prisma, product.id, 'color', 'SWATCH', 1, 'Colour', 'رنگ')
+      ? await upsertOption(prisma, product.id, 'color', 'SWATCH', 1, 'Colour', 'اللون')
       : null;
 
     const sizeValueIdByKey = sizeOptionId
@@ -119,7 +120,7 @@ async function upsertOption(
       translations: {
         create: [
           { locale: 'en', label: labelEn },
-          { locale: 'ur', label: labelUr },
+          { locale: SECOND_LOCALE, label: labelUr },
         ],
       },
     },
@@ -155,7 +156,7 @@ async function upsertDistinctValues(
         translations: {
           create: [
             { locale: 'en', label: key },
-            { locale: 'ur', label: key },
+            { locale: SECOND_LOCALE, label: key },
           ],
         },
       },

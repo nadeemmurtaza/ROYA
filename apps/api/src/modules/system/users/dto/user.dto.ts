@@ -23,7 +23,7 @@ export class CreateUserDto {
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email!: string;
 
-  @ApiPropertyOptional({ example: '03001234567' })
+  @ApiPropertyOptional({ example: '0501234567' })
   @IsOptional()
   @IsString()
   @MaxLength(20)
@@ -77,7 +77,7 @@ export class UpdateUserDto {
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email?: string;
 
-  @ApiPropertyOptional({ example: '03001234567' })
+  @ApiPropertyOptional({ example: '0501234567' })
   @IsOptional()
   @IsString()
   @MaxLength(20)

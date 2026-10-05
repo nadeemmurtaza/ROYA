@@ -47,21 +47,21 @@ describe('CartService.updateGuestContact', () => {
   it('normalises the phone and stamps consent when given', async () => {
     const cart = await makeGuestCart();
 
-    await service.updateGuestContact(cart.token, undefined, { phone: '0300 1234567', marketingConsent: true });
+    await service.updateGuestContact(cart.token, undefined, { phone: '050 123 4567', marketingConsent: true });
 
     const refreshed = await prisma.cart.findUniqueOrThrow({ where: { id: cart.id } });
-    expect(refreshed.guestPhone).toBe('+923001234567');
+    expect(refreshed.guestPhone).toBe('+971501234567');
     expect(refreshed.guestMarketingConsentAt).not.toBeNull();
   });
 
   it('clears consent when the customer withdraws it, without dropping the phone', async () => {
     const cart = await makeGuestCart();
-    await service.updateGuestContact(cart.token, undefined, { phone: '0300 1234567', marketingConsent: true });
+    await service.updateGuestContact(cart.token, undefined, { phone: '050 123 4567', marketingConsent: true });
 
-    await service.updateGuestContact(cart.token, undefined, { phone: '0300 1234567', marketingConsent: false });
+    await service.updateGuestContact(cart.token, undefined, { phone: '050 123 4567', marketingConsent: false });
 
     const refreshed = await prisma.cart.findUniqueOrThrow({ where: { id: cart.id } });
-    expect(refreshed.guestPhone).toBe('+923001234567');
+    expect(refreshed.guestPhone).toBe('+971501234567');
     expect(refreshed.guestMarketingConsentAt).toBeNull();
   });
 
@@ -80,7 +80,7 @@ describe('CartService.updateGuestContact', () => {
       data: { token, userId: user.id, expiresAt: new Date(Date.now() + 86_400_000) },
     });
 
-    await service.updateGuestContact(cart.token, user.id, { phone: '0300 1234567', marketingConsent: true });
+    await service.updateGuestContact(cart.token, user.id, { phone: '050 123 4567', marketingConsent: true });
 
     const refreshed = await prisma.cart.findUniqueOrThrow({ where: { id: cart.id } });
     expect(refreshed.guestPhone).toBeNull();

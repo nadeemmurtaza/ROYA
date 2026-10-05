@@ -2,6 +2,7 @@ import { NotificationsService } from '../../../core/notifications/notifications.
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { SecurityNotificationSubscriber } from './security-notification.subscriber';
 
+import { SECOND_LOCALE } from '@newax/shared';
 /**
  * 161-sso-identity-federation.md §3 — an account linked to single sign-on is
  * never linked silently: its holder is mailed, from a fresh lookup, with
@@ -45,12 +46,12 @@ describe('SecurityNotificationSubscriber.onSsoAccountLinked', () => {
 
   it('writes in the language of the account’s most recent device', async () => {
     prisma.user.findUnique.mockResolvedValue({ email: 'sana@shop.test', firstName: null, lastName: null });
-    prisma.deviceToken.findFirst.mockResolvedValue({ locale: 'ur-PK' });
+    prisma.deviceToken.findFirst.mockResolvedValue({ locale: 'ar-AE' });
 
     await subscriber.onSsoAccountLinked({ userId: 'u1', connectionId: 'c1' });
 
     expect(notifications.send).toHaveBeenCalledWith(
-      expect.objectContaining({ recipient: expect.objectContaining({ name: null, locale: 'ur' }) }),
+      expect.objectContaining({ recipient: expect.objectContaining({ name: null, locale: SECOND_LOCALE }) }),
     );
   });
 

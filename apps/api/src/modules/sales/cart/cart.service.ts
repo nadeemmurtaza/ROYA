@@ -15,6 +15,7 @@ import {
   stitchingFeeFor,
   type Locale,
   type MeasurementValues,
+  SECOND_LOCALE,
 } from '@newax/shared';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { SettingsService } from '../../../core/settings/settings.service';
@@ -594,8 +595,8 @@ export class CartService {
       const options = item.stitchingOptions.map((selection) => ({
         id: selection.option.id,
         groupLabel:
-          locale === 'ur' ? selection.option.group.labelUr : selection.option.group.labelEn,
-        label: locale === 'ur' ? selection.option.labelUr : selection.option.labelEn,
+          locale === SECOND_LOCALE ? selection.option.group.labelUr : selection.option.group.labelEn,
+        label: locale === SECOND_LOCALE ? selection.option.labelUr : selection.option.labelEn,
         priceDelta: selection.option.priceDelta,
       }));
 
@@ -641,7 +642,7 @@ export class CartService {
                 : null,
               garmentTypeId: garmentType.id,
               garmentKey: garmentType.key,
-              garmentLabel: locale === 'ur' ? garmentType.labelUr : garmentType.labelEn,
+              garmentLabel: locale === SECOND_LOCALE ? garmentType.labelUr : garmentType.labelEn,
               measurementProfileId: item.measurementProfileId,
               measurementProfileLabel:
                 (item.measurementProfileId ? profileById.get(item.measurementProfileId)?.label : null) ??

@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
-import { LOCALES } from '@newax/shared';
+import { LOCALES, Locale } from '@newax/shared';
 
 export class SearchQueryDto {
   @ApiPropertyOptional({ description: 'Free-text search term' })
@@ -72,7 +72,7 @@ export class SearchQueryDto {
 export class CreateSynonymDto {
   @ApiPropertyOptional({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @IsString()
   @IsNotEmpty()

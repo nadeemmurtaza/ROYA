@@ -31,9 +31,9 @@ const LIVE_URL =
 export class JazzCashProvider implements PaymentProvider {
   readonly key = 'jazzcash';
   readonly labelEn = 'JazzCash';
-  readonly labelUr = 'جاز کیش';
+  readonly labelUr = 'JazzCash';
   readonly descriptionEn = 'Pay from your JazzCash mobile account.';
-  readonly descriptionUr = 'اپنے جاز کیش موبائل اکاؤنٹ سے ادائیگی کریں۔';
+  readonly descriptionUr = 'ادفعوا من حسابكم في JazzCash.';
 
   private readonly logger = new Logger(JazzCashProvider.name);
 

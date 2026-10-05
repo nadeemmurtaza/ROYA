@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@newax/shared';
+import { DEFAULT_LOCALE, pickTranslation, type Locale, SECOND_LOCALE } from '@newax/shared';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import type { Prisma } from '../../../core/prisma/client';
 import { paginated, type PaginatedResult } from '../../../core/common/dto/pagination.dto';
@@ -294,14 +294,14 @@ export async function localise(
   const garmentTypes = fetchedGarments.map((g) => ({
     id: g.id,
     key: g.key,
-    label: locale === 'ur' ? g.labelUr : g.labelEn,
+    label: locale === SECOND_LOCALE ? g.labelUr : g.labelEn,
   }));
 
   const serviceGarment = serviceGarmentDb
     ? {
         id: serviceGarmentDb.id,
         key: serviceGarmentDb.key,
-        label: locale === 'ur' ? serviceGarmentDb.labelUr : serviceGarmentDb.labelEn,
+        label: locale === SECOND_LOCALE ? serviceGarmentDb.labelUr : serviceGarmentDb.labelEn,
       }
     : null;
 

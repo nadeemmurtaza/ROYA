@@ -5,6 +5,7 @@ import { PrismaService } from '../../../core/prisma/prisma.service';
 import { AiFeature } from '../../../core/prisma/client';
 import { COLUMNS, type Column, type Row } from './product-import.service';
 
+import { BRAND, SECOND_LOCALE } from '@newax/shared';
 /** Only these three free-text columns get value-normalization suggestions — the rest are either enums, numbers, or already-structured (sku, category_slug). */
 const NORMALIZABLE_COLUMNS = ['color', 'fabric', 'season'] as const;
 type NormalizableColumn = (typeof NORMALIZABLE_COLUMNS)[number];
@@ -58,9 +59,9 @@ const COLUMN_MEANINGS: Record<Column, string> = {
   kind: 'product kind (GOODS, SERVICE, DIGITAL, STITCHED, UNSTITCHED, STITCHING_SERVICE)',
   status: 'publish status (DRAFT, ACTIVE, ARCHIVED)',
   name_en: 'product name, English',
-  name_ur: 'product name, Urdu',
+  name_ur: `product name, ${BRAND.locale.localeNames[SECOND_LOCALE]}`,
   description_en: 'product description, English',
-  description_ur: 'product description, Urdu',
+  description_ur: `product description, ${BRAND.locale.localeNames[SECOND_LOCALE]}`,
   price_pkr: 'selling price in rupees',
   compare_at_pkr: 'strikethrough/original price in rupees',
   category_slug: "the shop's own existing category slug",
@@ -99,7 +100,7 @@ const CATEGORY_SYSTEM_PROMPT = [
 ].join('\n');
 
 const TRANSLATION_SYSTEM_PROMPT = [
-  'You translate retail product copy from English to Urdu for a Pakistani apparel store, faithfully — never add a claim, a material, or a measurement that the English text does not already say.',
+  `You translate retail product copy from English to ${BRAND.locale.localeNames[SECOND_LOCALE]} for ${BRAND.identity.name}, a bespoke couture and bridal house, faithfully — never add a claim, a material, or a measurement that the English text does not already say.`,
   'Reply with a single JSON array of exactly this shape and nothing else: [{"row": number, "field": string, "suggestedText": string}]',
 ].join('\n');
 

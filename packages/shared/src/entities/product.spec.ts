@@ -16,13 +16,13 @@ describe('getProductName / getProductDescription', () => {
   const product = {
     basePrice: toMinor(1000),
     translations: [
-      { locale: 'ur', name: 'کرتا', description: 'خوبصورت کرتا' },
+      { locale: 'ar', name: 'فستان', description: 'فستان أنيق' },
       { locale: 'en', name: 'Kurta', description: 'A beautiful kurta' },
     ],
   };
 
   it('prefers the requested locale', () => {
-    expect(getProductName(product, 'ur')).toBe('کرتا');
+    expect(getProductName(product, 'ar')).toBe('فستان');
   });
 
   it('falls back to English when the requested locale is missing', () => {
@@ -30,7 +30,7 @@ describe('getProductName / getProductDescription', () => {
   });
 
   it('falls back to whatever translation exists when English is also missing', () => {
-    expect(getProductName({ translations: [{ locale: 'ur', name: 'کرتا' }] }, 'fr')).toBe('کرتا');
+    expect(getProductName({ translations: [{ locale: 'ar', name: 'فستان' }] }, 'fr')).toBe('فستان');
   });
 
   it('returns null with no translations at all', () => {
@@ -94,7 +94,7 @@ describe('getVariantEffectivePrice / getVariantDisplayPrice', () => {
   it('uses the product base price with no override', () => {
     const variant = {};
     expect(getVariantEffectivePrice(product, variant)).toBe(toMinor(1000));
-    expect(getVariantDisplayPrice(product, variant).replace(/\s/g, ' ')).toBe('Rs 1,000');
+    expect(getVariantDisplayPrice(product, variant).replace(/\s/g, ' ')).toBe('AED 1,000');
   });
 
   it('uses the variant override when set', () => {

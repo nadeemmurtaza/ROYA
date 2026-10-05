@@ -51,9 +51,9 @@ interface GiftkartaRedeemResponse {
 export class GiftkartaProvider implements PaymentProvider {
   readonly key = 'giftkarta';
   readonly labelEn = 'Giftkarta gift card';
-  readonly labelUr = 'گفٹ کارٹا گفٹ کارڈ';
+  readonly labelUr = 'بطاقة هدايا Giftkarta';
   readonly descriptionEn = "Pay with a Giftkarta gift card. You'll enter the code on the next screen.";
-  readonly descriptionUr = 'گفٹ کارٹا گفٹ کارڈ سے ادائیگی کریں۔ کوڈ اگلے صفحے پر درج کریں۔';
+  readonly descriptionUr = 'ادفعوا ببطاقة هدايا Giftkarta. ستدخلون الرمز في الشاشة التالية.';
   readonly requiresCode = true;
 
   private readonly logger = new Logger(GiftkartaProvider.name);

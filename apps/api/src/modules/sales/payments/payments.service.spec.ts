@@ -19,7 +19,7 @@ const CONTEXT: PaymentContext = {
   orderNumber: 'ORD-1',
   amount: 10_000,
   customerName: 'Test Customer',
-  customerPhone: '+923001234567',
+  customerPhone: '+971501234567',
   customerEmail: null,
 };
 

@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { normalizePhone } from '@newax/shared';
+import { BRAND, LOCALES, normalizePhone } from '@newax/shared';
 import { AppConfigService } from '../../../../core/config/app-config.service';
 import { AiService } from '../../../../core/ai/ai.service';
 import { WhatsAppChannel } from '../../../../core/notifications/whatsapp.channel';
@@ -28,13 +28,16 @@ const conversationDetailInclude = {
   messages: { orderBy: { createdAt: 'asc' } },
 } satisfies Prisma.WhatsAppConversationInclude;
 
-/** Deterministic, cheap backstop — checked before any AI call, and enforced regardless of what the model itself decides. Covers both non-negotiables the doc lists explicitly (complaint/refund/payment/asks for a person) and the ones the assistant must never itself commit to (a cancellation, a discount). English and Urdu (Roman and script) since customers write in both. */
+/** Deterministic, cheap backstop — checked before any AI call, and enforced regardless of what the model itself decides. Covers both non-negotiables the doc lists explicitly (complaint/refund/payment/asks for a person) and the ones the assistant must never itself commit to (a cancellation, a discount). English and Arabic script, since customers write in both. */
 const HANDOFF_TRIGGERS = [
   'refund',
   'complaint',
-  'shikayat',
-  'شکایت',
-  'واپس',
+  'شكوى',
+  'استرجاع',
+  'إرجاع',
+  'استرداد',
+  'موظف',
+  'تعويض',
   'human',
   'agent',
   'representative',
@@ -47,8 +50,7 @@ const HANDOFF_TRIGGERS = [
   'discount',
   'compensation',
   'payment problem',
-  'paisay wapis',
-  'paise wapas',
+  'مشكلة في الدفع',
 ];
 
 /** What the model is asked to return — never trusted at face value; parseAssistantReply() re-validates every field. */
@@ -59,8 +61,8 @@ interface AssistantReply {
 }
 
 const SYSTEM_PROMPT = [
-  'You are a WhatsApp customer-support assistant for a Pakistani apparel retailer, replying to one already-identified customer.',
-  'Reply in the same language (English or Urdu) the customer wrote in, in one short message.',
+  `You are a WhatsApp customer-support assistant for ${BRAND.identity.name}, a bespoke couture house in ${BRAND.contact.country}, replying to one already-identified customer.`,
+  `Reply in the same language (${LOCALES.map((l) => BRAND.locale.localeNames[l]).join(' or ')}) the customer wrote in, in one short message.`,
   'Use ONLY the customer data given to you below. Never invent an order, a status, a date, a tracking number, or a policy detail that is not in the data.',
   'Never promise a delivery date that is not already recorded in the data.',
   'Never offer, apply, mention, or promise a discount, a refund, or a cancellation — those require a person. If asked for any of these, set handoff to true.',

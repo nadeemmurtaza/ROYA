@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
+import { DEFAULT_LOCALE, isLocale, type Locale, SECOND_LOCALE } from '@newax/shared';
 import {
   DomainEvent,
   type OrderPlacedPayload,
@@ -113,7 +113,7 @@ export class OrderNotificationSubscriber {
     const data: OrderEmailData = {
       orderNumber: order.number,
       items: order.items.map((item) => ({
-        name: (locale === 'ur' ? item.nameUr : item.nameEn) || item.nameEn,
+        name: (locale === SECOND_LOCALE ? item.nameUr : item.nameEn) || item.nameEn,
         variantLabel: item.variantLabel,
         imageUrl: item.imageUrl,
         quantity: item.quantity,
@@ -213,7 +213,7 @@ export class OrderNotificationSubscriber {
    * Which language to write in.
    *
    * The only language preference the schema records today is on DeviceToken,
-   * set when the mobile app registers for push, so app customers get Urdu mail
+   * set when the mobile app registers for push, so app customers get second-language mail
    * and everyone else gets English. Capturing the storefront's locale on the
    * order at checkout would cover web customers too — a nullable `locale`
    * column on Order, read from the locale-prefixed route the order came from.

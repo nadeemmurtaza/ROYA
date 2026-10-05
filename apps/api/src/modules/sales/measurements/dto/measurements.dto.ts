@@ -85,7 +85,7 @@ export class MeasurementFieldDto {
   @MaxLength(60)
   labelEn!: string;
 
-  @ApiProperty({ description: 'Urdu label — the storefront is bilingual' })
+  @ApiProperty({ description: 'Second-language label (see BRAND.locale) — the storefront is bilingual' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(60)
@@ -208,7 +208,7 @@ export class UpsertGarmentTypeDto {
 
   @ApiPropertyOptional({
     type: [String],
-    description: 'Regional/synonym display names (Urdu)',
+    description: 'Regional/synonym display names (second language)',
   })
   @IsOptional()
   @IsArray()

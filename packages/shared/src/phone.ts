@@ -8,7 +8,7 @@ import { BRAND } from './brand';
  * record. Getting this wrong duplicates customers, so it is unit-tested.
  *
  * Canonical form is E.164: the dial code followed by the national number,
- * e.g. +923001234567.
+ * e.g. +971501234567.
  *
  * This used to hardcode `92` and a 10-digit national length, which made the
  * CRM's dedup key Pakistan-only — the one piece of the product that would
@@ -16,12 +16,24 @@ import { BRAND } from './brand';
  * than failing loudly. The shape comes from BRAND.locale now.
  */
 
-const { dialCode, nationalNumberLength, mobilePrefix } = BRAND.locale;
+const { dialCode, nationalNumberLength, mobilePrefix, nationalGrouping } = BRAND.locale;
+
+/** Trunk "0", then the number in the brand's display groups: 050 123 4567. */
+function groupNational(digits: string): string {
+  const parts: string[] = [];
+  let at = 0;
+  for (const size of nationalGrouping) {
+    parts.push(digits.slice(at, at + size));
+    at += size;
+  }
+  if (at < digits.length) parts.push(digits.slice(at));
+  return `0${parts.filter(Boolean).join(' ')}`;
+}
 
 export interface NormalizedPhone {
-  /** E.164, e.g. "+923001234567". Null when the input is not a valid number. */
+  /** E.164, e.g. "+971501234567". Null when the input is not a valid number. */
   e164: string | null;
-  /** Local display form, e.g. "0300 1234567". */
+  /** Local display form, e.g. "050 123 4567". */
   national: string | null;
   isMobile: boolean;
 }
@@ -52,11 +64,9 @@ export function normalizePhone(input: string | null | undefined): NormalizedPhon
 
   return {
     e164: `+${dialCode}${digits}`,
-    // Trunk prefix, then a break after the network/area code. Three digits is
-    // right for PK (0300 1234567) and a sane default elsewhere; a country that
-    // groups differently is a formatting concern, not a correctness one — the
-    // e164 above is what anything stores or compares.
-    national: `0${digits.slice(0, 3)} ${digits.slice(3)}`,
+    // Display grouping comes from the brand; the e164 above is what anything
+    // stores or compares.
+    national: groupNational(digits),
     isMobile: digits.startsWith(mobilePrefix),
   };
 }

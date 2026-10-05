@@ -19,6 +19,7 @@ import {
   taxExclusive,
   taxInclusive,
   type Locale,
+  SECOND_LOCALE,
 } from '@newax/shared';
 import { AuditService } from '../../../core/audit/audit.service';
 import { CheckoutValidatorRegistry } from '../../../core/checkout/checkout-validator.registry';
@@ -1186,7 +1187,7 @@ export class OrdersService {
       }
 
       const english = pickTranslation(item.product.translations, 'en');
-      const urdu = item.product.translations.find((row) => row.locale === 'ur');
+      const second = item.product.translations.find((row) => row.locale === SECOND_LOCALE);
       const image =
         item.product.images.find((candidate) => candidate.isPrimary) ??
         item.product.images[0];
@@ -1216,7 +1217,7 @@ export class OrdersService {
         variantId: item.variantId,
         kind: item.product.kind,
         nameEn: english?.name ?? item.product.slug,
-        nameUr: urdu?.name ?? null,
+        nameUr: second?.name ?? null,
         sku: item.variant.sku,
         imageUrl: image?.url ?? null,
         variantLabel: getVariantDisplayLabel(item.variant),

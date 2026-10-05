@@ -237,7 +237,7 @@ describe('computeShippingFee', () => {
 describe('formatMoney', () => {
   it('renders whole rupees without decimals', () => {
     // Intl inserts a non-breaking space after the currency symbol.
-    expect(formatMoney(toMinor(3499)).replace(/\s/g, ' ')).toBe('Rs 3,499');
+    expect(formatMoney(toMinor(3499)).replace(/\s/g, ' ')).toBe('AED 3,499');
   });
 });
 

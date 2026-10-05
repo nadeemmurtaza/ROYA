@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { recommendSize, type SizeChartRow } from '@newax/shared';
+import { recommendSize, type SizeChartRow, Locale, SECOND_LOCALE } from '@newax/shared';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { toFieldDefs } from './measurements.service';
 
@@ -29,7 +29,7 @@ export class SizeRecommendationService {
   async recommendForProduct(
     userId: string | null,
     productId: string,
-    locale: 'en' | 'ur' = 'en',
+    locale: Locale = 'en',
   ): Promise<SizeRecommendationResponse | null> {
     if (!userId) return null;
 
@@ -80,7 +80,7 @@ export class SizeRecommendationService {
 
       return {
         garmentTypeId: garmentType.id,
-        garmentTypeLabel: locale === 'ur' ? garmentType.labelUr : garmentType.labelEn,
+        garmentTypeLabel: locale === SECOND_LOCALE ? garmentType.labelUr : garmentType.labelEn,
         profileId: profile.id,
         recommendedSize: result.recommendedSize,
         matchedSize: result.matchedSize,

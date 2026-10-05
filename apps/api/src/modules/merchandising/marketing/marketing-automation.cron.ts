@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { DEFAULT_LOCALE, formatMoney, generateHumanCode, isLocale, pickTranslation, type Locale } from '@newax/shared';
+import { DEFAULT_LOCALE, formatMoney, generateHumanCode, isLocale, pickTranslation, type Locale, SECOND_LOCALE } from '@newax/shared';
 import { AppConfigService } from '../../../core/config/app-config.service';
 import { NotificationsService } from '../../../core/notifications/notifications.service';
 import type {
@@ -283,7 +283,7 @@ export class MarketingAutomationCron {
             orderNumber: order.number,
             items: order.items.map(
               (item): MarketingProduct => ({
-                name: (locale === 'ur' ? item.nameUr : item.nameEn) || item.nameEn,
+                name: (locale === SECOND_LOCALE ? item.nameUr : item.nameEn) || item.nameEn,
                 imageUrl: item.imageUrl,
                 price: formatMoney(item.unitPrice, locale),
               }),

@@ -2,19 +2,19 @@ import { detectWhatsAppLocale, whatsAppAssistantCopy } from './whatsapp-copy';
 
 describe('whatsapp-copy', () => {
   describe('detectWhatsAppLocale', () => {
-    it('reads English for a message with no Urdu script', () => {
+    it('reads English for a message with no Arabic script', () => {
       expect(detectWhatsAppLocale('Where is my order?')).toBe('en');
     });
 
-    it('reads Urdu for a message containing Urdu script', () => {
-      expect(detectWhatsAppLocale('میرا آرڈر کہاں ہے؟')).toBe('ur');
+    it('reads Arabic for a message containing Arabic script', () => {
+      expect(detectWhatsAppLocale('أين طلبي؟')).toBe('ar');
     });
 
-    it('reads Urdu when the message mixes scripts', () => {
-      expect(detectWhatsAppLocale('order کہاں ہے')).toBe('ur');
+    it('reads Arabic when the message mixes scripts', () => {
+      expect(detectWhatsAppLocale('order أين هو')).toBe('ar');
     });
 
-    it('falls back to English for Roman Urdu, an honest limit of the heuristic', () => {
+    it('falls back to English for Arabic written in Latin letters, an honest limit of the heuristic', () => {
       expect(detectWhatsAppLocale('mera order kahan hai')).toBe('en');
     });
   });

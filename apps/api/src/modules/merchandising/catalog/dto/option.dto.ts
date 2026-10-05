@@ -11,12 +11,12 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES, OPTION_DISPLAYS, type OptionDisplay } from '@newax/shared';
+import { LOCALES, OPTION_DISPLAYS, type OptionDisplay, Locale } from '@newax/shared';
 
 export class OptionValueTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty()
   @IsString()

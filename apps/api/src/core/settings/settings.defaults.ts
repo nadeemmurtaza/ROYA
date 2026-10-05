@@ -366,7 +366,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   /*
    * Seeded from the brand file, not typed out again. These were a second
    * copy of facts BRAND already held, and the two had drifted: the support
-   * phone here was +923001234567 while the brand file said +92 335 621 2709,
+   * phone here was +971501234567 while the brand file said +92 335 621 2709,
    * and nothing reconciled them because nobody reads both files at once.
    */
   [SettingKey.Store]: {
@@ -468,7 +468,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
   [SettingKey.TaxDefaultClass]: 'standard',
-  [SettingKey.FinanceDefaultCurrency]: 'PKR',
+  [SettingKey.FinanceDefaultCurrency]: BRAND.locale.currency,
   [SettingKey.FinanceRecurringRunHour]: 3,
   [SettingKey.FinancePackagingCostPerOrder]: toMinor(50),
   [SettingKey.FinanceGatewayFeeBps]: {
@@ -478,11 +478,11 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   } satisfies FinanceGatewayFeeBpsSettings,
   [SettingKey.PayrollAccrualRunDay]: 1,
   [SettingKey.PayrollAccrualRunHour]: 4,
-  /** Rs. 50,000 — a reasonable default for a shop that has never set its own. */
-  [SettingKey.FinanceCreditNoteApprovalThresholdMinor]: toMinor(50_000),
+  /** 1,000 in shop currency: a credit note above the price of a typical accessory needs a second signature. A shop with different stakes changes it in the back office. */
+  [SettingKey.FinanceCreditNoteApprovalThresholdMinor]: toMinor(1_000),
   [SettingKey.PosInstalmentForfeitDepositOnCancel]: false,
-  /** Rs. 10,000 — a reasonable default; a shortfall this size or smaller is usually a rounding/fee difference, not something worth a second signature. */
-  [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(10_000),
+  /** 200 in shop currency: a shortfall this size or smaller is usually a rounding/fee difference, not something worth a second signature. */
+  [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(200),
   [SettingKey.FinanceFacilityDrawdownApprovalThresholdMinor]: toMinor(1_000_000),
   [SettingKey.FinanceFacilityRenewalAlertDays]: 60,
   /** 90 days — long enough to cover a real leave or a seasonal audit, short enough that a grant nobody renewed is gone within a quarter. */
@@ -517,7 +517,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.LoyaltyReferralRewardAmount]: toMinor(200),
 
   [SettingKey.AiMonthlyBudgetPaisa]: null as number | null,
-  [SettingKey.AiUsdToPkrRate]: 280,
+  // Dirham-pegged: 3.6725 AED per USD. The KEY keeps its Blueprint name
+  // (`ai.usd_to_pkr_rate`); the value is USD -> the shop's own currency.
+  [SettingKey.AiUsdToPkrRate]: 3.6725,
   [SettingKey.SearchEmbeddingBatchSize]: 20,
 
   [SettingKey.SizeBiasShiftThresholdPct]: 40,
@@ -534,11 +536,11 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.AnalyticsDefaultRangeDays]: 30,
   [SettingKey.AnalyticsComparisonBucket]: 'day',
 
-  // 50,000 PKR minor units (paisa) — a deliberately conservative default a
+  // 1,000 in shop currency — a deliberately conservative default a
   // deployment tunes once it has real adjustment volume to judge by; "it is
   // tunable," the same posture CodRiskConfirmationCallThreshold above
   // already takes for a threshold nobody should hardcode into a deploy.
-  [SettingKey.WalletAdjustmentApprovalThresholdMinor]: 5_000_000,
+  [SettingKey.WalletAdjustmentApprovalThresholdMinor]: toMinor(1_000),
 
   [SettingKey.TradingPartnersQuoteDefaultValidityDays]: 14,
   // "Guest carts live for a month; long enough to come back after payday."

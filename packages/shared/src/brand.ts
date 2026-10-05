@@ -29,25 +29,33 @@
 // ---------------------------------------------------------------------------
 
 const identity = {
-  /** Full legal-ish name. Invoices, emails, the Organization schema. */
-  name: 'Yaseen Fabrics & Stitching',
-  /** Short form for tight spaces — the header, the app switcher. */
-  shortName: 'Yaseen.pk',
+  /** Full name. Invoices, emails, the Organization schema. */
+  name: 'House of ROYA',
+  /** Short form for tight spaces: the header, the app switcher. */
+  shortName: 'ROYA',
   /**
    * The name in the shop's second language, for the places that print both.
    *
+   * The key keeps the Blueprint's original name (`nameUr`) so upgrade syncs
+   * stay mergeable; it holds the brand's SECOND locale, which for ROYA is
+   * Arabic (`locale.locales[1]`).
+   *
    * Not a translation row: a business name is brand, not copy, and a rebrand
-   * must be able to change it. Copy is what a page *says* about the business.
+   * must be able to change it.
    */
-  nameUr: 'یٰسین',
+  nameUr: 'رويا',
   /** One line, under the name. Shown on the storefront and in metadata. */
-  tagline: 'Premium Fabrics & Custom Stitching',
-  /** Bare host, no protocol. */
-  domain: 'yaseen.pk',
+  tagline: 'Wear your dream',
+  /**
+   * Bare host, no protocol. PLACEHOLDER: ROYA's domain is not decided yet
+   * (docs/OPEN-QUESTIONS.md). `.example` is reserved by RFC 2606, so a
+   * forgotten placeholder can never send mail or traffic to a stranger.
+   */
+  domain: 'roya.example',
   /** Canonical origin. NEXT_PUBLIC_SITE_URL overrides this per environment. */
-  url: 'https://yaseen.pk',
+  url: 'https://roya.example',
   /** What the back office calls itself in its own title bar. */
-  adminName: 'Yaseen Admin',
+  adminName: 'ROYA Atelier',
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -55,21 +63,25 @@ const identity = {
 // ---------------------------------------------------------------------------
 
 const contact = {
-  email: 'support@yaseen.pk',
-  phone: '+92 335 621 2709',
-  whatsapp: '+92 335 621 2709',
-  address: 'K 491, Shah Rukn e Alam Colony, Multan, Pakistan',
-  city: 'Multan',
-  country: 'Pakistan',
-  workingHours: '9 AM – 8 PM, Monday to Saturday',
-  supportResponseTime: 'Within 1–2 business days',
+  /** PLACEHOLDER until ROYA supplies a mailbox (docs/OPEN-QUESTIONS.md). */
+  email: 'atelier@roya.example',
+  /** PLACEHOLDERS: the design leaves the numbers open ("+971 50 [000 0000]"). */
+  phone: '+971 50 000 0000',
+  whatsapp: '+971 50 000 0000',
+  /** The design prints "[ATELIER ADDRESS]". Not invented here. */
+  address: '[ATELIER ADDRESS]',
+  city: '[CITY]',
+  country: 'United Arab Emirates',
+  /** The design: consultations are by appointment only. */
+  workingHours: 'By appointment only',
+  /** The design: "Replies personally, usually within the hour." */
+  supportResponseTime: 'Usually within the hour',
 } as const;
 
 const socials = {
-  facebook: 'https://facebook.com/yaseen.pk',
-  instagram: 'https://instagram.com/yaseen.pk',
-  tiktok: 'https://tiktok.com/@yaseen.pk',
-  youtube: 'https://youtube.com/@yaseen_pk',
+  /** Handles as printed in the design. */
+  instagram: 'https://instagram.com/houseofroya.ae',
+  tiktok: 'https://tiktok.com/@royawear.ae',
 } as const;
 
 /**
@@ -78,17 +90,19 @@ const socials = {
  * much a locale fact as the number is a client fact.
  */
 const legal = {
-  taxLabel: 'NTN',
-  taxNumber: 'NTN-XXXXXXX-X',
-  registrationLabel: 'SECP',
-  registrationNumber: 'SECP-XXXXXXX',
+  /** A UAE business is identified for VAT by a Tax Registration Number (TRN). */
+  taxLabel: 'TRN',
+  taxNumber: '[TRN]',
+  registrationLabel: 'Trade licence',
+  registrationNumber: '[LICENCE NO.]',
 } as const;
 
 const banking = {
-  bankName: 'Meezan Bank',
-  accountTitle: 'Yaseen Fabrics',
-  accountNumber: '00000000000000',
-  iban: 'PK00 MEEZ 0000 0000 0000 0000',
+  /** The design prints "[BANK NAME] · IBAN [AE00 0000 0000 0000 0000 000]". */
+  bankName: '[BANK NAME]',
+  accountTitle: '[ACCOUNT TITLE]',
+  accountNumber: '[ACCOUNT NUMBER]',
+  iban: '[AE00 0000 0000 0000 0000 000]',
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -102,53 +116,58 @@ const banking = {
 
 const locale = {
   /** ISO 4217. Drives Intl.NumberFormat everywhere money is shown. */
-  currency: 'PKR',
-  /** Shown where a symbol reads better than a code. */
-  currencySymbol: 'Rs.',
+  currency: 'AED',
+  /** The design prints the code ("AED 28,500"), never a symbol. */
+  currencySymbol: 'AED',
   /**
    * Minor units in one major unit. 100 for rupees/dollars/dirhams, 1000 for
    * dinars, 1 for yen. Every amount in the database is an integer of these.
+   * (AED: 100 fils to the dirham.)
    */
   minorUnitsPerMajor: 100,
 
   /** ISO 3166-1 alpha-2. */
-  countryCode: 'PK',
+  countryCode: 'AE',
   /** Dial code without the plus. */
-  dialCode: '92',
-  /** Digits after the dial code in a valid national number. */
-  nationalNumberLength: 10,
+  dialCode: '971',
+  /** Digits after the dial code in a valid national number (5X XXX XXXX). */
+  nationalNumberLength: 9,
   /** Leading digit(s) that mark a mobile rather than a landline. */
-  mobilePrefix: '3',
+  mobilePrefix: '5',
+  /**
+   * How a national number is grouped for display, after the trunk "0":
+   * 2 + 3 + 4 gives the UAE's "050 123 4567". Must sum to nationalNumberLength.
+   * Display only: the E.164 form is what anything stores or compares.
+   */
+  nationalGrouping: [2, 3, 4] as const,
 
-  /** IANA zone. The shop's day boundary — never a user-supplied value. */
-  timeZone: 'Asia/Karachi',
+  /** IANA zone. The shop's day boundary: never a user-supplied value. UAE has no DST. */
+  timeZone: 'Asia/Dubai',
 
   /**
-   * The top-level administrative regions a delivery address picks from.
-   *
-   * These were typed into the checkout page, which made them the most
-   * expensive kind of literal: not a colour somebody notices, but a list that
-   * is silently, confidently wrong the first time this ships anywhere else.
-   * A UAE client needs emirates; a UK one needs counties and a different
-   * label for the field entirely.
+   * The top-level administrative regions a delivery address picks from: the
+   * seven emirates. Orders from outside the UAE are a delivery METHOD
+   * (international courier), not a region, so they are not listed here.
    */
-  regionLabel: 'Province',
+  regionLabel: 'Emirate',
   regions: [
-    'Sindh',
-    'Punjab',
-    'Khyber Pakhtunkhwa',
-    'Balochistan',
-    'Islamabad Capital Territory',
-    'Gilgit-Baltistan',
-    'Azad Jammu & Kashmir',
+    'Abu Dhabi',
+    'Dubai',
+    'Sharjah',
+    'Ajman',
+    'Umm Al Quwain',
+    'Ras Al Khaimah',
+    'Fujairah',
   ] as const,
 
-  /** The locales the product ships. First is the default. */
-  locales: ['en', 'ur'] as const,
+  /** The locales the storefront ships. First is the default. */
+  locales: ['en', 'ar'] as const,
   /** BCP 47 tags for Intl, per locale. */
-  intlTags: { en: 'en-PK', ur: 'ur-PK' } as const,
+  intlTags: { en: 'en-AE', ar: 'ar-AE' } as const,
   /** Which of the above are written right to left. */
-  rtlLocales: ['ur'] as const,
+  rtlLocales: ['ar'] as const,
+  /** Each locale's name in English, for prompts that must name the language. */
+  localeNames: { en: 'English', ar: 'Arabic' } as const,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -569,21 +588,26 @@ const assets = {
 
 const commerce = {
   /**
-   * Stamped on every order number: YSN-2026-0001.
+   * Stamped on every order number: RY-2026-0001 (the design prints "RY-").
    *
-   * The client's initials, so it belongs here — it was written into the
-   * generator, where a case-insensitive search for the client's name would
-   * never find it. Changing it changes new numbers only; orders already
-   * placed keep the number they were given, which is the whole point of a
-   * number. Document types that are not brand — PO, GRN, JOB, STO, SC —
-   * stay literal in their own services.
+   * Changing it changes new numbers only; orders already placed keep the
+   * number they were given, which is the whole point of a number.
    */
-  orderNumberPrefix: 'YSN',
+  orderNumberPrefix: 'RY',
 
-  standardDeliveryTime: '3-5 Working Days',
-  stitchingTurnaroundTime: '10-14 Working Days',
-  /** In major units, not minor — this is a figure a human types. */
-  freeShippingThreshold: 5000,
+  /** PLACEHOLDERS: the design prints "[X] days" / "[X] weeks". */
+  standardDeliveryTime: '[X] days',
+  stitchingTurnaroundTime: '[X] weeks',
+  /** In major units. 0: the design offers complimentary white-glove delivery in the UAE. */
+  freeShippingThreshold: 0,
+
+  /**
+   * A bespoke (made-to-measure) piece begins with a deposit: "50% deposit to
+   * begin" (the design, Home and Product). Percent of the piece's price.
+   */
+  bespokeDepositPercent: 50,
+  /** UAE VAT, percent. Prices shown are VAT-inclusive ("Includes 5% UAE VAT"). */
+  vatPercent: 5,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -645,6 +669,185 @@ const feedback = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Storefront
+//
+// Everything the ROYA storefront draws with, taken from the design canvas
+// ("ROYA — Couture Storefront", design/source). The `theme.colors` /
+// `theme.colorsDark` roles above are the Blueprint's back-office palette and
+// are kept verbatim for the admin console, which this repository does not ship
+// yet; the storefront does not read them.
+//
+// A theme is a set of SEMANTIC roles, not hexes scattered through CSS. Light is
+// a role-for-role inversion of dark (`bg` and `text` swap ends, the pearl
+// accent becomes ink), derived by aligning every V2 page with its Light twin.
+// The storefront turns each role into a CSS variable at render time
+// (apps/storefront/src/lib/theme-css.ts), so nothing in a stylesheet holds a
+// colour literal (Law 1).
+//
+// `lineRgb`, `bgRgb` and `textRgb` are bare space-separated channels, so one
+// role serves every alpha the design uses: `rgb(var(--line-rgb) / .22)`.
+// ---------------------------------------------------------------------------
+
+const storefrontDark = {
+  bg: '#0B0A09',
+  bgRaised: '#131211',
+  bgSunken: '#060605',
+  /** The three stops of an unloaded photo's placeholder wash. */
+  washHi: '#2B2926',
+  washMid: '#161513',
+  washLo: '#0D0C0B',
+  text: '#F2EEE8',
+  /** Hover state of any link or icon. */
+  textHi: '#FFFFFF',
+  text2: '#E6E1D9',
+  text3: '#E4DED3',
+  textBody: '#CFC9BF',
+  textMuted: '#B3ACA2',
+  textFaint: '#9E978D',
+  textTag: '#A39C91',
+  textDim: '#7A746C',
+  /** Fill of a primary button, and the focus ring. */
+  accent: '#D9D2C5',
+  accentHover: '#F2EEE8',
+  onAccent: '#0B0A09',
+  /** Channels for hairlines, scrims and tints. */
+  lineRgb: '217 210 197',
+  bgRgb: '11 10 9',
+  textRgb: '242 238 232',
+  /** Inline validation text. */
+  error: '#E8A598',
+  /** The three stops of the logotype's moving highlight. */
+  shineLo: '#8F8A82',
+  shineHi: '#F7F4EE',
+  shineMid: '#C9C3B9',
+  /** The parchment band ("The Commission"): a light panel inside either theme. */
+  band: {
+    bg: '#F2EEE8',
+    text: '#171512',
+    textBody: '#47423B',
+    textMuted: '#57524A',
+    eyebrow: '#5E584F',
+    fill: '#E3DDD3',
+    lineRgb: '94 88 79',
+    ink: '#121110',
+    inkHover: '#2E2B27',
+    onInk: '#F2EEE8',
+  },
+} as const;
+
+const storefrontLight = {
+  bg: '#F7F4EF',
+  bgRaised: '#FDFBF8',
+  bgSunken: '#EEEAE3',
+  washHi: '#EFEBE4',
+  washMid: '#E2DCD2',
+  washLo: '#D3CBBF',
+  text: '#171512',
+  textHi: '#000000',
+  text2: '#2A2723',
+  text3: '#4E4943',
+  textBody: '#47423B',
+  textMuted: '#5F5951',
+  textFaint: '#6B655D',
+  textTag: '#7A746C',
+  textDim: '#8A8379',
+  accent: '#2A2723',
+  accentHover: '#3A3631',
+  onAccent: '#F7F4EF',
+  lineRgb: '23 21 18',
+  bgRgb: '247 244 239',
+  textRgb: '23 21 18',
+  /**
+   * The design left dark's error colour (#E8A598, about 2:1) unchanged in
+   * Light, where it cannot be read. This is the same hue, darkened to clear
+   * 4.5:1 on `bg`.
+   */
+  error: '#A3392B',
+  shineLo: '#171512',
+  shineHi: '#8F8A82',
+  shineMid: '#2A2723',
+  band: {
+    bg: '#ECE7DF',
+    text: '#171512',
+    textBody: '#47423B',
+    textMuted: '#57524A',
+    eyebrow: '#5E584F',
+    fill: '#E3DDD3',
+    lineRgb: '94 88 79',
+    ink: '#121110',
+    inkHover: '#2E2B27',
+    onInk: '#F2EEE8',
+  },
+} as const;
+
+const storefront = {
+  /** The design opens in dark; light is a toggle, remembered per visitor. */
+  defaultTheme: 'dark',
+  themes: { dark: storefrontDark, light: storefrontLight },
+
+  /**
+   * Four families, each with one job. `googleFamilies` is the exact request
+   * the design makes; next/font resolves the same names statically, so
+   * changing a typeface means editing the import in apps/storefront as well.
+   */
+  fonts: {
+    /** Headlines, prices, quotations. */
+    serif: { family: 'Cormorant Garamond', fallback: ['Garamond', 'Times New Roman', 'serif'] },
+    /** The logotype only. */
+    logo: { family: 'Cinzel', fallback: ['Trajan Pro', 'Georgia', 'serif'] },
+    /** Body, labels, controls. */
+    sans: { family: 'Jost', fallback: ['Futura', 'Century Gothic', 'sans-serif'] },
+    /** Arabic text, in place of all three above. */
+    arabic: { family: 'Amiri', fallback: ['Times New Roman', 'serif'] },
+  },
+
+  /** Page width and the side gutter, as the design sets them. */
+  layout: {
+    maxWidth: 1440,
+    gutter: 'clamp(20px, 4vw, 56px)',
+    /** Below this the header collapses into a menu and grids go to two columns. */
+    compactBelow: 900,
+    phoneBelow: 700,
+  },
+
+  /**
+   * Motion curves the design uses. `settle` is the same curve as
+   * `theme.motion.easing.settle`; the rest are specific to ROYA's films and
+   * panels. Under prefers-reduced-motion the storefront removes the motion
+   * and keeps the information it carried.
+   */
+  motion: {
+    settle: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    panel: 'cubic-bezier(0.77, 0, 0.18, 1)',
+    sweep: 'cubic-bezier(0.2, 0.7, 0.1, 1)',
+    film: 'cubic-bezier(0.65, 0, 0.35, 1)',
+  },
+
+  /**
+   * Display currencies, as units of the currency per 1 AED. Charges are
+   * always made in AED; other currencies are an indicative convenience and
+   * the storefront says so ("indicative price, charged in AED").
+   *
+   * USD and SAR are pegged to the dirham by the central bank (3.6725 AED per
+   * USD, 3.75 SAR per USD) and are derived from the peg, not typed to four
+   * decimals. GBP and EUR float: the values below are the design's and have
+   * NO live source yet (docs/OPEN-QUESTIONS.md), so they will drift.
+   */
+  currencies: {
+    codes: ['AED', 'USD', 'SAR', 'GBP', 'EUR'] as const,
+    perAed: {
+      AED: 1,
+      USD: 1 / 3.6725,
+      SAR: 3.75 / 3.6725,
+      GBP: 0.204,
+      EUR: 0.234,
+    } as const,
+    /** Non-AED prices are rounded to the nearest this, so they read as approximate. */
+    roundTo: 10,
+  },
+} as const;
+
+// ---------------------------------------------------------------------------
 
 export const BRAND = {
   identity,
@@ -654,6 +857,7 @@ export const BRAND = {
   banking,
   locale,
   theme: { colors, colorsDark, radii, type, fonts, space, size, elevation, layers, motion },
+  storefront,
   assets,
   commerce,
   safeguards,

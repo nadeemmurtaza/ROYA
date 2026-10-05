@@ -21,7 +21,7 @@ import type {
 export class ManualCourierProvider implements CourierProvider {
   readonly key = 'manual';
   readonly labelEn = 'Manual (courier counter)';
-  readonly labelUr = 'دستی (کوریئر کاؤنٹر)';
+  readonly labelUr = 'يدوي (مكتب شركة التوصيل)';
 
   async createShipment(input: CreateShipmentInput): Promise<CourierShipment> {
     return {

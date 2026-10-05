@@ -22,7 +22,7 @@ describe('WhatsAppWebhookController', () => {
     const assistant = { verifyWebhookSignature: jest.fn().mockReturnValue(false), handleInbound: jest.fn() };
     const controller = makeController(assistant);
 
-    await expect(controller.webhook(reqWith('{"from":"+923001234567","body":"hi"}'))).rejects.toThrow(
+    await expect(controller.webhook(reqWith('{"from":"+971501234567","body":"hi"}'))).rejects.toThrow(
       UnauthorizedException,
     );
     expect(assistant.handleInbound).not.toHaveBeenCalled();
@@ -41,7 +41,7 @@ describe('WhatsAppWebhookController', () => {
     const controller = makeController(assistant);
 
     await expect(controller.webhook(reqWith('{"body":"hi"}'))).rejects.toThrow(BadRequestException);
-    await expect(controller.webhook(reqWith('{"from":"+923001234567"}'))).rejects.toThrow(BadRequestException);
+    await expect(controller.webhook(reqWith('{"from":"+971501234567"}'))).rejects.toThrow(BadRequestException);
     expect(assistant.handleInbound).not.toHaveBeenCalled();
   });
 
@@ -50,11 +50,11 @@ describe('WhatsAppWebhookController', () => {
     const controller = makeController(assistant);
 
     const result = await controller.webhook(
-      reqWith('{"from":"+923001234567","body":"Where is my order?","messageId":"wamid.1"}'),
+      reqWith('{"from":"+971501234567","body":"Where is my order?","messageId":"wamid.1"}'),
     );
 
     expect(assistant.handleInbound).toHaveBeenCalledWith({
-      from: '+923001234567',
+      from: '+971501234567',
       body: 'Where is my order?',
       externalMessageId: 'wamid.1',
     });

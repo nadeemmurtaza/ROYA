@@ -164,21 +164,21 @@ describe('MarketingAutomationCron', () => {
     });
 
     it('sends a guest cart with a consented phone over WhatsApp/SMS instead of email', async () => {
-      const guestCart = cart({ userId: null, user: null, guestPhone: '+923001234567', guestMarketingConsentAt: new Date() });
+      const guestCart = cart({ userId: null, user: null, guestPhone: '+971501234567', guestMarketingConsentAt: new Date() });
       prisma.cart.findMany.mockResolvedValue([guestCart]);
 
       const sent = await cron.sendAbandonedCartFirstTouch();
 
       expect(sent).toBe(1);
       expect(notifications.send).toHaveBeenCalledWith(
-        expect.objectContaining({ recipient: expect.objectContaining({ phone: '+923001234567' }) }),
+        expect.objectContaining({ recipient: expect.objectContaining({ phone: '+971501234567' }) }),
       );
     });
 
     it('never sends to a guest phone that has opted out', async () => {
-      const guestCart = cart({ userId: null, user: null, guestPhone: '+923001234567', guestMarketingConsentAt: new Date() });
+      const guestCart = cart({ userId: null, user: null, guestPhone: '+971501234567', guestMarketingConsentAt: new Date() });
       prisma.cart.findMany.mockResolvedValue([guestCart]);
-      prisma.phoneOptOut.findUnique.mockResolvedValue({ phoneE164: '+923001234567' });
+      prisma.phoneOptOut.findUnique.mockResolvedValue({ phoneE164: '+971501234567' });
 
       const sent = await cron.sendAbandonedCartFirstTouch();
 

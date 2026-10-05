@@ -1,12 +1,24 @@
 import { BRAND } from './brand';
-/** Locales the storefront ships in. Admin is English-only by design. */
-export const LOCALES = ['en', 'ur'] as const;
+/**
+ * Locales the storefront ships in, from BRAND.locale (first is the default).
+ * Admin is English-only by design.
+ */
+export const LOCALES = BRAND.locale.locales;
 export type Locale = (typeof LOCALES)[number];
 
-export const DEFAULT_LOCALE: Locale = 'en';
+export const DEFAULT_LOCALE: Locale = LOCALES[0];
 
-/** Urdu is right-to-left; everything else is left-to-right. */
-export const RTL_LOCALES: readonly Locale[] = ['ur'];
+/**
+ * The brand's second language. Several tables carry it as dedicated columns
+ * (`nameUr`, `labelUr`, `helpUr`...) named for the Blueprint's original
+ * Urdu: the COLUMN names are kept so upgrade syncs stay mergeable, and they
+ * hold whatever language this is. Code must never compare a locale to a
+ * language literal; it asks this.
+ */
+export const SECOND_LOCALE: Locale = LOCALES[1];
+
+/** Locales written right to left; everything else is left-to-right. */
+export const RTL_LOCALES: readonly Locale[] = BRAND.locale.rtlLocales;
 
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
@@ -40,7 +52,7 @@ export function pickTranslation<T extends { locale: string }>(
 /**
  * The BCP 47 tag Intl should use for a locale.
  *
- * This was written out as `locale === 'ur' ? 'ur-PK' : 'en-PK'` at three call
+ * This was written out as a per-language ternary at three call
  * sites — two date formatters and the money one — so a client outside
  * Pakistan meant finding all three. The tags come from BRAND.locale now.
  */

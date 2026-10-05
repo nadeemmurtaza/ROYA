@@ -25,9 +25,9 @@ import type {
 export class AccountProvider implements PaymentProvider {
   readonly key = 'account';
   readonly labelEn = 'Pay on account';
-  readonly labelUr = 'اکاؤنٹ پر ادائیگی';
+  readonly labelUr = 'الدفع على الحساب';
   readonly descriptionEn = 'Bill this order to your standing account, under your agreed credit terms.';
-  readonly descriptionUr = 'یہ آرڈر آپ کے طے شدہ کریڈٹ اکاؤنٹ پر بل کیا جائے گا۔';
+  readonly descriptionUr = 'يُحمَّل هذا الطلب على حسابكم الائتماني وفق الشروط المتفق عليها.';
 
   constructor(
     private readonly prisma: PrismaService,

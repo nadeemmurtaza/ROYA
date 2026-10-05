@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '@newax/shared';
+import { BRAND, DEFAULT_LOCALE, LOCALES, type Locale } from '@newax/shared';
 import { AuditService } from '../../../core/audit/audit.service';
 import { AiService } from '../../../core/ai/ai.service';
 import { DomainEvent } from '../../../core/events/domain-events';
@@ -27,7 +27,7 @@ const TEXT_JOBS: Array<{ kind: Extract<AiSuggestionKind, 'META_TITLE' | 'META_DE
 ];
 
 const GUARDRAIL_SYSTEM_PROMPT =
-  'You write retail product copy for a Pakistani apparel store. Use only the attributes given to ' +
+  `You write retail product copy for ${BRAND.identity.name}, a bespoke couture and bridal house in ${BRAND.contact.country}. Use only the attributes given to ` +
   'you. Never invent a material, a measurement, a certification, or a price that was not given. ' +
   'If information is missing, write around the gap rather than guessing. Reply with only the ' +
   'requested text — no preamble, no quotation marks, no markdown.';
@@ -42,7 +42,7 @@ interface CopyContext {
 }
 
 function languageName(locale: string): string {
-  return locale === 'ur' ? 'Urdu' : 'English';
+  return BRAND.locale.localeNames[locale as Locale] ?? BRAND.locale.localeNames[DEFAULT_LOCALE];
 }
 
 function attributeLines(ctx: CopyContext, includeColor: boolean): string {

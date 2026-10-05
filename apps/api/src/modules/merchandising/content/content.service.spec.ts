@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { ContentService } from './content.service';
 
+import { SECOND_LOCALE } from '@newax/shared';
 describe('ContentService', () => {
   let service: ContentService;
   let prisma: PrismaService;
@@ -75,7 +76,7 @@ describe('ContentService', () => {
         translations: [{ locale: 'en', title: 'English only', body: [] }],
       });
 
-      const result = await service.getPublishedPageBySlug(s, 'ur');
+      const result = await service.getPublishedPageBySlug(s, SECOND_LOCALE);
       expect(result.translation?.title).toBe('English only');
     });
 
@@ -132,7 +133,7 @@ describe('ContentService', () => {
         translations: [{ locale: 'en', label: 'Contact us' }],
       });
 
-      const menu = await service.getMenu('footer_help', 'ur');
+      const menu = await service.getMenu('footer_help', SECOND_LOCALE);
       expect(menu.find((item) => item.url === url)?.label).toBe('Contact us');
     });
   });

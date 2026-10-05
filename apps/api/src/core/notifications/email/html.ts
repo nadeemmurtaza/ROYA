@@ -43,10 +43,10 @@ export function escUrl(value: string | null | undefined): string {
 }
 
 /**
- * Pins a Latin-script value so Urdu's right-to-left flow cannot reorder it.
+ * Pins a Latin-script value so a right-to-left flow cannot reorder it.
  *
  * Without this, a value made of more than one run renders scrambled inside an
- * RTL paragraph: "0318 6003165" comes out as "6003165 0318", and a discount of
+ * RTL paragraph: "050 123 4567" comes out as "6003165 0318", and a discount of
  * "- Rs 500" as "Rs 500 -". Both are wrong in a way a customer would act on.
  *
  * Uses LEFT-TO-RIGHT MARK rather than a `dir="ltr"` span because the same
@@ -68,7 +68,8 @@ export const palette = {
 
 const FONT =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
-const URDU_FONT = `'Noto Nastaliq Urdu', ${FONT}`;
+/** Arabic script. Naskh faces read well in mail clients that carry no web fonts. */
+const RTL_FONT = `'Noto Naskh Arabic', 'Geeza Pro', 'Segoe UI', Tahoma, ${FONT}`;
 
 export interface LayoutOptions {
   locale: Locale;
@@ -107,11 +108,11 @@ export function layout({
   body,
 }: LayoutOptions): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const align = dir === 'rtl' ? 'right' : 'left';
-  // Nastaliq descenders collide at normal leading, the same reason
-  // globals.css sets 2.1 for [lang='ur'] on the storefront.
-  const leading = locale === 'ur' ? '2.0' : '1.55';
+  // Arabic script with diacritics needs more leading than Latin, the same reason
+  // the storefront sets its own leading for right-to-left locales.
+  const leading = directionFor(locale) === 'rtl' ? '1.8' : '1.55';
 
   /*
    * The shop's mark. Text by default and for a real reason: Gmail and Outlook
@@ -172,15 +173,15 @@ ${body}
 }
 
 export function heading(text: string, locale: Locale): string {
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   return `<h1 style="margin:0 0 12px 0;font-family:${font};font-size:21px;font-weight:600;color:${palette.ink};">${esc(
     text,
   )}</h1>`;
 }
 
 export function paragraph(text: string, locale: Locale): string {
-  const font = locale === 'ur' ? URDU_FONT : FONT;
-  const leading = locale === 'ur' ? '2.0' : '1.6';
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
+  const leading = directionFor(locale) === 'rtl' ? '1.8' : '1.6';
   return `<p style="margin:0 0 14px 0;font-family:${font};font-size:15px;line-height:${leading};color:${palette.body};">${esc(
     text,
   )}</p>`;
@@ -195,7 +196,7 @@ export function paragraph(text: string, locale: Locale): string {
 export function button(label: string, url: string, locale: Locale): string {
   const href = escUrl(url);
   if (!href) return '';
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 24px 0;">
   <tr><td style="background:${palette.ink};" align="center">
     <a href="${href}" style="display:inline-block;padding:13px 26px;font-family:${font};font-size:15px;font-weight:600;color:#FFFFFF;text-decoration:none;">${esc(
@@ -220,7 +221,7 @@ export function divider(): string {
  */
 export function footerLink(text: string, linkLabel: string, url: string, locale: Locale): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const href = escUrl(url);
   const link = href
     ? ` <a href="${href}" style="color:${palette.muted};text-decoration:underline;">${esc(
@@ -233,7 +234,7 @@ export function footerLink(text: string, linkLabel: string, url: string, locale:
 }
 
 export function sectionTitle(text: string, locale: Locale): string {
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   return `<p style="margin:24px 0 12px 0;font-family:${font};font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:${palette.muted};">${esc(
     text,
   )}</p>`;
@@ -253,7 +254,7 @@ export interface LineItem {
 /** The order summary table: thumbnail, name, quantity, line total. */
 export function itemsTable(items: LineItem[], locale: Locale): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const start = dir === 'rtl' ? 'right' : 'left';
   const end = dir === 'rtl' ? 'left' : 'right';
 
@@ -308,7 +309,7 @@ export interface TotalRow {
 
 export function totals(rows: TotalRow[], locale: Locale): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const start = dir === 'rtl' ? 'right' : 'left';
   const end = dir === 'rtl' ? 'left' : 'right';
 
@@ -337,7 +338,7 @@ ${body}
 /** A bordered callout — bank transfer instructions, a pending-payment notice. */
 export function panel(title: string, lines: string[], locale: Locale): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const align = dir === 'rtl' ? 'right' : 'left';
 
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;">
@@ -354,7 +355,7 @@ export function detailBlocks(
   locale: Locale,
 ): string {
   const dir = directionFor(locale);
-  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const font = directionFor(locale) === 'rtl' ? RTL_FONT : FONT;
   const align = dir === 'rtl' ? 'right' : 'left';
 
   return blocks

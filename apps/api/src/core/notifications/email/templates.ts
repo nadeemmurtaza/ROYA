@@ -195,7 +195,7 @@ function addressLines(address: OrderEmailAddress | null | undefined): string[] {
 }
 
 function orderUrl(ctx: EmailContext, locale: Locale, orderNumber: string): string {
-  // Storefront routes are locale-prefixed (/en, /ur) — see the [locale] segment
+  // Storefront routes are locale-prefixed (/en, /ar) — see the [locale] segment
   // in apps/web. Dropping the prefix lands on a redirect at best.
   return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/orders/${encodeURIComponent(
     orderNumber,

@@ -11,12 +11,12 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES } from '@newax/shared';
+import { LOCALES, Locale } from '@newax/shared';
 
 export class CategoryTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty({ example: 'Unstitched' })
   @IsString()

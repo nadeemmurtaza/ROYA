@@ -27,7 +27,7 @@ describe('isDeliverable', () => {
     ['a stray space', 'ayesha @example.com'],
     ['two addresses in one field', 'a@b.com, c@d.com'],
     ['a trailing dot', 'ayesha@example.'],
-    ['a phone number pasted into the email box', '03001234567'],
+    ['a phone number pasted into the email box', '0501234567'],
   ])('rejects %s', (_label, address) => {
     expect(isDeliverable(address)).toBe(false);
   });

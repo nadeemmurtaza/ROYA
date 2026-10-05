@@ -1,4 +1,4 @@
-import { BRAND } from '@newax/shared';
+import { BRAND, SECOND_LOCALE } from '@newax/shared';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
@@ -83,13 +83,13 @@ export class ProductImportService {
     return stringify(
       [
         {
-          sku: 'LWN-3PC-BLU-M',
-          kind: 'UNSTITCHED',
+          sku: 'GWN-BLK-FR38',
+          kind: 'GOODS',
           status: 'DRAFT',
-          name_en: '3-Piece Embroidered Lawn Suit',
-          name_ur: 'تھری پیس کڑھائی والا لان سوٹ',
-          description_en: 'Embroidered front, printed back and sleeves, chiffon dupatta.',
-          description_ur: 'کڑھائی والا فرنٹ، پرنٹڈ بیک اور آستین، شیفون دوپٹہ۔',
+          name_en: 'Satin Evening Gown',
+          name_ur: 'فستان سهرة من الساتان',
+          description_en: 'Black satin with a hand-placed pearl waistline.',
+          description_ur: 'ساتان أسود مع حزام من اللؤلؤ المطرَّز يدويًا.',
           price_pkr: '4500',
           compare_at_pkr: '5500',
           category_slug: 'unstitched',
@@ -415,7 +415,7 @@ export class ProductImportService {
             ...(nameUr
               ? [
                   {
-                    locale: 'ur',
+                    locale: SECOND_LOCALE,
                     name: nameUr,
                     description: (row.description_ur ?? '').trim() || null,
                   },

@@ -19,9 +19,9 @@ import type {
 export class CodProvider implements PaymentProvider {
   readonly key = 'cod';
   readonly labelEn = 'Cash on delivery';
-  readonly labelUr = 'کیش آن ڈیلیوری';
+  readonly labelUr = 'الدفع عند الاستلام';
   readonly descriptionEn = 'Pay the courier in cash when your parcel arrives.';
-  readonly descriptionUr = 'پارسل موصول ہونے پر کورئیر کو نقد ادائیگی کریں۔';
+  readonly descriptionUr = 'ادفعوا نقدًا لمندوب التوصيل عند وصول طلبكم.';
 
   constructor(private readonly settings: SettingsService) {}
 

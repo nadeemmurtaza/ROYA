@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { DEFAULT_LOCALE, isLocale } from '@newax/shared';
+import { DEFAULT_LOCALE, isLocale, Locale } from '@newax/shared';
 import { CurrentUser, Public, RequirePermission } from '../../../core/auth/decorators';
 import { ContentService } from './content.service';
 import {
@@ -14,7 +14,7 @@ import {
   UpdatePageDto,
 } from './dto/content.dto';
 
-function resolveLocale(locale?: string): 'en' | 'ur' {
+function resolveLocale(locale?: string): Locale {
   return locale && isLocale(locale) ? locale : DEFAULT_LOCALE;
 }
 

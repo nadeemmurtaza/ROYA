@@ -15,12 +15,12 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@newax/shared';
+import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind, Locale } from '@newax/shared';
 
 export class ProductTranslationDto {
   @ApiProperty({ enum: LOCALES, example: 'en' })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty({ example: '3-Piece Embroidered Lawn Suit' })
   @IsString()

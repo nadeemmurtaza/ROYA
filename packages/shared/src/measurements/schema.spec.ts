@@ -17,7 +17,7 @@ describe('default garment definitions', () => {
     );
   });
 
-  it('gives every field an Urdu label, since the storefront is bilingual', () => {
+  it('gives every field a second-language label, since the storefront is bilingual', () => {
     for (const garment of DEFAULT_GARMENT_TYPES) {
       expect(garment.labelUr.length).toBeGreaterThan(0);
       for (const field of garment.fields) {

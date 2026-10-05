@@ -5,7 +5,7 @@ describe('getFormattedAddress', () => {
     expect(
       getFormattedAddress({
         fullName: 'Ayesha Khan',
-        phone: '03001234567',
+        phone: '0501234567',
         line1: 'House 12, Street 5',
         city: 'Karachi',
         province: 'Sindh',
@@ -17,7 +17,7 @@ describe('getFormattedAddress', () => {
     expect(
       getFormattedAddress({
         fullName: 'Ayesha Khan',
-        phone: '03001234567',
+        phone: '0501234567',
         line1: 'House 12',
         line2: 'Street 5',
         city: 'Karachi',
@@ -33,7 +33,7 @@ describe('getAddressCityProvince', () => {
     expect(
       getAddressCityProvince({
         fullName: 'Ayesha Khan',
-        phone: '03001234567',
+        phone: '0501234567',
         line1: 'House 12',
         city: 'Karachi',
         province: 'Sindh',

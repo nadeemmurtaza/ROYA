@@ -27,9 +27,9 @@ const LIVE_URL = 'https://easypay.easypaisa.com.pk/easypay/Index.jsf';
 export class EasypaisaProvider implements PaymentProvider {
   readonly key = 'easypaisa';
   readonly labelEn = 'Easypaisa';
-  readonly labelUr = 'ایزی پیسہ';
+  readonly labelUr = 'Easypaisa';
   readonly descriptionEn = 'Pay from your Easypaisa mobile account.';
-  readonly descriptionUr = 'اپنے ایزی پیسہ موبائل اکاؤنٹ سے ادائیگی کریں۔';
+  readonly descriptionUr = 'ادفعوا من حسابكم في Easypaisa.';
 
   private readonly logger = new Logger(EasypaisaProvider.name);
 

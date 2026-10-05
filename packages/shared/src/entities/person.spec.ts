@@ -44,11 +44,11 @@ describe('getPersonInitials', () => {
 
 describe('getPersonDisplayLabel', () => {
   it('prefers the name', () => {
-    expect(getPersonDisplayLabel({ name: 'Ayesha Khan', phone: '+923001234567' })).toBe('Ayesha Khan');
+    expect(getPersonDisplayLabel({ name: 'Ayesha Khan', phone: '+971501234567' })).toBe('Ayesha Khan');
   });
 
   it('falls back to a formatted phone when there is no name', () => {
-    expect(getPersonDisplayLabel({ phone: '+923001234567' })).toBe('0300 1234567');
+    expect(getPersonDisplayLabel({ phone: '+971501234567' })).toBe('050 123 4567');
   });
 
   it('falls back to email when there is no name or phone', () => {
@@ -72,12 +72,12 @@ describe('getPersonEmail', () => {
 
 describe('getPersonFormattedPhone / getPersonE164Phone', () => {
   it('reads User.phone', () => {
-    expect(getPersonFormattedPhone({ phone: '03001234567' })).toBe('0300 1234567');
-    expect(getPersonE164Phone({ phone: '03001234567' })).toBe('+923001234567');
+    expect(getPersonFormattedPhone({ phone: '0501234567' })).toBe('050 123 4567');
+    expect(getPersonE164Phone({ phone: '0501234567' })).toBe('+971501234567');
   });
 
   it('reads Contact.phoneE164 when phone is absent', () => {
-    expect(getPersonFormattedPhone({ phoneE164: '+923001234567' })).toBe('0300 1234567');
+    expect(getPersonFormattedPhone({ phoneE164: '+971501234567' })).toBe('050 123 4567');
   });
 
   it('returns null for an invalid number', () => {

@@ -8,6 +8,7 @@ import { EventBusService } from '../../../core/events/event-bus.service';
 import { DomainEvent } from '../../../core/events/domain-events';
 import { SeoHealthService } from './seo-health.service';
 
+import { BRAND, SECOND_LOCALE } from '@newax/shared';
 describe('AiSuggestionsService', () => {
   let service: AiSuggestionsService;
   let prisma: any;
@@ -117,9 +118,9 @@ describe('AiSuggestionsService', () => {
 
       await service.generateForProduct('prod1');
 
-      // Only 'ur' is missing; 'en' already has alt text.
+      // Only the second locale is missing; 'en' already has alt text.
       expect(ai.describeImage).toHaveBeenCalledTimes(1);
-      expect(ai.describeImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.stringContaining('Urdu'));
+      expect(ai.describeImage).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.stringContaining(BRAND.locale.localeNames[SECOND_LOCALE]));
     });
 
     it('skips a job that already has a PENDING suggestion, to keep a repeated bulk run cheap', async () => {

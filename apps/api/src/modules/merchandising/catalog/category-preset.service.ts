@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { slugifyWithFallback } from '@newax/shared';
+import { slugifyWithFallback, SECOND_LOCALE } from '@newax/shared';
 import { AuditService } from '../../../core/audit/audit.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import type { AuthenticatedUser } from '../../../core/auth/auth.constants';
@@ -114,7 +114,7 @@ export class CategoryPresetService {
             translations: {
               create: [
                 { locale: 'en', name: node.name },
-                ...(node.nameUr ? [{ locale: 'ur' as const, name: node.nameUr }] : []),
+                ...(node.nameUr ? [{ locale: SECOND_LOCALE, name: node.nameUr }] : []),
               ],
             },
           },

@@ -1,16 +1,16 @@
-import { BRAND } from '@newax/shared';
+import { BRAND, DEFAULT_LOCALE } from '@newax/shared';
 import type { Locale } from '@newax/shared';
 
 /**
  * Email wording, in both languages the storefront ships.
  *
  * One interface, two implementations, so a string added to English fails the
- * build until Urdu has it too. Translations drift the moment that stops being
- * enforced, and a half-Urdu order confirmation reads worse than an English one.
+ * build until Arabic has it too. Translations drift the moment that stops being
+ * enforced, and a half-Arabic order confirmation reads worse than an English one.
  *
  * Anything with a value in it is a function rather than a string, so word order
- * stays the translator's decision — Urdu does not put the number where English
- * does.
+ * stays the translator's decision — Arabic does not put the number where
+ * English does.
  */
 export interface EmailCopy {
   orderConfirmed: {
@@ -207,7 +207,7 @@ const en: EmailCopy = {
       `Please transfer ${amount} to the account below. Your order is confirmed once we verify the payment.`,
     sendScreenshot: (whatsapp) =>
       `After paying, send the screenshot on WhatsApp: ${whatsapp}`,
-    afterVerification: 'Bank transfer also works from the JazzCash and Easypaisa apps.',
+    afterVerification: 'Work on your order begins as soon as the transfer clears.',
   },
   paymentReceived: {
     subject: (orderNumber) => `Payment received for ${orderNumber}`,
@@ -246,9 +246,9 @@ const en: EmailCopy = {
   stitching: {
     readySubject: (garment) => `Your ${garment} is ready`,
     stageSubject: (garment, stage) => `Your ${garment}: ${stage}`,
-    heading: 'An update from the workshop',
+    heading: 'An update from the atelier',
     stages: {
-      RECEIVED: 'received by the workshop',
+      RECEIVED: 'received by the atelier',
       CUTTING: 'being cut',
       STITCHING: 'being stitched',
       QC: 'being checked',
@@ -260,7 +260,7 @@ const en: EmailCopy = {
     subject: (orderNumber) => `${orderNumber} is on its way`,
     heading: 'Your order is on its way',
     intro: (orderNumber) =>
-      `Order ${orderNumber} has left our workshop and is with the courier. It may take a day or two to reach you, and the courier may call to confirm delivery before it arrives.`,
+      `Order ${orderNumber} has left our atelier and is with the courier. It may take a day or two to reach you, and the courier may call to confirm delivery before it arrives.`,
   },
   orderDelivered: {
     subject: (orderNumber) => `${orderNumber} has been delivered`,
@@ -406,222 +406,232 @@ const en: EmailCopy = {
   viewOrder: 'View your order',
 };
 
-const ur: EmailCopy = {
+/**
+ * Arabic wording. DRAFT: written for ROYA and not yet read by a native
+ * speaker (docs/OPEN-QUESTIONS.md). It addresses the customer in the formal
+ * plural ("طلبكم"), which is the register luxury houses use and avoids
+ * gendered second-person forms. Brand names are never typed here: they come
+ * from BRAND.
+ */
+const ar: EmailCopy = {
   orderConfirmed: {
-    subject: (orderNumber) => `آرڈر ${orderNumber} کی تصدیق ہو گئی`,
-    heading: 'آپ کے آرڈر کا شکریہ!',
-    intro:
-      'ہم آپ کا آرڈر تیار کر رہے ہیں۔ روانہ ہوتے ہی ہم آپ کو اطلاع دے دیں گے۔',
-    cta: 'اپنا آرڈر دیکھیں',
-    summary: 'آرڈر کی تفصیل',
-    stitchingNote: 'آپ کے ناپ کے مطابق سلائی',
+    subject: (orderNumber) => `تم تأكيد الطلب ${orderNumber}`,
+    heading: 'شكرًا لطلبكم!',
+    intro: 'نقوم بتجهيز طلبكم الآن، وسنوافيكم بالتحديثات فور انطلاقه.',
+    cta: 'عرض طلبكم',
+    summary: 'ملخص الطلب',
+    stitchingNote: 'مُفصَّل وفق قياساتكم',
   },
   awaitingPayment: {
-    title: 'ادائیگی باقی ہے',
+    title: 'بانتظار الدفع',
     intro: (amount) =>
-      `براہِ کرم ${amount} نیچے دیے گئے اکاؤنٹ میں منتقل کریں۔ ادائیگی کی تصدیق کے بعد آپ کا آرڈر پکا ہو جائے گا۔`,
-    sendScreenshot: (whatsapp) =>
-      `ادائیگی کے بعد اسکرین شاٹ واٹس ایپ پر بھیجیں: ${whatsapp}`,
-    afterVerification:
-      'بینک ٹرانسفر جاز کیش اور ایزی پیسہ ایپ سے بھی کیا جا سکتا ہے۔',
+      `يرجى تحويل ${amount} إلى الحساب أدناه. يتم تأكيد طلبكم بعد التحقق من الدفعة.`,
+    sendScreenshot: (whatsapp) => `بعد التحويل، أرسلوا لقطة الشاشة عبر واتساب: ${whatsapp}`,
+    afterVerification: 'يبدأ العمل على طلبكم فور وصول التحويل.',
   },
   paymentReceived: {
-    subject: (orderNumber) => `${orderNumber} کی ادائیگی موصول ہو گئی`,
-    heading: 'ادائیگی موصول ہو گئی',
+    subject: (orderNumber) => `تم استلام الدفعة للطلب ${orderNumber}`,
+    heading: 'تم استلام الدفعة',
     intro: (amount) =>
-      `ہمیں آپ کی ${amount} کی ادائیگی موصول ہو گئی ہے۔ آپ کا آرڈر پکا ہو گیا ہے اور ہم اسے تیار کر رہے ہیں۔`,
+      `استلمنا دفعتكم بمبلغ ${amount}. تم تأكيد طلبكم ونعمل على تجهيزه الآن.`,
   },
   paymentFailed: {
-    subject: (orderNumber) => `ادائیگی مکمل نہیں ہوئی — ${orderNumber}`,
-    heading: 'ادائیگی مکمل نہیں ہوئی',
+    subject: (orderNumber) => `لم تكتمل عملية الدفع — ${orderNumber}`,
+    heading: 'لم تكتمل عملية الدفع',
     intro: (orderNumber) =>
-      `آپ کے آرڈر ${orderNumber} کی ادائیگی مکمل نہیں ہو سکی۔ براہِ کرم دوبارہ کوشش کریں، یا اس ای میل کا جواب دیں اور ہم مدد کریں گے۔`,
-    cta: 'دوبارہ کوشش کریں',
+      `تعذّر إتمام الدفع للطلب ${orderNumber}. يرجى المحاولة مرة أخرى، أو الرد على هذا البريد وسنساعدكم.`,
+    cta: 'حاولوا مرة أخرى',
   },
   welcome: {
-    subject: 'یاسین میں خوش آمدید',
-    heading: 'آپ کا اکاؤنٹ تیار ہے',
+    subject: `مرحبًا بكم في ${BRAND.identity.nameUr}`,
+    heading: 'حسابكم جاهز',
     intro: (name) =>
-      `السلام علیکم ${name}، آپ کا اکاؤنٹ تیار ہے۔ اب آپ اپنی پیمائشیں محفوظ کر سکتے ہیں، آرڈرز ٹریک کر سکتے ہیں اور اگلی بار تیزی سے چیک آؤٹ کر سکتے ہیں۔`,
-    cta: 'خریداری شروع کریں',
+      `مرحبًا ${name}، حسابكم جاهز. يمكنكم الآن حفظ قياساتكم وتتبّع طلباتكم وإتمام الشراء بسرعة أكبر في المرة القادمة.`,
+    cta: 'ابدؤوا التسوّق',
   },
   status: {
     subject: (orderNumber, status) => `${orderNumber} — ${status}`,
-    heading: (status) => `آپ کا آرڈر ${status}`,
-    intro: (orderNumber, status) => `آرڈر ${orderNumber} اب ${status}۔`,
+    heading: (status) => `طلبكم ${status}`,
+    intro: (orderNumber, status) => `الطلب ${orderNumber} الآن ${status}.`,
     words: {
-      PENDING: 'زیرِ التوا ہے',
-      CONFIRMED: 'پکا ہو گیا ہے',
-      PROCESSING: 'تیار ہو رہا ہے',
-      SHIPPED: 'روانہ ہو چکا ہے',
-      DELIVERED: 'پہنچا دیا گیا ہے',
-      CANCELLED: 'منسوخ ہو گیا ہے',
-      RETURNED: 'واپس کر دیا گیا ہے',
+      PENDING: 'قيد الانتظار',
+      CONFIRMED: 'مؤكَّد',
+      PROCESSING: 'قيد التجهيز',
+      SHIPPED: 'في الطريق إليكم',
+      DELIVERED: 'تم تسليمه',
+      CANCELLED: 'ملغى',
+      RETURNED: 'تم إرجاعه',
     },
   },
   stitching: {
-    readySubject: (garment) => `آپ کا ${garment} تیار ہے`,
-    stageSubject: (garment, stage) => `آپ کا ${garment}: ${stage}`,
-    heading: 'ورکشاپ سے اطلاع',
+    // Gender-neutral on purpose: `garment` is a noun of either gender.
+    readySubject: (garment) => `اكتمل تجهيز ${garment}`,
+    stageSubject: (garment, stage) => `${garment}: ${stage}`,
+    heading: 'تحديث من الأتيليه',
     stages: {
-      RECEIVED: 'ورکشاپ کو موصول ہو گیا',
-      CUTTING: 'کٹائی ہو رہی ہے',
-      STITCHING: 'سلائی ہو رہی ہے',
-      QC: 'جانچ ہو رہی ہے',
-      READY: 'تیار ہے',
-      DISPATCHED: 'روانہ ہو چکا ہے',
+      RECEIVED: 'وصل إلى الأتيليه',
+      CUTTING: 'قيد القصّ',
+      STITCHING: 'قيد الخياطة',
+      QC: 'قيد الفحص',
+      READY: 'جاهز',
+      DISPATCHED: 'في الطريق إليكم',
     },
   },
   orderShipped: {
-    subject: (orderNumber) => `${orderNumber} روانہ ہو چکا ہے`,
-    heading: 'آپ کا آرڈر روانہ ہو چکا ہے',
+    subject: (orderNumber) => `${orderNumber} في الطريق إليكم`,
+    heading: 'طلبكم في الطريق إليكم',
     intro: (orderNumber) =>
-      `آرڈر ${orderNumber} ہماری ورکشاپ سے نکل کر کورئیر کے پاس پہنچ چکا ہے۔ آپ تک پہنچنے میں ایک یا دو دن لگ سکتے ہیں، اور کورئیر ڈیلیوری سے پہلے تصدیق کے لیے کال کر سکتا ہے۔`,
+      `غادر الطلب ${orderNumber} الأتيليه وهو الآن مع شركة التوصيل. قد يستغرق وصوله يومًا أو يومين، وقد يتصل بكم المندوب لتأكيد التسليم قبل وصوله.`,
   },
   orderDelivered: {
-    subject: (orderNumber) => `${orderNumber} پہنچا دیا گیا`,
-    heading: 'ڈیلیور ہو گیا!',
-    intro: (orderNumber) => `آرڈر ${orderNumber} آپ تک پہنچا دیا گیا ہے۔`,
-    note: 'امید ہے آپ کو پسند آئے گا۔ اگر کچھ ٹھیک نہیں تو اس ای میل کا جواب دیں، ہم درست کر دیں گے۔',
+    subject: (orderNumber) => `تم تسليم ${orderNumber}`,
+    heading: 'تم التسليم!',
+    intro: (orderNumber) => `تم تسليم الطلب ${orderNumber}.`,
+    note: 'نأمل أن ينال إعجابكم. وإن كانت لديكم أي ملاحظة، يكفي أن تردّوا على هذا البريد وسنتولى الأمر.',
   },
   orderCancelled: {
-    subject: (orderNumber) => `${orderNumber} منسوخ کر دیا گیا`,
-    heading: 'آپ کا آرڈر منسوخ ہو گیا',
-    intro: (orderNumber) => `آرڈر ${orderNumber} منسوخ کر دیا گیا ہے۔`,
+    subject: (orderNumber) => `تم إلغاء ${orderNumber}`,
+    heading: 'تم إلغاء طلبكم',
+    intro: (orderNumber) => `تم إلغاء الطلب ${orderNumber}.`,
     refundNote:
-      'اس آرڈر کی ادائیگی آپ کو واپس کر دی جائے گی۔ ہماری ٹیم اسے آپ کے اصل ادائیگی کے طریقے پر دستی طور پر واپس کرے گی — مکمل ہونے پر آپ کو الگ ای میل موصول ہو گی۔',
+      'سيتم رد قيمة هذا الطلب. سيعالج فريقنا الاسترداد يدويًا إلى وسيلة الدفع الأصلية، وستصلكم رسالة منفصلة عند اكتماله.',
   },
   paymentRefunded: {
-    subject: (orderNumber) => `${orderNumber} کی رقم واپس کر دی گئی`,
-    heading: 'آپ کی رقم واپس کر دی گئی ہے',
+    subject: (orderNumber) => `تمت معالجة استرداد ${orderNumber}`,
+    heading: 'تمت معالجة استرداد المبلغ',
     intro: (orderNumber, amount) =>
-      `ہم نے آرڈر ${orderNumber} کے لیے ${amount} کی رقم واپس کر دی ہے۔ آپ کے بینک کے مطابق اسے ظاہر ہونے میں چند کاروباری دن لگ سکتے ہیں۔`,
+      `عالجنا استرداد مبلغ ${amount} للطلب ${orderNumber}. وبحسب مصرفكم، قد يستغرق ظهوره بضعة أيام عمل.`,
   },
   passwordChanged: {
-    subject: 'آپ کا پاس ورڈ تبدیل کر دیا گیا',
-    heading: 'آپ کا پاس ورڈ تبدیل کر دیا گیا',
+    subject: 'تم تغيير كلمة المرور',
+    heading: 'تم تغيير كلمة المرور',
     intro:
-      'ابھی آپ کا پاس ورڈ تبدیل کیا گیا ہے۔ اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً ہم سے رابطہ کریں — اس ای میل کا جواب دیں۔',
+      'تم تغيير كلمة مرور حسابكم للتو. إن كنتم أنتم من قام بذلك فلا حاجة لأي إجراء، وإن لم تكونوا فتواصلوا معنا فورًا بالرد على هذا البريد.',
   },
   apiKeyIssued: {
-    subject: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
-    heading: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
+    subject: 'تم إصدار مفتاح API جديد لحسابكم',
+    heading: 'تم إصدار مفتاح API جديد لحسابكم',
     created: (lastFour, surface) =>
-      `ابھی آپ کے اکاؤنٹ پر ایک نئی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید بنائی گئی ہے جس کے آخری حروف ${lastFour} ہیں۔ جس کے پاس یہ کلید ہو وہ اسے دی گئی رسائی کی حد میں آپ کی جگہ کام کر سکتا ہے۔`,
+      `تم للتو إنشاء مفتاح API ${surface === 'ADMIN' ? 'للإدارة' : 'للمتجر'} جديد ينتهي بالرقم ${lastFour} في حسابكم. يستطيع من يملكه التصرف باسمكم ضمن الصلاحيات الممنوحة له.`,
     rotated: (lastFour, surface) =>
-      `ابھی آپ کی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید کو نیا خفیہ کوڈ دیا گیا ہے جس کے آخری حروف ${lastFour} ہیں۔ پرانا خفیہ کوڈ اب کام نہیں کرتا۔`,
+      `تم للتو إصدار سرّ جديد لمفتاح API ${surface === 'ADMIN' ? 'للإدارة' : 'للمتجر'} الخاص بكم، وهو ينتهي بالرقم ${lastFour}. لم يعد السر القديم صالحًا.`,
     notYou:
-      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو ابھی یہ کلید منسوخ کریں، اپنا پاس ورڈ تبدیل کریں اور اس ای میل کا جواب دیں۔',
-    cta: 'اپنی API کلیدیں دیکھیں',
+      'إن كنتم أنتم من قام بذلك فلا حاجة لأي إجراء. وإن لم تكونوا، فألغوا المفتاح الآن وغيّروا كلمة المرور وردّوا على هذا البريد.',
+    cta: 'مراجعة مفاتيح API',
   },
   ssoAccountLinked: {
-    subject: `آپ کے ${BRAND.identity.nameUr} اکاؤنٹ سے سنگل سائن آن منسلک کر دیا گیا`,
-    heading: 'آپ کے اکاؤنٹ میں سائن اِن کا ایک نیا طریقہ شامل کیا گیا',
-    intro: `اب آپ کے ${BRAND.identity.nameUr} اکاؤنٹ میں آپ کے ادارے کے سنگل سائن آن کے ذریعے سائن اِن کیا جا سکتا ہے۔ یہ اُس وقت منسلک ہوا جب اس ای میل ایڈریس سے پہلی بار اس طریقے سے سائن اِن کیا گیا۔`,
+    subject: `تم ربط تسجيل الدخول الموحّد بحسابكم في ${BRAND.identity.nameUr}`,
+    heading: 'تمت إضافة طريقة جديدة لتسجيل الدخول إلى حسابكم',
+    intro: `يمكنكم الآن الدخول إلى حسابكم في ${BRAND.identity.nameUr} عبر تسجيل الدخول الموحّد الخاص بمؤسستكم. تم الربط عند أول دخول بهذه الطريقة باستخدام عنوان البريد الإلكتروني هذا.`,
     notYou:
-      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً اس ای میل کا جواب دیں — ہم اسے ہٹا دیں گے اور آپ کو ہر جگہ سے سائن آؤٹ کر دیں گے۔',
+      'إن كنتم أنتم من قام بذلك فلا حاجة لأي إجراء. وإن لم تكونوا، فردّوا على هذا البريد فورًا — سنزيل الربط ونُنهي جميع جلساتكم.',
   },
   passwordReset: {
-    subject: 'اپنا پاس ورڈ ری سیٹ کریں',
-    heading: 'اپنا پاس ورڈ ری سیٹ کریں',
+    subject: 'إعادة تعيين كلمة المرور',
+    heading: 'إعادة تعيين كلمة المرور',
     intro:
-      'ہمیں آپ کے پاس ورڈ کو ری سیٹ کرنے کی درخواست موصول ہوئی ہے۔ نیا پاس ورڈ منتخب کرنے کے لیے نیچے دیے گئے بٹن پر کلک کریں۔ اگر یہ درخواست آپ نے نہیں کی تو اس ای میل کو نظر انداز کریں۔',
-    cta: 'پاس ورڈ ری سیٹ کریں',
-    expiry: 'یہ لنک ایک گھنٹے میں ختم ہو جائے گا۔',
+      'وصلنا طلب لإعادة تعيين كلمة المرور. اضغطوا على الزر أدناه لاختيار كلمة مرور جديدة. وإن لم تقدّموا هذا الطلب فتجاهلوا هذا البريد.',
+    cta: 'إعادة تعيين كلمة المرور',
+    expiry: 'تنتهي صلاحية هذا الرابط خلال ساعة واحدة.',
   },
   emailVerification: {
-    subject: 'اپنا ای میل ایڈریس تصدیق کریں',
-    heading: 'اپنا ای میل ایڈریس تصدیق کریں',
-    intro: 'یہ تصدیق کرنے کے لیے کہ یہ آپ کا ای میل ایڈریس ہے، نیچے دیے گئے بٹن پر کلک کریں۔',
-    cta: 'ای میل تصدیق کریں',
+    subject: 'تأكيد عنوان بريدكم الإلكتروني',
+    heading: 'تأكيد عنوان بريدكم الإلكتروني',
+    intro: 'اضغطوا على الزر أدناه لتأكيد أن هذا هو عنوان بريدكم الإلكتروني.',
+    cta: 'تأكيد البريد الإلكتروني',
   },
-  shopNow: 'ابھی خریداری کریں',
+  shopNow: 'تسوّقوا الآن',
   marketing: {
     abandonedCartFirstTouch: {
-      subject: 'ابھی تک آپ کے کارٹ میں',
-      heading: 'آپ یہ چھوڑ گئے',
-      intro: 'بس ایک مختصر یاد دہانی — یہ اشیاء ابھی تک آپ کے کارٹ میں محفوظ ہیں۔',
-      cta: 'اپنا کارٹ دیکھیں',
+      subject: 'ما زالت في حقيبتكم',
+      heading: 'تركتم هذه القطع',
+      intro: 'تذكير لطيف: هذه القطع ما زالت محفوظة في حقيبتكم.',
+      cta: 'عرض حقيبتكم',
     },
     abandonedCartReminder: {
-      subject: 'آپ نے اپنے کارٹ میں کچھ چھوڑ دیا',
-      heading: 'ابھی تک سوچ رہے ہیں؟',
-      intro: 'آپ نے یہ اشیاء اپنے کارٹ میں چھوڑی ہیں۔ جب آپ تیار ہوں یہ یہیں موجود ہیں۔',
-      cta: 'اپنے کارٹ پر واپس جائیں',
+      subject: 'تركتم شيئًا في حقيبتكم',
+      heading: 'ما زلتم تفكّرون؟',
+      intro: 'تركتم هذه القطع في حقيبتكم، وستبقى هنا متى كنتم جاهزين.',
+      cta: 'العودة إلى حقيبتكم',
     },
     abandonedCartIncentive: {
-      subject: 'آپ کا آرڈر مکمل کرنے کے لیے ایک تحفہ',
-      heading: 'آپ کا کارٹ، رعایت کے ساتھ',
-      intro: 'آپ کی اشیاء ابھی تک موجود ہیں۔ آرڈر مکمل کرنے میں مدد کے لیے یہ رعایت حاضر ہے۔',
-      cta: 'اپنا آرڈر مکمل کریں',
-      discountTitle: 'آپ کی رعایت',
-      discountBody: (label) => `چیک آؤٹ پر یہ کوڈ استعمال کریں: ${label}`,
+      subject: 'لفتة صغيرة لإتمام طلبكم',
+      heading: 'حقيبتكم، مع خصم',
+      intro: 'قطعكم في انتظاركم. إليكم خصمًا يساعدكم على إتمام الطلب.',
+      cta: 'أتمّوا طلبكم',
+      discountTitle: 'خصمكم',
+      discountBody: (label) => `استخدموا هذا الرمز عند الدفع: ${label}`,
     },
     abandonedBrowse: {
-      subject: 'کیا آپ اب بھی ان میں دلچسپی رکھتے ہیں؟',
-      heading: 'جہاں سے چھوڑا تھا وہیں سے شروع کریں',
-      intro: 'آپ نے حال ہی میں یہ دیکھی تھیں۔ یہ اب بھی دستیاب ہیں۔',
-      cta: 'خریداری جاری رکھیں',
+      subject: 'هل ما زلتم مهتمين بهذه القطع؟',
+      heading: 'تابعوا من حيث توقفتم',
+      intro: 'تصفّحتم هذه القطع مؤخرًا، وهي ما زالت متاحة.',
+      cta: 'متابعة التصفّح',
     },
     reviewRequest: {
-      subject: 'آپ کا آرڈر کیسا رہا؟',
-      heading: 'ہمیں آپ کی رائے چاہیے',
+      subject: 'كيف كانت تجربتكم؟',
+      heading: 'يسعدنا سماع رأيكم',
       intro: (orderNumber) =>
-        `آپ کا آرڈر ${orderNumber} کچھ عرصہ پہلے پہنچایا گیا تھا۔ ہمیں بتانے کے لیے بس اس ای میل کا جواب دیں۔`,
-      cta: 'اپنا آرڈر دیکھیں',
+        `تم تسليم طلبكم ${orderNumber} منذ فترة قصيرة. يسعدنا أن نعرف كيف كانت التجربة، يكفي الرد على هذا البريد.`,
+      cta: 'عرض طلبكم',
     },
     crossSell: {
-      subject: 'آپ کو یہ بھی پسند آ سکتی ہیں',
-      heading: 'آپ کے لیے منتخب',
-      intro: 'آپ کی خریداری کی بنیاد پر، یہ اشیاء دیکھنے کے قابل ہو سکتی ہیں۔',
-      introBasedOn: (basedOn) =>
-        `چونکہ آپ نے ${basedOn} خریدا، یہ اشیاء دیکھنے کے قابل ہو سکتی ہیں۔`,
-      cta: 'منتخب اشیاء دیکھیں',
+      subject: 'قد تعجبكم هذه القطع',
+      heading: 'اخترناها لكم',
+      intro: 'بناءً على ما تسوّقتم له، قد تستحق هذه القطع نظرة.',
+      introBasedOn: (basedOn) => `بما أنكم اشتريتم ${basedOn}، قد تستحق هذه القطع نظرة.`,
+      cta: 'تصفّحوا الاختيارات',
     },
     replenishment: {
-      subject: (productName) => `${productName} ختم ہونے والا ہے؟`,
-      heading: 'دوبارہ اسٹاک کرنے کا وقت؟',
+      subject: (productName) => `هل يوشك ${productName} على النفاد؟`,
+      heading: 'حان وقت التجديد؟',
       intro: (productName) =>
-        `آپ کو ${productName} خریدے کچھ عرصہ ہو گیا ہے۔ اگر ختم ہو رہا ہے تو ایک کلک پر دوبارہ منگوائیں۔`,
-      cta: 'دوبارہ آرڈر کریں',
+        `مضى وقت منذ طلبتم ${productName}. إن كان يوشك على النفاد فهو على بُعد نقرة واحدة.`,
+      cta: 'اطلبوا مجددًا',
     },
     campaign: {
-      holidayBadge: 'سیل',
-      launchBadge: 'نیا',
-      flashSaleBadge: 'محدود وقت',
-      expiresNote: (expiresAt) => `پیشکش ${expiresAt} کو ختم ہو رہی ہے۔`,
+      holidayBadge: 'تخفيضات',
+      launchBadge: 'جديد',
+      flashSaleBadge: 'لفترة محدودة',
+      expiresNote: (expiresAt) => `ينتهي العرض في ${expiresAt}.`,
     },
-    unsubscribeLine: 'اس طرح کی ای میلز نہیں چاہیے؟',
-    unsubscribeCta: 'سبسکرپشن ختم کریں',
+    unsubscribeLine: 'لا ترغبون في استلام رسائل كهذه؟',
+    unsubscribeCta: 'إلغاء الاشتراك',
   },
   totals: {
-    subtotal: 'ذیلی میزان',
-    stitching: 'سلائی',
-    discount: 'رعایت',
-    shipping: 'ڈیلیوری چارجز',
-    codFee: 'کیش آن ڈیلیوری فیس',
-    total: 'کل رقم',
+    subtotal: 'المجموع الفرعي',
+    stitching: 'الخياطة',
+    discount: 'الخصم',
+    shipping: 'التوصيل',
+    codFee: 'رسوم الدفع عند الاستلام',
+    total: 'الإجمالي',
   },
   details: {
-    customerInformation: 'گاہک کی معلومات',
-    shippingAddress: 'ڈیلیوری کا پتہ',
-    billingAddress: 'بلنگ کا پتہ',
-    payment: 'ادائیگی',
-    shippingMethod: 'ڈیلیوری کا طریقہ',
-    orderNumber: 'آرڈر نمبر',
+    customerInformation: 'معلومات العميل',
+    shippingAddress: 'عنوان التوصيل',
+    billingAddress: 'عنوان الفوترة',
+    payment: 'الدفع',
+    shippingMethod: 'طريقة التوصيل',
+    orderNumber: 'رقم الطلب',
   },
   paymentMethods: {
-    cod: 'کیش آن ڈیلیوری',
-    bank_transfer: 'بینک ڈپازٹ',
-    jazzcash: 'جاز کیش',
-    easypaisa: 'ایزی پیسہ',
+    cod: 'الدفع عند الاستلام',
+    bank_transfer: 'تحويل مصرفي',
+    jazzcash: 'JazzCash',
+    easypaisa: 'Easypaisa',
   },
-  shippingFeeLabel: 'ڈیلیوری فیس',
+  shippingFeeLabel: 'رسوم التوصيل',
   footer: (storeName, contact) =>
-    `کسی بھی سوال کے لیے اس ای میل کا جواب دیں یا ہم سے ${contact} پر رابطہ کریں۔ — ${storeName}`,
-  viewOrder: 'اپنا آرڈر دیکھیں',
+    `لأي استفسار، ردّوا على هذا البريد أو تواصلوا معنا على ${contact}. — ${storeName}`,
+  viewOrder: 'عرض طلبكم',
 };
 
+/**
+ * One copy set per shipped locale. Typed as a Record over Locale, so a locale
+ * added to BRAND.locale.locales fails the build until it has wording.
+ */
+const COPY: Record<Locale, EmailCopy> = { en, ar };
+
 export function copyFor(locale: Locale | null | undefined): EmailCopy {
-  return locale === 'ur' ? ur : en;
+  return COPY[locale ?? DEFAULT_LOCALE] ?? en;
 }

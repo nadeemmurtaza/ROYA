@@ -51,14 +51,14 @@ describe('ImportAssistantService', () => {
 
     it('asks the AI to map relabeled headers onto canonical columns', async () => {
       const file = csv([
-        ['Product Code', 'Product Name', 'Urdu Name', 'Price'],
+        ['Product Code', 'Product Name', 'Arabic Name', 'Price'],
         ['SKU-1', 'Lawn Suit', 'لان سوٹ', '3000'],
       ]);
       ai.complete.mockResolvedValue({
         text: JSON.stringify([
           { header: 'product code', column: 'sku' },
           { header: 'product name', column: 'name_en' },
-          { header: 'urdu name', column: 'name_ur' },
+          { header: 'arabic name', column: 'name_ur' },
           { header: 'price', column: 'price_pkr' },
         ]),
         inputTokens: 1,
@@ -73,7 +73,7 @@ describe('ImportAssistantService', () => {
       expect(result.columnMapping).toEqual([
         { header: 'product code', column: 'sku' },
         { header: 'product name', column: 'name_en' },
-        { header: 'urdu name', column: 'name_ur' },
+        { header: 'arabic name', column: 'name_ur' },
         { header: 'price', column: 'price_pkr' },
       ]);
     });
@@ -271,7 +271,7 @@ describe('ImportAssistantService', () => {
   });
 
   describe('translation suggestions', () => {
-    it('suggests Urdu text only for rows missing it, never overwriting an existing translation', async () => {
+    it('suggests second-language text only for rows missing it, never overwriting an existing translation', async () => {
       const file = csv([
         ['sku', 'name_en', 'name_ur'],
         ['SKU-1', 'Lawn Suit', ''],

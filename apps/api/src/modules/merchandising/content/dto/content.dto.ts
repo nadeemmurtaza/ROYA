@@ -12,7 +12,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { BANNER_PLACEMENTS, LOCALES, MENU_KEYS } from '@newax/shared';
+import { BANNER_PLACEMENTS, LOCALES, MENU_KEYS, Locale } from '@newax/shared';
 import { ContentStatus } from '../../../../core/prisma/client';
 
 const STATUSES = ['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const;
@@ -22,7 +22,7 @@ const STATUSES = ['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const;
 export class PageTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty()
   @IsString()
@@ -110,7 +110,7 @@ export class UpdatePageDto {
 export class BlogPostTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty()
   @IsString()
@@ -228,7 +228,7 @@ export class UpdateBlogPostDto {
 export class BannerTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -333,7 +333,7 @@ export class UpdateBannerDto {
 export class MenuItemTranslationDto {
   @ApiProperty({ enum: LOCALES })
   @IsIn([...LOCALES])
-  locale!: 'en' | 'ur';
+  locale!: Locale;
 
   @ApiProperty()
   @IsString()

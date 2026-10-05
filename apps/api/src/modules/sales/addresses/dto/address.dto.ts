@@ -14,7 +14,7 @@ export class CreateAddressDto {
   @MaxLength(120)
   fullName!: string;
 
-  @ApiProperty({ example: '03001234567' })
+  @ApiProperty({ example: '0501234567' })
   @IsString()
   @IsNotEmpty({ message: 'The courier needs a phone number.' })
   @MaxLength(20)
@@ -69,7 +69,7 @@ export class UpdateAddressDto {
   @MaxLength(120)
   fullName?: string;
 
-  @ApiPropertyOptional({ example: '03001234567' })
+  @ApiPropertyOptional({ example: '0501234567' })
   @IsOptional()
   @IsString()
   @MaxLength(20)

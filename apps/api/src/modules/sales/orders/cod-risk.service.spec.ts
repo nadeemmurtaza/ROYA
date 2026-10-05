@@ -10,7 +10,7 @@ describe('CodRiskService', () => {
   let settings: any;
 
   const baseInput = {
-    address: { line1: 'House 12, Street 5, Sector G-9', line2: 'Near City Park', postalCode: '44000', phone: '03001234567', city: 'Lahore' },
+    address: { line1: 'House 12, Street 5, Sector G-9', line2: 'Near City Park', postalCode: '44000', phone: '0501234567', city: 'Lahore' },
     orderValue: 500_00,
     userId: 'user1',
     placedAt: new Date('2026-06-15T10:00:00.000Z'), // daytime everywhere relevant
@@ -55,7 +55,7 @@ describe('CodRiskService', () => {
     const result = await service.score(baseInput);
 
     expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-      where: { phoneE164: '+923001234567' },
+      where: { phoneE164: '+971501234567' },
       select: { orderCount: true, rtoCount: true },
     });
     expect(result!.reasonEn).toContain('returned 4 of its last 5 orders');

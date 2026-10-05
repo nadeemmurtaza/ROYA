@@ -9,7 +9,7 @@ import { WhatsAppChannel } from '../../../../core/notifications/whatsapp.channel
 import { CrmService } from '../crm.service';
 
 const SECRET = 'test-secret';
-const CONTACT = { id: 'contact1', name: 'Sana', phoneE164: '+923001234567' };
+const CONTACT = { id: 'contact1', name: 'Sana', phoneE164: '+971501234567' };
 const CONVERSATION = {
   id: 'conv1',
   contactId: CONTACT.id,
@@ -68,14 +68,14 @@ describe('WhatsAppAssistantService', () => {
   describe('verifyWebhookSignature', () => {
     it('accepts a correctly signed body', () => {
       const timestamp = '1700000000';
-      const body = '{"from":"+923001234567","body":"hi"}';
+      const body = '{"from":"+971501234567","body":"hi"}';
       expect(service.verifyWebhookSignature(body, timestamp, sign(body, timestamp))).toBe(true);
     });
 
     it('rejects a tampered body', () => {
       const timestamp = '1700000000';
-      const body = '{"from":"+923001234567","body":"hi"}';
-      const badSignature = sign('{"from":"+923001234567","body":"bye"}', timestamp);
+      const body = '{"from":"+971501234567","body":"hi"}';
+      const badSignature = sign('{"from":"+971501234567","body":"bye"}', timestamp);
       expect(service.verifyWebhookSignature(body, timestamp, badSignature)).toBe(false);
     });
 
@@ -94,7 +94,7 @@ describe('WhatsAppAssistantService', () => {
     it('never touches the database for an unrecognised phone number, and sends only the fixed generic reply', async () => {
       crm.findContactByPhone.mockResolvedValue(null);
 
-      await service.handleInbound({ from: '+923001234567', body: 'Where is my order?' });
+      await service.handleInbound({ from: '+971501234567', body: 'Where is my order?' });
 
       expect(prisma.whatsAppConversation.create).not.toHaveBeenCalled();
       expect(prisma.whatsAppMessage.create).not.toHaveBeenCalled();

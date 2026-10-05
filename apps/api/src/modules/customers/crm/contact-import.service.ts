@@ -57,7 +57,7 @@ export class ContactImportService {
       [
         {
           name: 'Ayesha Khan',
-          phone: '03001234567',
+          phone: '0501234567',
           email: 'ayesha@example.com',
           city: 'Lahore',
           notes: 'Prefers WhatsApp',

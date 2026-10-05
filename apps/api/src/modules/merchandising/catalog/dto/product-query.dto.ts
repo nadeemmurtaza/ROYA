@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@newax/shared';
+import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind, Locale } from '@newax/shared';
 import { PaginationQueryDto } from '../../../../core/common/dto/pagination.dto';
 
 const csvToArray = ({ value }: { value: unknown }): string[] | undefined => {
@@ -26,7 +26,7 @@ export class ProductQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({ enum: LOCALES, default: 'en' })
   @IsOptional()
   @IsIn([...LOCALES])
-  locale: 'en' | 'ur' = 'en';
+  locale: Locale = 'en';
 
   @ApiPropertyOptional({ description: 'Category slug or id' })
   @IsOptional()
