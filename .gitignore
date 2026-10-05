@@ -1,0 +1,40 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Every .env variant is ignored, then the committed templates are allowed back
+# in by name. Real secrets must never sit in the working tree under a name
+# this list does not know, so the default is "ignored".
+.env
+.env.*
+!.env.example
+!.env.production.example
+!.env.staging.example
+
+.DS_Store
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Prisma generated client
+apps/api/src/generated/
+
+# Local service data
+.data/
+uploads/
+
+# Playwright
+test-results/
+playwright-report/
+
+# Redis local persistence dump
+dump.rdb
+
+# Claude Code agent worktrees: machine-local scratch state
+.claude/worktrees/

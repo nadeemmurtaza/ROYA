@@ -1,0 +1,44 @@
+{
+  "name": "roya",
+  "version": "0.1.0",
+  "private": true,
+  "description": "House of ROYA: bespoke couture storefront and commerce engine",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md,css}\"",
+    "db:generate": "pnpm --filter @newax/api db:generate",
+    "db:migrate": "pnpm --filter @newax/api db:migrate",
+    "db:deploy": "pnpm --filter @newax/api db:deploy",
+    "db:reset": "pnpm --filter @newax/api db:reset",
+    "db:seed": "turbo run db:seed",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "eslint": "9.39.5",
+    "playwright": "^1.63.0",
+    "prettier": "3.9.6",
+    "turbo": "2.10.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "sharp": ">=0.35.0",
+      "postcss": ">=8.5.23",
+      "deepmerge-ts": ">=8.0.0",
+      "js-yaml": ">=5.2.2",
+      "@smithy/core": "3.33.3"
+    }
+  }
+}

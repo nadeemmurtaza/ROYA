@@ -1,0 +1,62 @@
+# Local services. The API needs Postgres WITH pgvector (a migration runs
+# CREATE EXTENSION vector) and pg_trgm (bundled), and a dedicated Redis for
+# rate-limit counters. MinIO stands in for S3 object storage.
+services:
+  postgres:
+    # pgvector/pgvector, not postgres:16-alpine: the AI-layer migration
+    # (20260925050000_add_ai_layer) creates the `vector` extension.
+    image: pgvector/pgvector:pg16
+    container_name: roya-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: roya
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d roya']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Nothing in Redis is a fact, so nothing is persisted. noeviction because an
+  # evicted counter is a silently reset rate limit. Sign-in answers 503 while
+  # it is down, never "unlimited".
+  redis:
+    image: redis:7-alpine
+    container_name: roya-redis
+    restart: unless-stopped
+    command: ['redis-server', '--save', '', '--appendonly', 'no', '--maxmemory', '64mb', '--maxmemory-policy', 'noeviction']
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: roya-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
+  minio-data:

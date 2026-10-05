@@ -1,0 +1,12 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Dependencies whose install scripts must run (native engines and binaries).
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - 'prisma'
+  - 'esbuild'
+  - 'sharp'
+  - 'unrs-resolver'
