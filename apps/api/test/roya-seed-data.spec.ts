@@ -7,6 +7,7 @@ import {
   COLLECTIONS,
   GOWN,
   MADE_TO_MEASURE,
+  PRESENTATION_TRUNK,
   PRODUCTS,
   SHIPPING,
   depositMinor,
@@ -79,6 +80,13 @@ describe('ROYA seed data', () => {
     for (const product of PRODUCTS) {
       if (product.type === 'accessory') expect(product.shades.length).toBeGreaterThan(0);
     }
+  });
+
+  it('keeps the couture trunk out of the catalogue it must not appear in, at the design price', () => {
+    expect(PRODUCTS.map((product) => product.slug)).not.toContain(PRESENTATION_TRUNK.slug);
+    expect(PRESENTATION_TRUNK.priceMajor).toBe(1_200);
+    expect(PRESENTATION_TRUNK.name.ar).toMatch(/[؀-ۿ]/);
+    expect(PRESENTATION_TRUNK.description.ar).toMatch(/[؀-ۿ]/);
   });
 
   it('puts every collection member in the catalogue, once', () => {

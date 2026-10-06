@@ -263,6 +263,25 @@ export const PRODUCTS: readonly RoyaProduct[] = [
 ];
 
 /** Collections the Home page draws from, in the design's order. */
+/**
+ * The design's "Presentation" step in the bag offers the black ROYA box (free), a
+ * monogrammed couture trunk (AED 1,200) or plain packaging (free). Only the trunk
+ * costs anything, so it is the one that needs to be a product: it is added to the
+ * bag as a line, which keeps the total, the VAT and the invoice right with no
+ * special case. It is a GOODS product, which the storefront's default browse
+ * (STITCHED) never lists; the bag finds it by this slug.
+ */
+export const PRESENTATION_TRUNK = {
+  slug: 'couture-trunk',
+  sku: 'COUTURE-TRUNK',
+  priceMajor: 1_200,
+  name: { en: 'Couture trunk', ar: 'صندوق الأزياء الراقية' },
+  description: {
+    en: 'A monogrammed garment trunk, in place of the box.',
+    ar: 'صندوق أزياء مطرّز بالأحرف الأولى، بدلاً من العلبة.',
+  },
+} as const;
+
 export const COLLECTIONS = [
   {
     slug: 'signature',

@@ -20,7 +20,7 @@ export class LabelTranslationDto {
   @IsIn([...LOCALES])
   locale!: Locale;
 
-  @ApiProperty({ example: 'Karachi' })
+  @ApiProperty({ example: 'Dubai' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(120)
@@ -327,4 +327,22 @@ export class ShippingQuoteQueryDto {
   @IsInt()
   @Min(1)
   itemCount?: number;
+}
+
+export class ShippingOptionsQueryDto {
+  @ApiProperty({ description: 'The delivery city (for a destination in the home country, its region) — decides the zone' })
+  @IsString()
+  @IsNotEmpty()
+  city!: string;
+
+  @ApiProperty({ description: 'The goods subtotal, in the minor unit' })
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  subtotal!: number;
+
+  @ApiPropertyOptional({ description: 'Language of the method names' })
+  @IsOptional()
+  @IsString()
+  locale?: string;
 }

@@ -28,6 +28,7 @@ import {
   COLLECTIONS,
   GOWN,
   MADE_TO_MEASURE,
+  PRESENTATION_TRUNK,
   PRODUCTS,
   SHIPPING,
   depositMinor,
@@ -82,6 +83,7 @@ async function main(): Promise<void> {
   await seedGown();
   const categories = await seedCategories();
   await seedCatalogue(categories);
+  await seedPresentation(categories);
   await seedCollections();
   await seedShipping();
   await seedTax();
@@ -637,6 +639,41 @@ async function seedCatalogue(categories: Map<string, string>): Promise<void> {
 
     await seedMedia(product.id, definition);
   }
+}
+
+/** The couture trunk the bag offers as a paid presentation (roya-data.ts says why it is a product). */
+async function seedPresentation(categories: Map<string, string>): Promise<void> {
+  const trunk = PRESENTATION_TRUNK;
+  const brandId = await houseBrandId();
+  const product = await prisma.product.upsert({
+    where: { slug: trunk.slug },
+    update: {},
+    create: {
+      slug: trunk.slug,
+      kind: 'GOODS',
+      status: 'ACTIVE',
+      categoryId: categories.get('accessories'),
+      basePrice: toMinor(trunk.priceMajor),
+      brandId,
+      tags: ['presentation'],
+      publishedAt: new Date(),
+    },
+  });
+  for (const [locale, copy] of [
+    ['en', 'en'],
+    [SECOND_LOCALE, 'ar'],
+  ] as const) {
+    await prisma.productTranslation.upsert({
+      where: { productId_locale: { productId: product.id, locale } },
+      update: {},
+      create: { productId: product.id, locale, name: trunk.name[copy], description: trunk.description[copy] },
+    });
+  }
+  await prisma.productVariant.upsert({
+    where: { sku: trunk.sku },
+    update: {},
+    create: { productId: product.id, sku: trunk.sku, size: 'One size', stock: 0, order: 0 },
+  });
 }
 
 const SECTION_TITLES = {

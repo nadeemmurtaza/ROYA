@@ -784,13 +784,14 @@ const storefront = {
   /** The design opens in dark; light is a toggle, remembered per visitor. */
   defaultTheme: 'dark',
   /**
-   * The two pieces the design leads with, by catalogue slug: the flagship the
-   * Home hero and the full-width section point at, and a second one the search
-   * overlay offers as a shortcut. A slug is content, so it lives with the
+   * The pieces the storefront names by catalogue slug: the flagship the Home
+   * hero and the full-width section point at, a second one the search overlay
+   * offers as a shortcut, and the paid presentation extra the bag adds as a line
+   * (apps/api/prisma/roya-data.ts PRESENTATION_TRUNK). A slug is content, so it lives with the
    * brand and not in a component; the atelier renaming the piece means one
    * edit here.
    */
-  featured: { flagship: 'mehr', secondary: 'noir' },
+  featured: { flagship: 'mehr', secondary: 'noir', presentationTrunk: 'couture-trunk' },
   themes: { dark: storefrontDark, light: storefrontLight },
 
   /**

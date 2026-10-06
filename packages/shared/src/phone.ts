@@ -33,7 +33,7 @@ function groupNational(digits: string): string {
 export interface NormalizedPhone {
   /** E.164, e.g. "+971501234567". Null when the input is not a valid number. */
   e164: string | null;
-  /** Local display form, e.g. "050 123 4567". */
+  /** Local display form, e.g. "050 123 4567". Null for a number from another country. */
   national: string | null;
   isMobile: boolean;
 }
@@ -46,6 +46,18 @@ export function normalizePhone(input: string | null | undefined): NormalizedPhon
   // dial-code checks below.
   let digits = input.replace(/\D/g, '');
   if (!digits) return invalid;
+
+  // A number written with another country's code (+44…, 0044…) is a client abroad: a couture
+  // house ships and consults worldwide, so it is kept as written in E.164 instead of being forced
+  // into this country's national length. Only the brand's own code takes the national path below,
+  // so a UAE landline written +971 4… is still rejected.
+  const abroad = input.trim().startsWith('+') || digits.startsWith('00');
+  if (abroad) {
+    const international = digits.startsWith('00') ? digits.slice(2) : digits;
+    if (!international.startsWith(dialCode) && /^[1-9]\d{7,14}$/.test(international)) {
+      return { e164: `+${international}`, national: null, isMobile: false };
+    }
+  }
 
   if (digits.startsWith('00' + dialCode)) {
     // 0092… international prefix

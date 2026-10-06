@@ -6,6 +6,7 @@ import {
   CreateShippingMethodDto,
   CreateShippingRateDto,
   CreateShippingZoneDto,
+  ShippingOptionsQueryDto,
   ShippingQuoteQueryDto,
   UpdateShippingClassDto,
   UpdateShippingMethodDto,
@@ -100,6 +101,12 @@ export class ShippingAdminController {
 @Controller('shipping')
 export class ShippingController {
   constructor(private readonly shipping: ShippingService) {}
+
+  @Public()
+  @Get('options')
+  options(@Query() query: ShippingOptionsQueryDto) {
+    return this.shipping.options(query.city, query.subtotal, query.locale);
+  }
 
   @Public()
   @Get('quote')

@@ -39,6 +39,10 @@ const nextConfig = {
       { protocol: 'http', hostname: '127.0.0.1', port: '3001' },
     ],
   },
+  async redirects() {
+    // The API's emails (abandoned-cart reminders) link to /cart; the design calls it the bag.
+    return [{ source: '/:locale/cart', destination: '/:locale/bag', permanent: true }];
+  },
   async rewrites() {
     return [{ source: '/api/v1/:path*', destination: `${API_INTERNAL_URL}/:path*` }];
   },

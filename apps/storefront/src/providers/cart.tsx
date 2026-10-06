@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Cart } from '@/types/api';
 import { api } from '@/lib/api';
@@ -25,6 +26,8 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  // Every cart call names the language so product names come back in it.
+  const locale = useLocale();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -45,9 +48,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const reload = useCallback(async () => {
-    await run(() => api<Cart>('/cart'));
+    await run(() => api<Cart>('/cart', { query: { locale } }));
     setLoading(false);
-  }, [run]);
+  }, [run, locale]);
 
   useEffect(() => {
     void reload();
@@ -55,22 +58,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const add = useCallback<CartContextValue['add']>(
     (variantId, quantity = 1, stitching) =>
-      run(() => api<Cart>('/cart/items', { method: 'POST', body: { variantId, quantity, ...(stitching ? { stitching } : {}) } })),
-    [run],
+      run(() => api<Cart>('/cart/items', { method: 'POST', query: { locale }, body: { variantId, quantity, ...(stitching ? { stitching } : {}) } })),
+    [run, locale],
   );
 
   const setQuantity = useCallback<CartContextValue['setQuantity']>(
     async (lineId, quantity) => {
-      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'PATCH', body: { quantity } }));
+      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'PATCH', query: { locale }, body: { quantity } }));
     },
-    [run],
+    [run, locale],
   );
 
   const remove = useCallback<CartContextValue['remove']>(
     async (lineId) => {
-      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'DELETE' }));
+      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'DELETE', query: { locale } }));
     },
-    [run],
+    [run, locale],
   );
 
   const value = useMemo(

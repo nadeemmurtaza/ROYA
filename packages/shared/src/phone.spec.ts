@@ -34,6 +34,32 @@ describe('normalizePhone', () => {
     expect(normalizePhone('+971 4 123 4567').e164).toBeNull();
   });
 
+  describe('numbers from other countries', () => {
+    it.each([
+      ['+44 7700 900123', '+447700900123'],
+      ['0044 7700 900123', '+447700900123'],
+      ['+1 (415) 555-2671', '+14155552671'],
+      ['+966 50 123 4567', '+966501234567'],
+    ])('keeps %s as %s', (input, expected) => {
+      const phone = normalizePhone(input);
+      expect(phone.e164).toBe(expected);
+      expect(phone.national).toBeNull();
+      expect(phone.isMobile).toBe(false);
+    });
+
+    it('does not mistake a foreign number for a local one, or the reverse', () => {
+      // Written without a + or 00 a foreign number cannot be told from a national one: rejected.
+      expect(normalizePhone('44 7700 900123').e164).toBeNull();
+      // The brand's own code still takes the national path, so a UAE landline stays rejected.
+      expect(normalizePhone('+971 4 123 4567').e164).toBeNull();
+    });
+
+    it('rejects an international number that is too short or too long to be one', () => {
+      expect(normalizePhone('+44 123').e164).toBeNull();
+      expect(normalizePhone('+44 1234 5678 9012 3456').e164).toBeNull();
+    });
+  });
+
   it('marks 5x numbers as mobile', () => {
     expect(normalizePhone('0521234567').isMobile).toBe(true);
   });

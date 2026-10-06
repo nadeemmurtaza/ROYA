@@ -346,32 +346,6 @@ html[dir='rtl'] .ar-link {
   }
 }
 
-/* ── Focus layout (bag, checkout, confirmation) ─────── */
-.focus-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 20px var(--gutter);
-  border-block-end: 1px solid rgb(var(--line-rgb) / 0.16);
-}
-.focus-header .back {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  font-size: 12px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--text2);
-}
-.focus-header .secure {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
 /* The logotype lockup is Latin in both languages; its letters must not mirror in RTL. */
 .brand {
   direction: ltr;

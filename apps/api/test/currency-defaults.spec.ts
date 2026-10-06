@@ -41,4 +41,10 @@ describe('currency column defaults', () => {
     expect(seen).toBeGreaterThanOrEqual(8);
     expect(offenders).toEqual([]);
   });
+
+  it("gives an address the brand's country, not the Blueprint's", () => {
+    const core = readFileSync(join(schemaDir, 'core.prisma'), 'utf8');
+    const match = /model Address \{[\s\S]*?country\s+String\s+@default\("([^"]*)"\)/.exec(core);
+    expect(match?.[1]).toBe(BRAND.locale.countryCode);
+  });
 });

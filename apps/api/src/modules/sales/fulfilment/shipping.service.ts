@@ -12,6 +12,18 @@ import type {
   UpdateShippingZoneDto,
 } from './dto/shipping.dto';
 
+/** One way to get the order to this destination, priced: what a checkout lists for the customer to choose. */
+export interface ShippingOption {
+  zoneKey: string;
+  methodKey: string;
+  /** The method's name in the asked-for language, falling back to English, then to its key. */
+  label: string;
+  /** Paisa. */
+  fee: number;
+  etaMinDays: number;
+  etaMaxDays: number;
+}
+
 export interface ShippingQuote {
   zoneId: string;
   zoneKey: string;
@@ -256,9 +268,15 @@ export class ShippingService {
   ): Promise<ShippingQuote> {
     const zone = await this.resolveZone(city);
 
+    // With no method named, use the first active one that has a rate in THIS zone. Taking the first
+    // active method overall fails for every zone that method does not serve: a brand that delivers by
+    // hand at home and by courier abroad could not quote (or place) a single international order.
     const method = opts?.methodKey
       ? await this.prisma.shippingMethod.findUnique({ where: { key: opts.methodKey } })
-      : await this.prisma.shippingMethod.findFirst({ where: { isActive: true }, orderBy: { order: 'asc' } });
+      : ((await this.prisma.shippingMethod.findFirst({
+          where: { isActive: true, rates: { some: { zoneId: zone.id, isActive: true } } },
+          orderBy: { order: 'asc' },
+        })) ?? (await this.prisma.shippingMethod.findFirst({ where: { isActive: true }, orderBy: { order: 'asc' } })));
     if (!method) throw new BadRequestException('No shipping method is configured.');
 
     const rates = await this.prisma.shippingRate.findMany({
@@ -282,6 +300,39 @@ export class ShippingService {
       etaMinDays: method.etaMinDays,
       etaMaxDays: method.etaMaxDays,
     };
+  }
+
+  /**
+   * Every active method that has a rate for this destination, priced for this basket. A destination
+   * whose zone no method serves yields an empty list, which the checkout shows as "we cannot deliver
+   * there online" instead of letting the customer fill in a form that cannot be placed.
+   */
+  async options(city: string, subtotalMinor: number, locale: string = 'en'): Promise<ShippingOption[]> {
+    const zone = await this.resolveZone(city);
+    const methods = await this.prisma.shippingMethod.findMany({
+      where: { isActive: true, rates: { some: { zoneId: zone.id, isActive: true } } },
+      include: { translations: true, rates: { where: { zoneId: zone.id, isActive: true } } },
+      orderBy: { order: 'asc' },
+    });
+
+    return methods.flatMap((method) => {
+      const rate = this.selectRate(method.rates, subtotalMinor);
+      if (!rate) return [];
+      const label =
+        method.translations.find((entry) => entry.locale === locale)?.label ??
+        method.translations.find((entry) => entry.locale === 'en')?.label ??
+        method.key;
+      return [
+        {
+          zoneKey: zone.key,
+          methodKey: method.key,
+          label,
+          fee: computeRateFee(rate, subtotalMinor, 0, 1),
+          etaMinDays: method.etaMinDays,
+          etaMaxDays: method.etaMaxDays,
+        },
+      ];
+    });
   }
 
   /** BY_PRICE bands the same zone+method pair across several rows; everything else has exactly one. */

@@ -26,25 +26,25 @@ export class CreateAddressDto {
   @MaxLength(200)
   line1!: string;
 
-  @ApiPropertyOptional({ example: 'DHA Phase 6' })
+  @ApiPropertyOptional({ example: 'Emirates Hills' })
   @IsOptional()
   @IsString()
   @MaxLength(200)
   line2?: string;
 
-  @ApiProperty({ example: 'Karachi' })
+  @ApiProperty({ example: 'Dubai' })
   @IsString()
   @IsNotEmpty({ message: 'Enter the city.' })
   @MaxLength(80)
   city!: string;
 
-  @ApiProperty({ example: 'Sindh' })
+  @ApiProperty({ example: 'Dubai' })
   @IsString()
   @IsNotEmpty({ message: 'Enter the province.' })
   @MaxLength(80)
   province!: string;
 
-  @ApiPropertyOptional({ example: '75500' })
+  @ApiPropertyOptional({ example: '12345' })
   @IsOptional()
   @IsString()
   @MaxLength(12)
@@ -81,25 +81,25 @@ export class UpdateAddressDto {
   @MaxLength(200)
   line1?: string;
 
-  @ApiPropertyOptional({ example: 'DHA Phase 6' })
+  @ApiPropertyOptional({ example: 'Emirates Hills' })
   @IsOptional()
   @IsString()
   @MaxLength(200)
   line2?: string;
 
-  @ApiPropertyOptional({ example: 'Karachi' })
+  @ApiPropertyOptional({ example: 'Dubai' })
   @IsOptional()
   @IsString()
   @MaxLength(80)
   city?: string;
 
-  @ApiPropertyOptional({ example: 'Sindh' })
+  @ApiPropertyOptional({ example: 'Dubai' })
   @IsOptional()
   @IsString()
   @MaxLength(80)
   province?: string;
 
-  @ApiPropertyOptional({ example: '75500' })
+  @ApiPropertyOptional({ example: '12345' })
   @IsOptional()
   @IsString()
   @MaxLength(12)

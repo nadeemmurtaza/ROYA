@@ -8,7 +8,7 @@ import { BRAND } from '@newax/shared';
  * on the page; a live shop must not. `isFilled` lets a page leave a placeholder
  * out until the real value is in (docs/OPEN-QUESTIONS.md lists each one).
  */
-export const isFilled = (value: string): boolean => value.trim() !== '' && !/^\[.*\]$/.test(value.trim());
+export const isFilled = (value: string): boolean => value.trim() !== '' && !/\[[^\]]*\]/.test(value);
 
 /** "@houseofroya.ae" from "https://instagram.com/houseofroya.ae". */
 export function handleOf(url: string): string {

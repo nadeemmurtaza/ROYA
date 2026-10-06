@@ -45,25 +45,25 @@ export class ShippingAddressDto {
   @MaxLength(200)
   line1!: string;
 
-  @ApiPropertyOptional({ example: 'DHA Phase 6' })
+  @ApiPropertyOptional({ example: 'Emirates Hills' })
   @IsOptional()
   @IsString()
   @MaxLength(200)
   line2?: string;
 
-  @ApiProperty({ example: 'Karachi', description: 'Decides the shipping zone' })
+  @ApiProperty({ example: 'Dubai', description: 'Decides the shipping zone' })
   @IsString()
   @IsNotEmpty({ message: 'Enter the city.' })
   @MaxLength(80)
   city!: string;
 
-  @ApiProperty({ example: 'Sindh' })
+  @ApiProperty({ example: 'Dubai' })
   @IsString()
   @IsNotEmpty({ message: 'Enter the province.' })
   @MaxLength(80)
   province!: string;
 
-  @ApiPropertyOptional({ example: '75500' })
+  @ApiPropertyOptional({ example: '12345' })
   @IsOptional()
   @IsString()
   @MaxLength(12)
@@ -93,6 +93,14 @@ export class PlaceOrderDto {
   note?: string;
 
   @ApiPropertyOptional({ description: 'A promotions promo code — validated and applied server-side (WO-5.3).' })
+  @ApiPropertyOptional({
+    description: 'The delivery method the customer chose, by key. Without it the zone\'s first method is used.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  shippingMethodKey?: string;
+
   @IsOptional()
   @IsString()
   promoCode?: string;

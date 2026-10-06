@@ -214,7 +214,9 @@ export class OrdersService {
     const priced = await this.priceCart(cart, locale);
 
     const goodsSubtotal = priced.totals.itemsSubtotal + priced.totals.stitchingSubtotal;
-    const quote = await this.shipping.quote(dto.shippingAddress.city, goodsSubtotal);
+    const quote = await this.shipping.quote(dto.shippingAddress.city, goodsSubtotal, {
+      methodKey: dto.shippingMethodKey,
+    });
     const shippingFeeBeforeDiscount = quote.fee;
     const paymentFee = await this.payments.feeFor(dto.paymentMethod, goodsSubtotal);
 

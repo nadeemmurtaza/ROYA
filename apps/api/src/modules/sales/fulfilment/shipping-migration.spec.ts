@@ -61,6 +61,33 @@ describe('ShippingService, ROYA zones', () => {
     expect(quote.etaMaxDays).toBe(5);
   });
 
+  it('picks, with no method named, the first method that actually serves the zone', async () => {
+    // Without this an international order could not be placed at all: the first active method
+    // (white-glove) has no rate outside the UAE.
+    const home = await service.quote('Dubai', BASKET);
+    expect(home.methodKey).toBe('white_glove');
+    const abroad = await service.quote('London', BASKET);
+    expect(abroad.methodKey).toBe('international_courier');
+    expect(abroad.fee).toBe(toMinor(950));
+  });
+
+  it('lists only the methods that serve a destination, priced, in the asked-for language', async () => {
+    const home = await service.options('Dubai', BASKET, 'en');
+    expect(home.map((option) => option.methodKey)).toEqual(['white_glove', 'atelier_collection']);
+    expect(home.every((option) => option.fee === 0 && option.zoneKey === 'uae')).toBe(true);
+    expect(home[0]?.label).toBe('White-glove delivery');
+
+    const abroad = await service.options('London', BASKET, 'ar');
+    expect(abroad.map((option) => option.methodKey)).toEqual(['international_courier']);
+    expect(abroad[0]).toMatchObject({ fee: toMinor(950), etaMinDays: 3, etaMaxDays: 5 });
+    expect(abroad[0]?.label).toMatch(/[؀-ۿ]/);
+  });
+
+  it('falls back to English, then to the key, when a method has no name in the language', async () => {
+    const fallback = await service.options('Dubai', BASKET, 'fr');
+    expect(fallback[0]?.label).toBe('White-glove delivery');
+  });
+
   it('refuses a method that has no rate in the zone, rather than quoting zero', async () => {
     await expect(service.quote('Dubai', BASKET, { methodKey: 'international_courier' })).rejects.toThrow(/No shipping rate/);
     await expect(service.quote('London', BASKET, { methodKey: 'white_glove' })).rejects.toThrow(/No shipping rate/);

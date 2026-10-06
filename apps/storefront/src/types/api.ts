@@ -93,13 +93,6 @@ export interface Cart {
   issues: Array<{ lineId?: string; message?: string; code?: string }>;
 }
 
-export interface ShippingQuote {
-  method: string;
-  label: string;
-  amount: number;
-  [key: string]: unknown;
-}
-
 export interface PaymentMethod {
   key: string;
   labelEn: string;
@@ -108,32 +101,53 @@ export interface PaymentMethod {
   descriptionUr: string | null;
 }
 
+/** What a placed order looks like when the API hands it back (POST /orders, /orders/:number, /orders/mine). */
 export interface OrderLine {
   id: string;
-  name: string;
-  variantLabel?: string | null;
-  sku?: string;
-  quantity: number;
+  nameEn: string;
+  /** The second language's name: the engine's column predates the second locale being configurable. */
+  nameUr: string | null;
+  sku: string;
+  imageUrl: string | null;
+  variantLabel: string | null;
   unitPrice: number;
-  taxAmount?: number;
-  imageUrl?: string | null;
+  quantity: number;
+  lineTotal: number;
+  /** The VAT already inside this line, in fils. Order-level `taxAmount` is not filled in; sum these. */
+  taxAmount: number;
+}
+
+export interface BankAccount {
+  bank: string;
+  title: string;
+  accountNumber: string;
+  iban: string;
+}
+
+export interface OrderPayment {
+  paymentId: string;
+  /** Set when the method is a hosted gateway: send the customer there to pay. */
+  redirectUrl: string | null;
+  meta?: { accounts?: BankAccount[] } | null;
 }
 
 export interface Order {
   id: string;
-  orderNumber: string;
+  number: string;
   status: string;
-  paymentStatus?: string;
   currency: string;
-  subtotal: number;
-  shippingAmount?: number;
-  discountAmount?: number;
-  taxAmount?: number;
-  total: number;
-  createdAt: string;
+  guestName: string | null;
+  guestEmail: string | null;
+  shippingAddress: Record<string, string | null> | null;
+  itemsSubtotal: number;
+  shippingFee: number;
+  grandTotal: number;
+  shippingZone: string | null;
+  customerNote: string | null;
+  placedAt: string;
   items: OrderLine[];
-  shippingAddress?: Record<string, string | null>;
-  paymentMethod?: string;
+  /** Present on the response to placing the order only. */
+  payment?: OrderPayment;
 }
 
 export interface AuthUser {
@@ -142,4 +156,27 @@ export interface AuthUser {
   phone: string | null;
   firstName: string | null;
   lastName: string | null;
+}
+
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  price: number;
+  variantId: string | null;
+  variantLabel: string | null;
+  inStock: boolean;
+  createdAt: string;
+}
+
+export interface ShippingOption {
+  zoneKey: string;
+  methodKey: string;
+  label: string;
+  /** Fils. */
+  fee: number;
+  etaMinDays: number;
+  etaMaxDays: number;
 }

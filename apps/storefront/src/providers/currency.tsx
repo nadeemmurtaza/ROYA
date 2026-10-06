@@ -73,3 +73,12 @@ export function Price({
     </>
   );
 }
+
+/**
+ * " · indicative price, charged in AED", shown only when the visitor is looking
+ * at a converted price. The note is the caller's translated text.
+ */
+export function IndicativeNote({ children }: { children: ReactNode }) {
+  const { currency } = useCurrency();
+  return currency === BASE_CURRENCY ? null : <> · {children}</>;
+}

@@ -349,7 +349,7 @@ model Address {
   city       String
   province   String
   postalCode String?
-  country    String   @default("PK")
+  country    String   @default("AE")
   isDefault  Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
