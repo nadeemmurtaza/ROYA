@@ -34,7 +34,9 @@ function PaneState({ status, onRetry }: { status: 'loading' | 'error'; onRetry: 
 }
 
 const dayFormat = (locale: Locale, value: string): string =>
-  new Intl.DateTimeFormat(intlTag(locale), { dateStyle: 'medium', timeZone: BRAND.locale.timeZone }).format(new Date(value));
+  new Intl.DateTimeFormat(intlTag(locale), { dateStyle: 'medium', timeZone: BRAND.locale.timeZone }).format(
+    new Date(value),
+  );
 
 export function OrderRow({ order, locale }: { order: Order; locale: Locale }) {
   const t = useTranslations('dashboard');
@@ -44,7 +46,16 @@ export function OrderRow({ order, locale }: { order: Order; locale: Locale }) {
   return (
     <li className="order-row">
       <span className="ph order-thumb">
-        {first?.imageUrl ? <Image src={first.imageUrl} alt="" fill sizes="96px" className="photo" style={{ objectPosition: '50% 25%' }} /> : null}
+        {first?.imageUrl ? (
+          <Image
+            src={first.imageUrl}
+            alt=""
+            fill
+            sizes="96px"
+            className="photo"
+            style={{ objectPosition: '50% 25%' }}
+          />
+        ) : null}
       </span>
       <span className="stack" style={{ gap: 6, minWidth: 0 }}>
         <span className="serif order-name">
@@ -72,7 +83,7 @@ export function OrderRow({ order, locale }: { order: Order; locale: Locale }) {
 export function OrdersPane({ limit, showAll }: { limit?: number; showAll?: boolean }) {
   const t = useTranslations('dashboard');
   const locale = useLocale() as Locale;
-  const { state, reload } = useAuthedQuery<Paged<Order>>('/orders/mine', { pageSize: limit ?? 20, locale });
+  const { state, reload } = useAuthedQuery<Paged<Order>>('/orders/mine', { pageSize: limit ?? 20 });
   if (state.status !== 'ready') return <PaneState status={state.status} onRetry={reload} />;
   const orders = state.data.data;
   if (orders.length === 0) {
@@ -157,15 +168,26 @@ export function MeasurementsPane() {
       <p className="bag-muted" style={{ maxWidth: 560 }}>
         {t('measureBody')}
       </p>
-      {list.length === 0 ? <div className="card-box"><span className="bag-muted">{t('measureNone')}</span></div> : null}
+      {list.length === 0 ? (
+        <div className="card-box">
+          <span className="bag-muted">{t('measureNone')}</span>
+        </div>
+      ) : null}
       {list.map((profile) => {
-        const fields = garments.find((garment) => garment.key === profile.garmentType.key)?.fields.slice().sort((a, b) => a.order - b.order) ?? [];
+        const fields =
+          garments
+            .find((garment) => garment.key === profile.garmentType.key)
+            ?.fields.slice()
+            .sort((a, b) => a.order - b.order) ?? [];
         return (
           <section key={profile.id} className="stack" style={{ gap: 14 }} aria-label={profile.label}>
             <div className="card-head">
               <span className="serif" style={{ fontSize: 24 }}>
                 {profile.label}
-                <span className="bag-muted-sm"> · {second ? profile.garmentType.labelUr : profile.garmentType.labelEn}</span>
+                <span className="bag-muted-sm">
+                  {' '}
+                  · {second ? profile.garmentType.labelUr : profile.garmentType.labelEn}
+                </span>
               </span>
               <span className="bag-muted-sm">{t('measureTaken', { date: dayFormat(locale, profile.createdAt) })}</span>
             </div>
@@ -174,7 +196,9 @@ export function MeasurementsPane() {
                 <div key={field.key}>
                   <dt>{second ? field.labelUr : field.labelEn}</dt>
                   <dd className="serif" dir="ltr">
-                    {shown && profile.values[field.key] !== undefined ? `${profile.values[field.key]} ${field.unit.toLowerCase()}` : '•• cm'}
+                    {shown && profile.values[field.key] !== undefined
+                      ? `${profile.values[field.key]} ${field.unit.toLowerCase()}`
+                      : '•• cm'}
                   </dd>
                 </div>
               ))}
@@ -183,7 +207,13 @@ export function MeasurementsPane() {
         );
       })}
       {list.length > 0 ? (
-        <button type="button" className="btn-line" style={{ alignSelf: 'flex-start' }} onClick={() => setShown((value) => !value)} aria-pressed={shown}>
+        <button
+          type="button"
+          className="btn-line"
+          style={{ alignSelf: 'flex-start' }}
+          onClick={() => setShown((value) => !value)}
+          aria-pressed={shown}
+        >
           {shown ? t('measureHide') : t('measureReveal')}
         </button>
       ) : null}
@@ -204,32 +234,51 @@ export function WishlistPane() {
       .catch(() => undefined);
   }, [locale]);
 
-  if (wishlist.loading) return <p className="bag-muted" role="status">{t('loading')}</p>;
+  if (wishlist.loading)
+    return (
+      <p className="bag-muted" role="status">
+        {t('loading')}
+      </p>
+    );
   if (wishlist.items.length === 0) {
     return (
       <div className="card-box" style={{ alignItems: 'flex-start' }}>
-        <span className="serif" style={{ fontSize: 26 }}>{t('wishNone')}</span>
+        <span className="serif" style={{ fontSize: 26 }}>
+          {t('wishNone')}
+        </span>
         <span className="bag-muted">{t('wishBody')}</span>
-        <Link className="btn-gold" href="/collection">{t('wishCta')}</Link>
+        <Link className="btn-gold" href="/collection">
+          {t('wishCta')}
+        </Link>
       </div>
     );
   }
   return (
     <div className="stack" style={{ gap: 20 }}>
-      <p className="bag-muted" style={{ maxWidth: 560 }}>{t('wishBody')}</p>
+      <p className="bag-muted" style={{ maxWidth: 560 }}>
+        {t('wishBody')}
+      </p>
       <ul className="wish-grid">
         {wishlist.items.map((item) => {
           const known = catalogue.get(item.slug);
           return (
             <li key={item.id} className="wish-card">
               <Link href={`/product/${item.slug}`} className="ph wish-photo">
-                {item.imageUrl ? <Image src={item.imageUrl} alt="" fill sizes="(max-width: 700px) 50vw, 240px" className="photo" /> : null}
+                {item.imageUrl ? (
+                  <Image src={item.imageUrl} alt="" fill sizes="(max-width: 700px) 50vw, 240px" className="photo" />
+                ) : null}
               </Link>
-              <span className="serif" style={{ fontSize: 22 }}>{known?.name ?? item.name}</span>
+              <span className="serif" style={{ fontSize: 22 }}>
+                {known?.name ?? item.name}
+              </span>
               <span style={{ fontSize: 14, color: 'var(--text3)' }}>{formatPrice(known?.basePrice ?? item.price)}</span>
               <div className="bag-actions">
-                <Link className="lnk" href={`/product/${item.slug}`}>{t('wishView')}</Link>
-                <button type="button" className="lnk" onClick={() => void wishlist.remove(item.id)}>{t('wishRemove')}</button>
+                <Link className="lnk" href={`/product/${item.slug}`}>
+                  {t('wishView')}
+                </Link>
+                <button type="button" className="lnk" onClick={() => void wishlist.remove(item.id)}>
+                  {t('wishRemove')}
+                </button>
               </div>
             </li>
           );
@@ -257,7 +306,16 @@ export function AddressesPane() {
   const [adding, setAdding] = useState(false);
   const [saving, setSaving] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [form, setForm] = useState({ label: '', fullName: '', phone: '', emirate: '', city: '', country: '', area: '', line1: '' });
+  const [form, setForm] = useState({
+    label: '',
+    fullName: '',
+    phone: '',
+    emirate: '',
+    city: '',
+    country: '',
+    area: '',
+    line1: '',
+  });
   const checkout = useTranslations('checkout');
 
   if (q.state.status !== 'ready') return <PaneState status={q.state.status} onRetry={q.reload} />;
@@ -294,7 +352,8 @@ export function AddressesPane() {
 
   async function act(id: string, action: 'default' | 'delete') {
     try {
-      if (action === 'delete') await apiAuthed(`/addresses/${encodeURIComponent(id)}`, { method: 'DELETE', expect: 'none' });
+      if (action === 'delete')
+        await apiAuthed(`/addresses/${encodeURIComponent(id)}`, { method: 'DELETE', expect: 'none' });
       else await apiAuthed(`/addresses/${encodeURIComponent(id)}`, { method: 'PATCH', body: { isDefault: true } });
     } finally {
       q.reload();
@@ -305,13 +364,20 @@ export function AddressesPane() {
     id: `ad-${field}`,
     className: 'field',
     value: form[field],
-    onChange: (event: { target: { value: string } }) => setForm((current) => ({ ...current, [field]: event.target.value })),
+    onChange: (event: { target: { value: string } }) =>
+      setForm((current) => ({ ...current, [field]: event.target.value })),
   });
 
   return (
     <div className="stack" style={{ gap: 24 }}>
-      <p className="bag-muted" style={{ maxWidth: 560 }}>{t('addrBody')}</p>
-      {addresses.length === 0 && !adding ? <div className="card-box"><span className="bag-muted">{t('addrNone')}</span></div> : null}
+      <p className="bag-muted" style={{ maxWidth: 560 }}>
+        {t('addrBody')}
+      </p>
+      {addresses.length === 0 && !adding ? (
+        <div className="card-box">
+          <span className="bag-muted">{t('addrNone')}</span>
+        </div>
+      ) : null}
       <ul className="addr-grid">
         {addresses.map((address) => (
           <li key={address.id} className="card-box">
@@ -330,8 +396,14 @@ export function AddressesPane() {
               <bdi dir="ltr">{address.phone}</bdi>
             </span>
             <div className="bag-actions" style={{ marginTop: 'auto' }}>
-              {!address.isDefault ? <button type="button" className="lnk" onClick={() => void act(address.id, 'default')}>{t('addrMakeDefault')}</button> : null}
-              <button type="button" className="lnk" onClick={() => void act(address.id, 'delete')}>{t('addrDelete')}</button>
+              {!address.isDefault ? (
+                <button type="button" className="lnk" onClick={() => void act(address.id, 'default')}>
+                  {t('addrMakeDefault')}
+                </button>
+              ) : null}
+              <button type="button" className="lnk" onClick={() => void act(address.id, 'delete')}>
+                {t('addrDelete')}
+              </button>
             </div>
           </li>
         ))}
@@ -340,30 +412,56 @@ export function AddressesPane() {
       {adding ? (
         <form className="card-box" onSubmit={save}>
           <div className="field-grid">
-            <Field id="ad-label" label={t('addrLabel')}><input {...bind('label')} placeholder={t('addrLabelPlaceholder')} /></Field>
-            <Field id="ad-fullName" label={checkout('fullName')}><input {...bind('fullName')} autoComplete="name" required /></Field>
-            <Field id="ad-phone" label={checkout('phone')}><input {...bind('phone')} type="tel" autoComplete="tel" dir="ltr" required /></Field>
+            <Field id="ad-label" label={t('addrLabel')}>
+              <input {...bind('label')} placeholder={t('addrLabelPlaceholder')} />
+            </Field>
+            <Field id="ad-fullName" label={checkout('fullName')}>
+              <input {...bind('fullName')} autoComplete="name" required />
+            </Field>
+            <Field id="ad-phone" label={checkout('phone')}>
+              <input {...bind('phone')} type="tel" autoComplete="tel" dir="ltr" required />
+            </Field>
             <Field id="ad-emirate" label={checkout('emirate')}>
               <select {...bind('emirate')} required>
                 <option value="">{checkout('emirateChoose')}</option>
-                {EMIRATES.map((emirate) => <option key={emirate} value={emirate}>{emirate}</option>)}
+                {EMIRATES.map((emirate) => (
+                  <option key={emirate} value={emirate}>
+                    {emirate}
+                  </option>
+                ))}
                 <option value={OUTSIDE}>{checkout('outside')}</option>
               </select>
             </Field>
             {abroad ? (
               <>
-                <Field id="ad-city" label={checkout('city')}><input {...bind('city')} required /></Field>
-                <Field id="ad-country" label={checkout('country')}><input {...bind('country')} required /></Field>
+                <Field id="ad-city" label={checkout('city')}>
+                  <input {...bind('city')} required />
+                </Field>
+                <Field id="ad-country" label={checkout('country')}>
+                  <input {...bind('country')} required />
+                </Field>
               </>
             ) : (
-              <Field id="ad-area" label={checkout('area')}><input {...bind('area')} /></Field>
+              <Field id="ad-area" label={checkout('area')}>
+                <input {...bind('area')} />
+              </Field>
             )}
-            <Field id="ad-line1" label={checkout('line1')} wide><input {...bind('line1')} required /></Field>
+            <Field id="ad-line1" label={checkout('line1')} wide>
+              <input {...bind('line1')} required />
+            </Field>
           </div>
-          {failed ? <p role="alert" className="field-error">{t('addrFailed')}</p> : null}
+          {failed ? (
+            <p role="alert" className="field-error">
+              {t('addrFailed')}
+            </p>
+          ) : null}
           <div className="btn-row">
-            <button type="submit" className="btn-gold" disabled={saving}>{saving ? t('addrSaving') : t('addrSave')}</button>
-            <button type="button" className="btn-line" onClick={() => setAdding(false)}>{t('addrCancel')}</button>
+            <button type="submit" className="btn-gold" disabled={saving}>
+              {saving ? t('addrSaving') : t('addrSave')}
+            </button>
+            <button type="button" className="btn-line" onClick={() => setAdding(false)}>
+              {t('addrCancel')}
+            </button>
           </div>
         </form>
       ) : (
@@ -374,4 +472,3 @@ export function AddressesPane() {
     </div>
   );
 }
-

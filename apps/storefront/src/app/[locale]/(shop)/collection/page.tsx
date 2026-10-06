@@ -11,6 +11,7 @@ import { fetchCategories, fetchProducts } from '@/lib/catalog';
 import { parseCollectionQuery } from '@/lib/collection-query';
 import { image } from '@/lib/media';
 import { toCard } from '@/lib/product-model';
+import { alternatesFor } from '@/lib/seo';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -20,7 +21,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'collection' });
-  return { title: t('metaTitle'), description: t('metaDescription'), alternates: { canonical: `/${locale}/collection` } };
+  return { title: t('metaTitle'), description: t('metaDescription'), alternates: alternatesFor(locale, '/collection') };
 }
 
 const PAGE_SIZE = 24;
@@ -34,12 +35,15 @@ export default async function CollectionPage({ params, searchParams }: Props) {
 
   // The catalogue being unreachable is a state the page shows, not an error page.
   const [catalogue, categories] = await Promise.all([
-    fetchProducts(locale as Locale, { category: query.category, sort: query.sort, page: query.page, pageSize: PAGE_SIZE }).catch(
-      (error) => {
-        console.error('Collection: could not load products', error);
-        return null;
-      },
-    ),
+    fetchProducts(locale as Locale, {
+      category: query.category,
+      sort: query.sort,
+      page: query.page,
+      pageSize: PAGE_SIZE,
+    }).catch((error) => {
+      console.error('Collection: could not load products', error);
+      return null;
+    }),
     fetchCategories(locale as Locale).catch(() => []),
   ]);
 
@@ -50,7 +54,10 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         key={slug ?? 'all'}
         className={`chip${on ? ' chip-on' : ''}`}
         aria-current={on ? 'true' : undefined}
-        href={{ pathname: '/collection', query: { ...(slug ? { category: slug } : {}), ...(query.sort !== 'featured' ? { sort: query.sort } : {}) } }}
+        href={{
+          pathname: '/collection',
+          query: { ...(slug ? { category: slug } : {}), ...(query.sort !== 'featured' ? { sort: query.sort } : {}) },
+        }}
       >
         {label}
       </Link>
@@ -165,7 +172,11 @@ export default async function CollectionPage({ params, searchParams }: Props) {
             <span className="eyebrow">{t('apptEyebrow')}</span>
             <h2 className="serif appointment-title">{t('apptTitle')}</h2>
             <p>{t('apptBody')}</p>
-            <Link className="btn-gold" href={{ pathname: '/consultation', query: { kind: 'atelier' } }} style={{ alignSelf: 'flex-start' }}>
+            <Link
+              className="btn-gold"
+              href={{ pathname: '/consultation', query: { kind: 'atelier' } }}
+              style={{ alignSelf: 'flex-start' }}
+            >
               {t('apptCta')}
             </Link>
           </div>

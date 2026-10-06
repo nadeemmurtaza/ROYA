@@ -152,7 +152,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
           <div className="blurin card ph atelier-tile" data-keep="dark">
             <div className="zoom">
-              <Image src={image('noir-corset-inside')} alt={t('altCorset')} fill sizes="(max-width: 700px) 72vw, 33vw" className="photo" />
+              <Image
+                src={image('noir-corset-inside')}
+                alt={t('altCorset')}
+                fill
+                sizes="(max-width: 700px) 72vw, 33vw"
+                className="photo"
+              />
             </div>
             <span className="tile-caption">{t('captionCorset')}</span>
           </div>
@@ -169,7 +175,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section aria-label={t('boxAria')} className="box">
         <div className="card ph parallax box-photo">
           <div className="zoom">
-            <Image src={image('roya-box')} alt={t('boxAlt')} fill sizes="(max-width: 1000px) 100vw, 50vw" className="photo" />
+            <Image
+              src={image('roya-box')}
+              alt={t('boxAlt')}
+              fill
+              sizes="(max-width: 1000px) 100vw, 50vw"
+              className="photo"
+            />
           </div>
         </div>
         <div className="box-copy">

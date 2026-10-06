@@ -13,7 +13,11 @@ export function BagLink() {
   return (
     <Link className="icon-btn has-badge" href="/bag" aria-label={t('bag', { count })}>
       <BagIcon />
-      {count > 0 ? <span className="bag-count" aria-hidden="true">{count}</span> : null}
+      {count > 0 ? (
+        <span className="bag-count" aria-hidden="true">
+          {count}
+        </span>
+      ) : null}
     </Link>
   );
 }

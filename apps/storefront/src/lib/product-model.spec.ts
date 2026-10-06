@@ -67,11 +67,9 @@ describe('shades and fits', () => {
   });
 
   it('lists each size once, with made to measure first', () => {
-    expect(fitsOf([variant({ size: 'FR 34' }), variant({ size: MADE_TO_MEASURE }), variant({ size: 'FR 36' })])).toEqual([
-      MADE_TO_MEASURE,
-      'FR 34',
-      'FR 36',
-    ]);
+    expect(
+      fitsOf([variant({ size: 'FR 34' }), variant({ size: MADE_TO_MEASURE }), variant({ size: 'FR 36' })]),
+    ).toEqual([MADE_TO_MEASURE, 'FR 34', 'FR 36']);
   });
 
   it('finds the variant for a shade and size, or nothing', () => {
@@ -106,7 +104,10 @@ describe('galleryOf and cardImages', () => {
   });
 
   it('picks the cover and the hover photograph, never a film', () => {
-    expect(cardImages(product)).toEqual({ cover: { url: '/media/images/a.jpg', alt: 'A' }, hover: '/media/images/b.jpg' });
+    expect(cardImages(product)).toEqual({
+      cover: { url: '/media/images/a.jpg', alt: 'A' },
+      hover: '/media/images/b.jpg',
+    });
     expect(cardImages({ name: 'X', images: [] })).toEqual({ cover: null, hover: null });
   });
 });

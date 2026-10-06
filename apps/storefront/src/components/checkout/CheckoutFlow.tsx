@@ -112,7 +112,17 @@ export function CheckoutFlow() {
     let live = true;
     Promise.all([
       apiAuthed<AuthUser>('/auth/me').catch(() => null),
-      apiAuthed<Array<{ fullName: string; phone: string; line1: string; line2: string | null; city: string; province: string; isDefault: boolean }>>('/addresses').catch(() => []),
+      apiAuthed<
+        Array<{
+          fullName: string;
+          phone: string;
+          line1: string;
+          line2: string | null;
+          city: string;
+          province: string;
+          isDefault: boolean;
+        }>
+      >('/addresses').catch(() => []),
     ]).then(([me, addresses]) => {
       if (!live) return;
       const home = addresses.find((address) => address.isDefault) ?? addresses[0];
@@ -166,7 +176,9 @@ export function CheckoutFlow() {
         .then((items) => {
           if (!live) return;
           setOptions({ status: 'ready', items });
-          setMethodKey((current) => (current && items.some((item) => item.methodKey === current) ? current : (items[0]?.methodKey ?? null)));
+          setMethodKey((current) =>
+            current && items.some((item) => item.methodKey === current) ? current : (items[0]?.methodKey ?? null),
+          );
         })
         .catch(() => live && setOptions({ status: 'error' }));
     }, OPTIONS_DEBOUNCE_MS);
@@ -179,7 +191,9 @@ export function CheckoutFlow() {
   const errors: DeliveryErrors = useMemo(() => {
     const all = validateDelivery(form);
     if (showAll) return all;
-    return Object.fromEntries(Object.entries(all).filter(([field]) => touched.has(field as DeliveryField))) as DeliveryErrors;
+    return Object.fromEntries(
+      Object.entries(all).filter(([field]) => touched.has(field as DeliveryField)),
+    ) as DeliveryErrors;
   }, [form, touched, showAll]);
 
   const pieces = piecesIn(cart.cart);
@@ -216,7 +230,9 @@ export function CheckoutFlow() {
     });
 
     try {
-      const order = await api<Order>('/orders', {
+      // A signed-in client's order must carry their token, or it is placed as a guest's and never reaches their account.
+      const send = session.status === 'signed-in' ? apiAuthed : api;
+      const order = await send<Order>('/orders', {
         method: 'POST',
         query: { locale },
         headers: { 'Idempotency-Key': idempotencyKey.current },
@@ -280,7 +296,11 @@ export function CheckoutFlow() {
           {stepLabels.map((label, index) => {
             const n = index + 1;
             return (
-              <li key={label} className={`ck-step${n === step ? ' ck-step-on' : n < step ? ' ck-step-done' : ''}`} aria-current={n === step ? 'step' : undefined}>
+              <li
+                key={label}
+                className={`ck-step${n === step ? ' ck-step-on' : n < step ? ' ck-step-done' : ''}`}
+                aria-current={n === step ? 'step' : undefined}
+              >
                 <span className="num">{n < step ? '✓' : n}</span>
                 {label}
               </li>
@@ -310,7 +330,13 @@ export function CheckoutFlow() {
             />
           ) : null}
           {step === 2 ? (
-            <PaymentStep payments={payments} paymentKey={paymentKey} onPick={setPaymentKey} onBack={() => setStep(1)} onNext={() => setStep(3)} />
+            <PaymentStep
+              payments={payments}
+              paymentKey={paymentKey}
+              onPick={setPaymentKey}
+              onBack={() => setStep(1)}
+              onNext={() => setStep(3)}
+            />
           ) : null}
           {step === 3 && address ? (
             <ReviewStep

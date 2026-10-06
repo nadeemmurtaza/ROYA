@@ -71,7 +71,17 @@ export function ResetPassword() {
         <form className="auth-form" onSubmit={submit} noValidate>
           <p className="bag-muted">{t('resetBody')}</p>
           <Field id="r-password" label={t('resetNew')} error={error}>
-            <input id="r-password" className="field" type="password" autoComplete="new-password" dir="ltr" value={password} onChange={(event) => setPassword(event.target.value)} aria-invalid={error ? true : undefined} aria-describedby="r-password-error" />
+            <input
+              id="r-password"
+              className="field"
+              type="password"
+              autoComplete="new-password"
+              dir="ltr"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              aria-invalid={error ? true : undefined}
+              aria-describedby="r-password-error"
+            />
           </Field>
           <button type="submit" className="btn-gold" disabled={state === 'sending'}>
             {state === 'sending' ? t('working') : t('resetSave')}
@@ -100,9 +110,21 @@ export function VerifyEmail() {
 
   return (
     <Frame title={t('verifyTitle')}>
-      {state === 'working' ? <p role="status" className="bag-muted">{t('working')}</p> : null}
-      {state === 'done' ? <p role="status" className="bag-muted">{t('verifyDone')}</p> : null}
-      {state === 'failed' ? <p role="alert" className="field-error">{t('verifyFailed')}</p> : null}
+      {state === 'working' ? (
+        <p role="status" className="bag-muted">
+          {t('working')}
+        </p>
+      ) : null}
+      {state === 'done' ? (
+        <p role="status" className="bag-muted">
+          {t('verifyDone')}
+        </p>
+      ) : null}
+      {state === 'failed' ? (
+        <p role="alert" className="field-error">
+          {t('verifyFailed')}
+        </p>
+      ) : null}
       {state !== 'working' ? (
         <Link className="btn-gold" href="/dashboard">
           {t('verifyCta')}
@@ -132,13 +154,21 @@ export function Unsubscribe() {
 
   return (
     <Frame title={t('unsubTitle')}>
-      {state === 'working' ? <p role="status" className="bag-muted">{t('unsubWorking')}</p> : null}
+      {state === 'working' ? (
+        <p role="status" className="bag-muted">
+          {t('unsubWorking')}
+        </p>
+      ) : null}
       {state === 'done' ? (
         <p role="status" className="bag-muted">
           {t('unsubDone')} {t('unsubBody')}
         </p>
       ) : null}
-      {state === 'failed' ? <p role="alert" className="field-error">{t('unsubFailed')}</p> : null}
+      {state === 'failed' ? (
+        <p role="alert" className="field-error">
+          {t('unsubFailed')}
+        </p>
+      ) : null}
       <Link className="btn-line" href="/">
         {t('unsubCta')}
       </Link>

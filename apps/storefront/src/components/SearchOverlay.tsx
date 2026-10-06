@@ -18,11 +18,7 @@ interface Hit {
   category: string | null;
 }
 
-type State =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'done'; hits: Hit[] }
-  | { status: 'error' };
+type State = { status: 'idle' } | { status: 'loading' } | { status: 'done'; hits: Hit[] } | { status: 'error' };
 
 const DEBOUNCE_MS = 250;
 const MIN_CHARS = 2;
@@ -123,7 +119,13 @@ export function SearchOverlay() {
 
   return (
     <>
-      <button ref={trigger} type="button" className="icon-btn hide-sm" aria-label={t('searchOpen')} onClick={() => setOpen(true)}>
+      <button
+        ref={trigger}
+        type="button"
+        className="icon-btn hide-sm"
+        aria-label={t('searchOpen')}
+        onClick={() => setOpen(true)}
+      >
         <SearchIcon />
       </button>
 
@@ -156,11 +158,21 @@ export function SearchOverlay() {
             />
 
             <div className="search-chips">
-              <Link className="btn-line" href={`/product/${BRAND.storefront.featured.flagship}`}>{t('chipFlagship')}</Link>
-              <Link className="btn-line" href={{ pathname: '/collection', query: { category: 'bridal' } }}>{t('chipBridal')}</Link>
-              <Link className="btn-line" href={{ pathname: '/collection', query: { category: 'evening' } }}>{t('chipEvening')}</Link>
-              <Link className="btn-line" href={`/product/${BRAND.storefront.featured.secondary}`}>{t('chipSecondary')}</Link>
-              <Link className="btn-line" href="/#commission">{t('chipBespoke')}</Link>
+              <Link className="btn-line" href={`/product/${BRAND.storefront.featured.flagship}`}>
+                {t('chipFlagship')}
+              </Link>
+              <Link className="btn-line" href={{ pathname: '/collection', query: { category: 'bridal' } }}>
+                {t('chipBridal')}
+              </Link>
+              <Link className="btn-line" href={{ pathname: '/collection', query: { category: 'evening' } }}>
+                {t('chipEvening')}
+              </Link>
+              <Link className="btn-line" href={`/product/${BRAND.storefront.featured.secondary}`}>
+                {t('chipSecondary')}
+              </Link>
+              <Link className="btn-line" href="/#commission">
+                {t('chipBespoke')}
+              </Link>
             </div>
 
             <div aria-live="polite">
@@ -175,13 +187,23 @@ export function SearchOverlay() {
                     <li key={hit.id}>
                       <Link className="search-hit" href={`/product/${hit.slug}`}>
                         <span className="thumb ph">
-                          {hit.imageUrl ? <Image src={hit.imageUrl} alt="" fill sizes="56px" className="photo" /> : null}
+                          {hit.imageUrl ? (
+                            <Image src={hit.imageUrl} alt="" fill sizes="56px" className="photo" />
+                          ) : null}
                         </span>
                         <span>
-                          <span className="serif" style={{ fontSize: 22 }}>{hit.name}</span>
-                          {hit.category ? <span className="search-note" style={{ display: 'block', fontSize: 13 }}>{hit.category}</span> : null}
+                          <span className="serif" style={{ fontSize: 22 }}>
+                            {hit.name}
+                          </span>
+                          {hit.category ? (
+                            <span className="search-note" style={{ display: 'block', fontSize: 13 }}>
+                              {hit.category}
+                            </span>
+                          ) : null}
                         </span>
-                        <span style={{ fontSize: 14 }}><bdi dir="ltr">{formatPrice(hit.basePrice)}</bdi></span>
+                        <span style={{ fontSize: 14 }}>
+                          <bdi dir="ltr">{formatPrice(hit.basePrice)}</bdi>
+                        </span>
                       </Link>
                     </li>
                   ))}

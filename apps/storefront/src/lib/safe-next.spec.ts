@@ -7,7 +7,14 @@ describe('safeNext', () => {
   });
 
   it('falls back for anything that could leave the site', () => {
-    for (const bad of ['//evil.example', 'https://evil.example', '/\\evil.example', 'javascript:alert(1)', 'evil', '/\u0000x']) {
+    for (const bad of [
+      '//evil.example',
+      'https://evil.example',
+      '/\\evil.example',
+      'javascript:alert(1)',
+      'evil',
+      '/\u0000x',
+    ]) {
       expect(safeNext(bad)).toBe('/dashboard');
     }
     expect(safeNext(null)).toBe('/dashboard');

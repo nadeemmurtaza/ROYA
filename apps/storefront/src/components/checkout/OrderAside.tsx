@@ -28,13 +28,26 @@ export function OrderAside({ cart, shippingFee }: { cart: Cart; shippingFee: num
           return (
             <li key={line.id}>
               <span className="ph aside-thumb">
-                {line.imageUrl ? <Image src={line.imageUrl} alt="" fill sizes="64px" className="photo" style={{ objectPosition: '50% 25%' }} /> : null}
+                {line.imageUrl ? (
+                  <Image
+                    src={line.imageUrl}
+                    alt=""
+                    fill
+                    sizes="64px"
+                    className="photo"
+                    style={{ objectPosition: '50% 25%' }}
+                  />
+                ) : null}
               </span>
               <span className="stack" style={{ gap: 4 }}>
                 <span className="serif" style={{ fontSize: 18 }}>
                   {line.name}
                 </span>
-                {bespoke ? <span className="bag-muted-sm">{t('deposit', { percent: BRAND.commerce.bespokeDepositPercent })}</span> : null}
+                {bespoke ? (
+                  <span className="bag-muted-sm">
+                    {t('deposit', { percent: BRAND.commerce.bespokeDepositPercent })}
+                  </span>
+                ) : null}
               </span>
               <span style={{ fontSize: 14 }}>
                 <Price minor={line.unitPrice * line.quantity} charged />

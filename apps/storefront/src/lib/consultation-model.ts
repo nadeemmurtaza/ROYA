@@ -39,11 +39,19 @@ export function validateConsultation(form: ConsultationForm): ConsultationProble
 }
 
 /** What the CRM lead holds. The labels are English: the designer reads them, whatever language the client wrote in. */
-export function leadFrom(form: ConsultationForm): { name: string; email?: string; phone?: string; message: string; source: string } {
+export function leadFrom(form: ConsultationForm): {
+  name: string;
+  email?: string;
+  phone?: string;
+  message: string;
+  source: string;
+} {
   const phone = normalizePhone(form.phone).e164 ?? undefined;
   const lines = [
     `Consultation request: ${form.kind}`,
-    form.date || form.time !== 'any' ? `Preferred: ${[form.date, form.time !== 'any' ? form.time : ''].filter(Boolean).join(', ')}` : '',
+    form.date || form.time !== 'any'
+      ? `Preferred: ${[form.date, form.time !== 'any' ? form.time : ''].filter(Boolean).join(', ')}`
+      : '',
     form.where.trim() ? `Where: ${form.where.trim()}` : '',
     form.orderNumber ? `Order: ${form.orderNumber}` : '',
     form.message.trim(),

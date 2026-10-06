@@ -1,15 +1,22 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Cart } from '@/types/api';
-import { api } from '@/lib/api';
+import { api, apiAuthed } from '@/lib/api';
+import { useSession } from './session';
 
 /**
  * The bag. The cart lives in the API, keyed by a cookie it sets (a guest never
  * has to sign in to buy), so this provider holds a copy and re-reads it after
  * every change rather than computing totals itself: the API is the one place
  * that knows stock, deposits and VAT.
+ *
+ * A signed-in client's bag is their account's, and the API only finds it when
+ * the request carries their token, so every call below is authenticated while
+ * a session exists. The moment someone signs in, the guest bag they were
+ * filling is folded into their account's (POST /cart/merge): signing in at
+ * checkout must never empty the bag.
  */
 interface CartContextValue {
   cart: Cart | null;
@@ -28,10 +35,18 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   // Every cart call names the language so product names come back in it.
   const locale = useLocale();
+  const { status } = useSession();
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const guestToken = useRef<string | null>(null);
+
+  const send = useCallback(
+    <T,>(path: string, options: Parameters<typeof api>[1] = {}): Promise<T> =>
+      (status === 'signed-in' ? apiAuthed : api)<T>(path, { ...options, query: { locale } }),
+    [status, locale],
+  );
 
   const run = useCallback(async (action: () => Promise<Cart>): Promise<boolean> => {
     setBusy(true);
@@ -48,32 +63,51 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const reload = useCallback(async () => {
-    await run(() => api<Cart>('/cart', { query: { locale } }));
+    await run(() => send<Cart>('/cart'));
     setLoading(false);
-  }, [run, locale]);
+  }, [run, send]);
+
+  // Remember the guest bag's token while nobody is signed in, to fold it in at sign-in.
+  useEffect(() => {
+    if (status === 'anonymous' && cart) guestToken.current = cart.token;
+  }, [cart, status]);
 
   useEffect(() => {
-    void reload();
-  }, [reload]);
+    // Wait for the session to be known: reading the bag as a guest, then again as a client, would flash the wrong one.
+    if (status === 'loading') return;
+    const token = status === 'signed-in' ? guestToken.current : null;
+    guestToken.current = null;
+    void (async () => {
+      if (token) {
+        await run(() => apiAuthed<Cart>('/cart/merge', { method: 'POST', body: { token } }));
+      }
+      await reload();
+    })();
+  }, [status, reload, run]);
 
   const add = useCallback<CartContextValue['add']>(
     (variantId, quantity = 1, stitching) =>
-      run(() => api<Cart>('/cart/items', { method: 'POST', query: { locale }, body: { variantId, quantity, ...(stitching ? { stitching } : {}) } })),
-    [run, locale],
+      run(() =>
+        send<Cart>('/cart/items', {
+          method: 'POST',
+          body: { variantId, quantity, ...(stitching ? { stitching } : {}) },
+        }),
+      ),
+    [run, send],
   );
 
   const setQuantity = useCallback<CartContextValue['setQuantity']>(
     async (lineId, quantity) => {
-      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'PATCH', query: { locale }, body: { quantity } }));
+      await run(() => send<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'PATCH', body: { quantity } }));
     },
-    [run, locale],
+    [run, send],
   );
 
   const remove = useCallback<CartContextValue['remove']>(
     async (lineId) => {
-      await run(() => api<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'DELETE', query: { locale } }));
+      await run(() => send<Cart>(`/cart/items/${encodeURIComponent(lineId)}`, { method: 'DELETE' }));
     },
-    [run, locale],
+    [run, send],
   );
 
   const value = useMemo(

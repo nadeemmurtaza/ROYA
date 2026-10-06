@@ -32,7 +32,12 @@ export function PrivateListForm() {
     }
   }
 
-  if (state === 'done') return <p role="status" className="footer-thanks">{t('joined')}</p>;
+  if (state === 'done')
+    return (
+      <p role="status" className="footer-thanks">
+        {t('joined')}
+      </p>
+    );
 
   return (
     <form className="private-list-form" onSubmit={submit} noValidate>
@@ -55,7 +60,11 @@ export function PrivateListForm() {
           {t('join')}
         </button>
       </div>
-      {state === 'error' ? <p role="alert" className="field-error">{message}</p> : null}
+      {state === 'error' ? (
+        <p role="alert" className="field-error">
+          {message}
+        </p>
+      ) : null}
     </form>
   );
 }

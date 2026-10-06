@@ -8,7 +8,10 @@ import { LOCALES } from '@newax/shared';
  * placeholder dropped from a translation prints a half-sentence.
  */
 const load = (locale: string) =>
-  JSON.parse(readFileSync(join(import.meta.dirname, '..', 'messages', `${locale}.json`), 'utf8')) as Record<string, unknown>;
+  JSON.parse(readFileSync(join(import.meta.dirname, '..', 'messages', `${locale}.json`), 'utf8')) as Record<
+    string,
+    unknown
+  >;
 
 function flatten(tree: Record<string, unknown>, prefix = ''): Map<string, string> {
   const out = new Map<string, string>();

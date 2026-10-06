@@ -70,7 +70,15 @@ export function ConsultationForm() {
   const set = (field: keyof Form, value: string) => setForm((current) => ({ ...current, [field]: value }) as Form);
   const error = (problem: ConsultationProblem): string | undefined =>
     problems.includes(problem)
-      ? t(problem === 'name' ? 'errName' : problem === 'reach' ? 'errReach' : problem === 'email' ? 'errEmail' : 'errPhone')
+      ? t(
+          problem === 'name'
+            ? 'errName'
+            : problem === 'reach'
+              ? 'errReach'
+              : problem === 'email'
+                ? 'errEmail'
+                : 'errPhone',
+        )
       : undefined;
 
   async function submit(event: FormEvent) {
@@ -109,7 +117,9 @@ export function ConsultationForm() {
   }
 
   const note: Record<Kind, string> = {
-    atelier: t('kindAtelierNote') + (isFilled(BRAND.contact.address) ? ` ${t('atelierAddress', { address: BRAND.contact.address })}` : ''),
+    atelier:
+      t('kindAtelierNote') +
+      (isFilled(BRAND.contact.address) ? ` ${t('atelierAddress', { address: BRAND.contact.address })}` : ''),
     home: t('kindHomeNote'),
     video: t('kindVideoNote'),
   };
@@ -145,17 +155,50 @@ export function ConsultationForm() {
 
           <div className="field-grid">
             <Field id="c-name" label={t('name')} error={error('name')}>
-              <input id="c-name" className="field" autoComplete="name" value={form.name} onChange={(event) => set('name', event.target.value)} aria-invalid={error('name') ? true : undefined} aria-describedby="c-name-error" />
+              <input
+                id="c-name"
+                className="field"
+                autoComplete="name"
+                value={form.name}
+                onChange={(event) => set('name', event.target.value)}
+                aria-invalid={error('name') ? true : undefined}
+                aria-describedby="c-name-error"
+              />
             </Field>
             <Field id="c-phone" label={t('phone')} error={error('phone') ?? error('reach')}>
-              <input id="c-phone" className="field" type="tel" autoComplete="tel" dir="ltr" value={form.phone} onChange={(event) => set('phone', event.target.value)} aria-invalid={error('phone') || error('reach') ? true : undefined} aria-describedby="c-phone-error" />
+              <input
+                id="c-phone"
+                className="field"
+                type="tel"
+                autoComplete="tel"
+                dir="ltr"
+                value={form.phone}
+                onChange={(event) => set('phone', event.target.value)}
+                aria-invalid={error('phone') || error('reach') ? true : undefined}
+                aria-describedby="c-phone-error"
+              />
             </Field>
             <Field id="c-email" label={t('email')} error={error('email')}>
-              <input id="c-email" className="field" type="email" autoComplete="email" dir="ltr" value={form.email} onChange={(event) => set('email', event.target.value)} aria-invalid={error('email') ? true : undefined} aria-describedby="c-email-error" />
+              <input
+                id="c-email"
+                className="field"
+                type="email"
+                autoComplete="email"
+                dir="ltr"
+                value={form.email}
+                onChange={(event) => set('email', event.target.value)}
+                aria-invalid={error('email') ? true : undefined}
+                aria-describedby="c-email-error"
+              />
             </Field>
             {form.kind === 'home' ? (
               <Field id="c-where" label={t('where')}>
-                <select id="c-where" className="field" value={form.where} onChange={(event) => set('where', event.target.value)}>
+                <select
+                  id="c-where"
+                  className="field"
+                  value={form.where}
+                  onChange={(event) => set('where', event.target.value)}
+                >
                   <option value="" />
                   {EMIRATES.map((emirate) => (
                     <option key={emirate} value={emirate}>
@@ -167,19 +210,47 @@ export function ConsultationForm() {
               </Field>
             ) : null}
             <Field id="c-date" label={t('date')}>
-              <input id="c-date" className="field" type="date" value={form.date} min={new Date().toISOString().slice(0, 10)} onChange={(event) => set('date', event.target.value)} />
+              <input
+                id="c-date"
+                className="field"
+                type="date"
+                value={form.date}
+                min={new Date().toISOString().slice(0, 10)}
+                onChange={(event) => set('date', event.target.value)}
+              />
             </Field>
             <Field id="c-time" label={t('time')}>
-              <select id="c-time" className="field" value={form.time} onChange={(event) => set('time', event.target.value)}>
+              <select
+                id="c-time"
+                className="field"
+                value={form.time}
+                onChange={(event) => set('time', event.target.value)}
+              >
                 {TIMES.map((time) => (
                   <option key={time} value={time}>
-                    {t(time === 'any' ? 'timeAny' : time === 'morning' ? 'timeMorning' : time === 'afternoon' ? 'timeAfternoon' : 'timeEvening')}
+                    {t(
+                      time === 'any'
+                        ? 'timeAny'
+                        : time === 'morning'
+                          ? 'timeMorning'
+                          : time === 'afternoon'
+                            ? 'timeAfternoon'
+                            : 'timeEvening',
+                    )}
                   </option>
                 ))}
               </select>
             </Field>
             <Field id="c-message" label={t('message')} wide>
-              <textarea id="c-message" className="field remarks" rows={3} maxLength={1000} placeholder={t('messagePlaceholder')} value={form.message} onChange={(event) => set('message', event.target.value)} />
+              <textarea
+                id="c-message"
+                className="field remarks"
+                rows={3}
+                maxLength={1000}
+                placeholder={t('messagePlaceholder')}
+                value={form.message}
+                onChange={(event) => set('message', event.target.value)}
+              />
             </Field>
           </div>
 

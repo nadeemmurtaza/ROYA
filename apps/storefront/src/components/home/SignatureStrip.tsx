@@ -83,7 +83,12 @@ export function SignatureStrip({ pieces }: { pieces: PieceCard[] }) {
           </h2>
         </div>
         <div className="band-controls">
-          <button type="button" className="navc" aria-label={paused ? t('play') : t('pause')} onClick={() => setPaused((value) => !value)}>
+          <button
+            type="button"
+            className="navc"
+            aria-label={paused ? t('play') : t('pause')}
+            onClick={() => setPaused((value) => !value)}
+          >
             {paused ? <PlayIcon size={16} /> : <PauseIcon size={16} />}
           </button>
           <span className="serif band-counter" aria-live="polite" dir="ltr">

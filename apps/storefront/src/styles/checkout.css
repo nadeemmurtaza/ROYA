@@ -82,7 +82,7 @@
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-faint);
 }
 .ck-step .num {
   display: grid;
@@ -242,7 +242,8 @@ html[dir='rtl'] input[dir='ltr'] {
 }
 .bag-actions {
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 0 24px;
   margin-top: auto;
 }
 .lnk {
@@ -831,4 +832,21 @@ select.field option {
 }
 .lookup h1 {
   font-size: 44px;
+}
+
+/* At 280px the focus header keeps only what a hand needs: back, the logotype, a lock. */
+@media (max-width: 380px) {
+  .focus-bar {
+    gap: 8px;
+  }
+  .focus-header .back {
+    font-size: 0;
+    gap: 0;
+    min-width: 44px;
+  }
+  .focus-logo .logo {
+    font-size: 20px;
+    letter-spacing: 0.35em;
+    padding-inline-start: 0.35em;
+  }
 }

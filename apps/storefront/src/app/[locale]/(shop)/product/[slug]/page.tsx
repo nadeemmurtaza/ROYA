@@ -10,7 +10,7 @@ import { Link } from '@/i18n/navigation';
 import { isFilled } from '@/lib/brand-contact';
 import { fetchProduct, fetchProducts } from '@/lib/catalog';
 import { depositOf, galleryOf, pieceType, splitDescription, toCard, type PieceType } from '@/lib/product-model';
-import { productJsonLd } from '@/lib/seo';
+import { alternatesFor, productJsonLd } from '@/lib/seo';
 import { IndicativeNote, Price } from '@/providers/currency';
 
 type Params = { params: Promise<{ locale: string; slug: string }> };
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: product.metaTitle ?? product.name,
     description: product.metaDescription ?? undefined,
-    alternates: { canonical: `/${locale}/product/${slug}` },
+    alternates: alternatesFor(locale, `/product/${slug}`),
     robots: product.tags.includes('noindex') ? { index: false } : undefined,
     openGraph: cover ? { images: [{ url: cover.url }] } : undefined,
   };
@@ -50,7 +50,10 @@ export default async function ProductPage({ params }: Params) {
   const type = pieceType(product.tags);
   const { intro, sections } = splitDescription(product.description);
   const deposit = depositOf(product);
-  const related = (catalogue?.data ?? []).filter((other) => other.slug !== product.slug).slice(0, 4).map(toCard);
+  const related = (catalogue?.data ?? [])
+    .filter((other) => other.slug !== product.slug)
+    .slice(0, 4)
+    .map(toCard);
 
   // The facts every piece of that type shares. A lead time the atelier has not supplied yet is left out, not shown as "[X] weeks".
   const lead = type === 'bespoke' ? BRAND.commerce.stitchingTurnaroundTime : BRAND.commerce.standardDeliveryTime;
@@ -70,7 +73,10 @@ export default async function ProductPage({ params }: Params) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, locale)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, locale)) }}
+      />
       <div className="product-page">
         <Gallery items={galleryOf(product)} />
 
@@ -80,7 +86,9 @@ export default async function ProductPage({ params }: Params) {
             <span aria-hidden="true">/</span>
             {product.category ? (
               <>
-                <Link href={{ pathname: '/collection', query: { category: product.category.slug } }}>{categoryName}</Link>
+                <Link href={{ pathname: '/collection', query: { category: product.category.slug } }}>
+                  {categoryName}
+                </Link>
                 <span aria-hidden="true">/</span>
               </>
             ) : null}
@@ -95,7 +103,9 @@ export default async function ProductPage({ params }: Params) {
               <Price minor={product.basePrice} prefix={type === 'bespoke' ? t('fromPrefix') : undefined} />
             </span>
             <span className="product-note">
-              {type === 'bespoke' ? t('noteBespoke', { percent: BRAND.commerce.bespokeDepositPercent }) : t('noteReady')}
+              {type === 'bespoke'
+                ? t('noteBespoke', { percent: BRAND.commerce.bespokeDepositPercent })
+                : t('noteReady')}
               <IndicativeNote>{t('noteIndicative', { currency: BRAND.locale.currency })}</IndicativeNote>
             </span>
           </div>

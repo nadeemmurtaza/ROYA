@@ -460,10 +460,10 @@ html[dir='rtl'] .status-pill {
 }
 .trap {
   position: absolute;
-  inset-inline-start: -9999px;
   width: 1px;
   height: 1px;
   overflow: hidden;
+  clip-path: inset(50%);
 }
 .consult-done {
   min-height: 50vh;

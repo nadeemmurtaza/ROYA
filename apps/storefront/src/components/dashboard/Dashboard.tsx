@@ -22,7 +22,9 @@ const TAB_LABEL: Record<Tab, string> = {
 
 /** The part of the day in the shop's own timezone, whatever the visitor's clock says. */
 function dayPart(now = new Date()): 'Morning' | 'Afternoon' | 'Evening' {
-  const hour = Number(new Intl.DateTimeFormat('en', { hour: 'numeric', hourCycle: 'h23', timeZone: BRAND.locale.timeZone }).format(now));
+  const hour = Number(
+    new Intl.DateTimeFormat('en', { hour: 'numeric', hourCycle: 'h23', timeZone: BRAND.locale.timeZone }).format(now),
+  );
   return hour < 12 ? 'Morning' : hour < 18 ? 'Afternoon' : 'Evening';
 }
 
@@ -56,9 +58,7 @@ export function Dashboard() {
   const user = session.user;
   const name = user.firstName?.trim() ?? '';
   const part = dayPart();
-  const greeting = name
-    ? t.rich(`greet${part}`, { name, em: (chunks) => <em>{chunks}</em> })
-    : t(`greet${part}No`);
+  const greeting = name ? t.rich(`greet${part}`, { name, em: (chunks) => <em>{chunks}</em> }) : t(`greet${part}No`);
 
   return (
     <div className="dash-page">
@@ -78,7 +78,9 @@ export function Dashboard() {
               aria-current={id === tab ? 'page' : undefined}
             >
               {t(TAB_LABEL[id])}
-              <span aria-hidden="true" className="flip-rtl">→</span>
+              <span aria-hidden="true" className="flip-rtl">
+                →
+              </span>
             </Link>
           ))}
           <button
@@ -105,7 +107,11 @@ export function Dashboard() {
                   {t('apptTitle')}
                 </span>
                 <span className="bag-muted">{t('apptBody')}</span>
-                <Link className="btn-gold" style={{ marginTop: 'auto', alignSelf: 'flex-start' }} href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
+                <Link
+                  className="btn-gold"
+                  style={{ marginTop: 'auto', alignSelf: 'flex-start' }}
+                  href={{ pathname: '/consultation', query: { kind: 'atelier' } }}
+                >
                   {t('apptCta')}
                 </Link>
               </section>
@@ -118,7 +124,13 @@ export function Dashboard() {
                   <span className="bag-muted-sm">{t('designerRole', { house: BRAND.identity.name })}</span>
                 </div>
                 <span className="bag-muted">{t('designerBody')}</span>
-                <a className="btn-gold" style={{ marginTop: 'auto', alignSelf: 'flex-start' }} href={whatsappUrl} rel="noopener" target="_blank">
+                <a
+                  className="btn-gold"
+                  style={{ marginTop: 'auto', alignSelf: 'flex-start' }}
+                  href={whatsappUrl}
+                  rel="noopener"
+                  target="_blank"
+                >
                   {t('designerCta')}
                 </a>
               </section>

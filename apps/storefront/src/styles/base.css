@@ -208,7 +208,12 @@ html[dir='rtl'] :is(.btn-gold, .btn-line, .btn-ink) {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 30%, color-mix(in srgb, var(--text-hi) 60%, transparent) 50%, transparent 70%);
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    color-mix(in srgb, var(--text-hi) 60%, transparent) 50%,
+    transparent 70%
+  );
   transform: translateX(-130%);
   transition: transform 1.2s var(--ease-sweep);
 }

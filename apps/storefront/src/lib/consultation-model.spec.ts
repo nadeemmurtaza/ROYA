@@ -43,7 +43,11 @@ describe('leadFrom', () => {
 
   it('leaves out what was not given', () => {
     const lead = leadFrom({ ...form, email: '', date: '', time: 'any', message: '', phone: '' });
-    expect(lead).toEqual({ name: 'Mariam Al Hashimi', message: 'Consultation request: atelier', source: 'consultation-atelier' });
+    expect(lead).toEqual({
+      name: 'Mariam Al Hashimi',
+      message: 'Consultation request: atelier',
+      source: 'consultation-atelier',
+    });
   });
 
   it('names the order a consultation belongs to, and where a home visit should be', () => {

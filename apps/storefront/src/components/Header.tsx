@@ -25,7 +25,7 @@ export async function Header() {
   const t = await getTranslations('shell');
 
   return (
-    <>
+    <header className="masthead">
       <div className="topbar">
         <span className="hide-sm">{t('announce')}</span>
         <div className="topbar-tools">
@@ -38,7 +38,7 @@ export async function Header() {
         </div>
       </div>
 
-      <header className="site-header">
+      <div className="site-header">
         <div className="hdr-left">
           <MobileMenu />
           <nav className="nav-desk" aria-label={t('primary')}>
@@ -65,7 +65,7 @@ export async function Header() {
           </Link>
           <BagLink />
         </div>
-      </header>
-    </>
+      </div>
+    </header>
   );
 }

@@ -23,10 +23,7 @@ function readRemembered(number: string): RememberedOrder | null {
   }
 }
 
-type State =
-  | { status: 'loading' }
-  | { status: 'found'; remembered: RememberedOrder }
-  | { status: 'lookup' };
+type State = { status: 'loading' } | { status: 'found'; remembered: RememberedOrder } | { status: 'lookup' };
 
 /**
  * The confirmation. It shows the order straight after it is placed (handed over
@@ -50,7 +47,10 @@ export function OrderView({ number }: { number: string }) {
     if (session.status === 'signed-in') {
       let live = true;
       apiAuthed<Order>(`/orders/${encodeURIComponent(number)}`)
-        .then((order) => live && setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } }))
+        .then(
+          (order) =>
+            live && setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } }),
+        )
         .catch(() => live && setState({ status: 'lookup' }));
       return () => {
         live = false;
@@ -70,12 +70,21 @@ export function OrderView({ number }: { number: string }) {
   }
 
   if (state.status === 'lookup') {
-    return <Lookup number={number} onFound={(order) => setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } })} />;
+    return (
+      <Lookup
+        number={number}
+        onFound={(order) =>
+          setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } })
+        }
+      />
+    );
   }
 
   const { order, bespoke, balance } = state.remembered;
   const first = (order.guestName ?? order.shippingAddress?.fullName ?? '').trim().split(/\s+/)[0] ?? '';
-  const accounts = (order.payment?.meta?.accounts ?? []).filter((account) => isFilled(account.iban) || isFilled(account.accountNumber));
+  const accounts = (order.payment?.meta?.accounts ?? []).filter(
+    (account) => isFilled(account.iban) || isFilled(account.accountNumber),
+  );
   const bank = order.payment && order.payment.redirectUrl === null && order.payment.meta?.accounts !== undefined;
   const timeline = bespoke
     ? [
@@ -90,7 +99,15 @@ export function OrderView({ number }: { number: string }) {
 
   return (
     <div className="confirm-page">
-      <svg className="seal" width="132" height="132" viewBox="0 0 140 140" fill="none" stroke="currentColor" aria-hidden="true">
+      <svg
+        className="seal"
+        width="132"
+        height="132"
+        viewBox="0 0 140 140"
+        fill="none"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
         <circle cx="70" cy="70" r="66" strokeWidth="1" />
         <circle className="inner" cx="70" cy="70" r="54" strokeWidth="0.6" />
         <path d="M50 71 L64 84 L91 57" strokeWidth="1.6" />
@@ -98,7 +115,9 @@ export function OrderView({ number }: { number: string }) {
 
       <div className="rise d1 confirm-head">
         <span className="eyebrow">{t('eyebrow', { number: order.number })}</span>
-        <h1 className="serif">{first ? t.rich('thanksName', { name: first, em: (chunks) => <em>{chunks}</em> }) : t('thanks')}</h1>
+        <h1 className="serif">
+          {first ? t.rich('thanksName', { name: first, em: (chunks) => <em>{chunks}</em> }) : t('thanks')}
+        </h1>
         <p>{bespoke ? t('ledeBespoke') : t('ledeReady')}</p>
       </div>
 
@@ -133,7 +152,12 @@ export function OrderView({ number }: { number: string }) {
       </ol>
 
       <div className="rise d3 btn-row" style={{ justifyContent: 'center' }}>
-        <Link className="btn-gold" href={bespoke ? { pathname: '/consultation', query: { kind: 'atelier', order: order.number } } : '/collection'}>
+        <Link
+          className="btn-gold"
+          href={
+            bespoke ? { pathname: '/consultation', query: { kind: 'atelier', order: order.number } } : '/collection'
+          }
+        >
           {t('bookConsultation')}
         </Link>
         <Link className="btn-line" href="/dashboard">
@@ -143,7 +167,13 @@ export function OrderView({ number }: { number: string }) {
 
       <div className="rise d4 confirm-box">
         <div className="ph confirm-box-photo">
-          <Image src={image('roya-box')} alt={t('boxAlt')} fill sizes="(max-width: 700px) 100vw, 400px" className="photo" />
+          <Image
+            src={image('roya-box')}
+            alt={t('boxAlt')}
+            fill
+            sizes="(max-width: 700px) 100vw, 400px"
+            className="photo"
+          />
         </div>
         <div className="stack" style={{ padding: 36, justifyContent: 'center', gap: 12 }}>
           <span className="eyebrow">{t('boxEyebrow')}</span>
@@ -219,7 +249,11 @@ function ReceiptUpload({ paymentId }: { paymentId: string }) {
     try {
       const body = new FormData();
       body.append('file', file);
-      await api(`/payments/${encodeURIComponent(paymentId)}/receipt`, { method: 'POST', formData: body, expect: 'none' });
+      await api(`/payments/${encodeURIComponent(paymentId)}/receipt`, {
+        method: 'POST',
+        formData: body,
+        expect: 'none',
+      });
       setState('done');
     } catch {
       setState('error');
@@ -234,7 +268,12 @@ function ReceiptUpload({ paymentId }: { paymentId: string }) {
         {t('receiptTitle')}
       </label>
       <span className="bag-muted-sm">{t('receiptHelp')}</span>
-      <input id="receipt" type="file" accept="image/*,application/pdf" onChange={(event) => setFile(event.target.files?.[0] ?? null)} />
+      <input
+        id="receipt"
+        type="file"
+        accept="image/*,application/pdf"
+        onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+      />
       <button type="submit" className="btn-line" disabled={!file || state === 'sending'}>
         {state === 'sending' ? t('receiptSending') : t('receiptSend')}
       </button>
@@ -257,7 +296,10 @@ function Lookup({ number, onFound }: { number: string; onFound: (order: Order) =
     event.preventDefault();
     setState('sending');
     try {
-      const order = await api<Order>(`/orders/${encodeURIComponent(orderNumber.trim())}/track`, { method: 'POST', body: { phone } });
+      const order = await api<Order>(`/orders/${encodeURIComponent(orderNumber.trim())}/track`, {
+        method: 'POST',
+        body: { phone },
+      });
       onFound(order);
     } catch {
       setState('error');
@@ -273,13 +315,29 @@ function Lookup({ number, onFound }: { number: string; onFound: (order: Order) =
           <label className="lbl" htmlFor="lookup-number">
             {t('lookupNumber')}
           </label>
-          <input id="lookup-number" className="field" value={orderNumber} onChange={(event) => setOrderNumber(event.target.value)} dir="ltr" required />
+          <input
+            id="lookup-number"
+            className="field"
+            value={orderNumber}
+            onChange={(event) => setOrderNumber(event.target.value)}
+            dir="ltr"
+            required
+          />
         </div>
         <div className="f">
           <label className="lbl" htmlFor="lookup-phone">
             {t('lookupPhone')}
           </label>
-          <input id="lookup-phone" className="field" type="tel" autoComplete="tel" value={phone} onChange={(event) => setPhone(event.target.value)} dir="ltr" required />
+          <input
+            id="lookup-phone"
+            className="field"
+            type="tel"
+            autoComplete="tel"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+            dir="ltr"
+            required
+          />
         </div>
         {state === 'error' ? (
           <p role="alert" className="field-error">

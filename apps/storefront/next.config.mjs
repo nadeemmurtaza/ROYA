@@ -18,6 +18,8 @@ const API_INTERNAL_URL = process.env.API_INTERNAL_URL || 'http://localhost:3001/
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // A build can be written elsewhere, so it does not trample a running dev server's cache.
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   // Self-contained server bundle for the production image.
   output: 'standalone',
   // Trace dependencies from the pnpm workspace root so @newax/shared's files are included.

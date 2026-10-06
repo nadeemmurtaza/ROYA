@@ -609,11 +609,11 @@ html[dir='rtl'] .morph-fill {
   cursor: pointer;
   font-family: var(--font-sans);
   color: var(--band-text);
-  opacity: 0.5;
+  opacity: 0.72;
   transition: opacity 0.8s;
 }
 .step:hover {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 .step-on {
   opacity: 1;
@@ -651,7 +651,8 @@ html[dir='rtl'] .step-on.is-timed::after {
   margin-block-end: 4px;
 }
 .step .body {
-  color: var(--band-text-muted);
+  /* The step is dimmed when inactive; the darkest text keeps the dimmed copy above 4.5:1. */
+  color: var(--band-text);
   font-size: 15px;
   line-height: 1.6;
 }

@@ -52,7 +52,8 @@ describe('the stylesheets', () => {
     for (const file of files) {
       const source = readFileSync(join(STYLES, file), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
       // #rgb / #rrggbb, and rgb()/rgba()/hsl() with numbers (rgb(var(--x)) is fine).
-      for (const match of source.matchAll(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\(\s*\d/g)) literals.push(`${file}: ${match[0]}`);
+      for (const match of source.matchAll(/#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\(\s*\d/g))
+        literals.push(`${file}: ${match[0]}`);
     }
     expect(literals).toEqual([]);
   });

@@ -55,15 +55,7 @@ export function useCurrency(): CurrencyContextValue {
  * customer is actually billed (bag total, checkout, order). A price is a number
  * and a code, so it is set left-to-right even inside Arabic text.
  */
-export function Price({
-  minor,
-  prefix,
-  charged = false,
-}: {
-  minor: number;
-  prefix?: string;
-  charged?: boolean;
-}) {
+export function Price({ minor, prefix, charged = false }: { minor: number; prefix?: string; charged?: boolean }) {
   const { currency } = useCurrency();
   const text = formatPrice(minor, charged ? BASE_CURRENCY : currency);
   return (

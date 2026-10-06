@@ -1,5 +1,14 @@
 import type { CartLine } from '@/types/api';
-import { balanceDue, isTrunk, parseExtras, parseVariantLabel, pieceCount, piecesIn, trunkIn, type LineMeta } from './cart-model';
+import {
+  balanceDue,
+  isTrunk,
+  parseExtras,
+  parseVariantLabel,
+  pieceCount,
+  piecesIn,
+  trunkIn,
+  type LineMeta,
+} from './cart-model';
 
 const line = (over: Partial<CartLine>): CartLine => ({
   id: 'l',
@@ -17,7 +26,13 @@ const line = (over: Partial<CartLine>): CartLine => ({
 });
 
 describe('the trunk is how an order is presented, not a piece', () => {
-  const cart = { items: [line({}), line({ id: 't', slug: 'couture-trunk', unitPrice: 120_000 }), line({ id: 'x', slug: 'lilas', quantity: 2 })] };
+  const cart = {
+    items: [
+      line({}),
+      line({ id: 't', slug: 'couture-trunk', unitPrice: 120_000 }),
+      line({ id: 'x', slug: 'lilas', quantity: 2 }),
+    ],
+  };
 
   it('is recognised by its slug and left out of the pieces and their count', () => {
     expect(isTrunk(cart.items[1]!)).toBe(true);
@@ -67,7 +82,10 @@ describe('balanceDue', () => {
 
 describe('parseExtras', () => {
   it('reads what was saved', () => {
-    expect(parseExtras('{"presentation":"trunk","giftNote":"With love"}')).toEqual({ presentation: 'trunk', giftNote: 'With love' });
+    expect(parseExtras('{"presentation":"trunk","giftNote":"With love"}')).toEqual({
+      presentation: 'trunk',
+      giftNote: 'With love',
+    });
   });
   it('falls back to the box and no note for anything unexpected', () => {
     expect(parseExtras(null)).toEqual({ presentation: 'box', giftNote: '' });

@@ -7,7 +7,8 @@ const TRUNK_SLUG = BRAND.storefront.featured.presentationTrunk;
 
 export const isTrunk = (line: Pick<CartLine, 'slug'>): boolean => line.slug === TRUNK_SLUG;
 
-export const piecesIn = (cart: Pick<Cart, 'items'> | null): CartLine[] => (cart ? cart.items.filter((line) => !isTrunk(line)) : []);
+export const piecesIn = (cart: Pick<Cart, 'items'> | null): CartLine[] =>
+  cart ? cart.items.filter((line) => !isTrunk(line)) : [];
 
 export const trunkIn = (cart: Pick<Cart, 'items'> | null): CartLine | undefined => cart?.items.find(isTrunk);
 

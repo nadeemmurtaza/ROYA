@@ -15,7 +15,10 @@ import { BRAND } from '@newax/shared';
  */
 
 /** Both themes have the same keys with different values; typing by shape lets one function take either. */
-type Theme = { readonly [key: string]: string | Readonly<Record<string, string>>; readonly band: Readonly<Record<string, string>> };
+type Theme = {
+  readonly [key: string]: string | Readonly<Record<string, string>>;
+  readonly band: Readonly<Record<string, string>>;
+};
 
 const kebab = (key: string): string => key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 

@@ -138,7 +138,12 @@ html[dir='rtl'] .pcard-tag {
 .banner-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgb(var(--bg-rgb) / 0.88) 0%, rgb(var(--bg-rgb) / 0.4) 55%, rgb(var(--bg-rgb) / 0.1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgb(var(--bg-rgb) / 0.88) 0%,
+    rgb(var(--bg-rgb) / 0.4) 55%,
+    rgb(var(--bg-rgb) / 0.1) 100%
+  );
 }
 html[dir='rtl'] .banner-shade {
   transform: scaleX(-1);
@@ -212,8 +217,10 @@ html[dir='rtl'] .chip {
 }
 .sort-tools {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 22px;
+  gap: 12px 22px;
+  max-width: 100%;
   font-size: 13px;
   color: var(--text-muted);
 }
@@ -224,6 +231,7 @@ html[dir='rtl'] .chip {
 }
 .sort-select {
   min-height: 44px;
+  max-width: 100%;
   background: var(--bg);
   color: var(--text);
   border: 1px solid rgb(var(--line-rgb) / 0.3);

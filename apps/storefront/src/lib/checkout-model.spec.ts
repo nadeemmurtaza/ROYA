@@ -26,7 +26,13 @@ describe('validateDelivery', () => {
   });
 
   it('asks for every missing field and says what is wrong with a malformed one', () => {
-    expect(Object.keys(validateDelivery(EMPTY_DELIVERY)).sort()).toEqual(['email', 'emirate', 'fullName', 'line1', 'phone']);
+    expect(Object.keys(validateDelivery(EMPTY_DELIVERY)).sort()).toEqual([
+      'email',
+      'emirate',
+      'fullName',
+      'line1',
+      'phone',
+    ]);
     expect(validateDelivery({ ...valid, email: 'nope' }).email).toBe('email');
     expect(validateDelivery({ ...valid, phone: '12345' }).phone).toBe('phone');
   });
@@ -68,7 +74,14 @@ describe('buildShippingAddress', () => {
 
   it('carries the country in the province for an address abroad, and omits an empty second line', () => {
     expect(
-      buildShippingAddress({ ...valid, emirate: OUTSIDE, phone: '+44 7700 900123', city: 'London', country: 'United Kingdom', area: '' }),
+      buildShippingAddress({
+        ...valid,
+        emirate: OUTSIDE,
+        phone: '+44 7700 900123',
+        city: 'London',
+        country: 'United Kingdom',
+        area: '',
+      }),
     ).toEqual({
       fullName: 'Mariam Al Hashimi',
       phone: '+447700900123',
@@ -86,9 +99,9 @@ describe('buildShippingAddress', () => {
 
 describe('composeNote', () => {
   it('labels each part and leaves out what is empty', () => {
-    expect(composeNote({ delivery: 'White-glove delivery', presentation: 'The ROYA box', giftNote: ' With love ' })).toBe(
-      'Delivery: White-glove delivery\nPresentation: The ROYA box\nNote for the box: With love',
-    );
+    expect(
+      composeNote({ delivery: 'White-glove delivery', presentation: 'The ROYA box', giftNote: ' With love ' }),
+    ).toBe('Delivery: White-glove delivery\nPresentation: The ROYA box\nNote for the box: With love');
     expect(composeNote({})).toBe('');
   });
 

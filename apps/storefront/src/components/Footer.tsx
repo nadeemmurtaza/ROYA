@@ -38,7 +38,9 @@ export async function Footer() {
       </div>
 
       <div className="footer-base">
-        <span>{t('rights', { year: new Date().getFullYear(), name: BRAND.identity.name, country: BRAND.contact.country })}</span>
+        <span>
+          {t('rights', { year: new Date().getFullYear(), name: BRAND.identity.name, country: BRAND.contact.country })}
+        </span>
         <span>{t('payments')}</span>
         <span>
           <Link href="/help/privacy">{t('privacy')}</Link> · <Link href="/help/terms">{t('terms')}</Link>

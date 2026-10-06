@@ -11,7 +11,6 @@ import { api } from '@/lib/api';
 import { whatsappUrl } from '@/lib/brand-contact';
 import { image } from '@/lib/media';
 import { safeNext } from '@/lib/safe-next';
-import { useCart } from '@/providers/cart';
 import { useSession } from '@/providers/session';
 
 type Mode = 'in' | 'up' | 'forgot';
@@ -29,7 +28,6 @@ export function AccountForm() {
   const router = useRouter();
   const params = useSearchParams();
   const session = useSession();
-  const cart = useCart();
   const next = safeNext(params.get('next'));
 
   const [mode, setMode] = useState<Mode>(params.get('mode') === 'register' ? 'up' : 'in');
@@ -37,14 +35,23 @@ export function AccountForm() {
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
-  const [values, setValues] = useState({ identifier: '', password: '', firstName: '', lastName: '', email: '', phone: '', list: false });
+  const [values, setValues] = useState({
+    identifier: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    list: false,
+  });
 
   // Already signed in: nothing to do here.
   useEffect(() => {
     if (session.status === 'signed-in' && !busy) router.replace(next);
   }, [session.status, busy, router, next]);
 
-  const set = (field: keyof typeof values, value: string | boolean) => setValues((current) => ({ ...current, [field]: value }));
+  const set = (field: keyof typeof values, value: string | boolean) =>
+    setValues((current) => ({ ...current, [field]: value }));
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -67,11 +74,14 @@ export function AccountForm() {
     setBusy(true);
     try {
       if (mode === 'forgot') {
-        await api('/auth/forgot-password', { method: 'POST', body: { email: values.email.trim() }, expect: 'none' });
+        await api('/auth/forgot-password', {
+          method: 'POST',
+          body: { email: values.email.trim() },
+          expect: 'none',
+        });
         setSent(true);
       } else if (mode === 'in') {
         await session.login(values.identifier.trim(), values.password);
-        await cart.reload();
         router.replace(next);
       } else {
         await session.register({
@@ -85,15 +95,21 @@ export function AccountForm() {
           // Best effort: joining the list must never fail the sign-up that has already succeeded.
           void api('/crm/enquiries', {
             method: 'POST',
-            body: { name: `${values.firstName} ${values.lastName}`.trim(), email: values.email.trim(), source: 'private-list' },
+            body: {
+              name: `${values.firstName} ${values.lastName}`.trim(),
+              email: values.email.trim(),
+              source: 'private-list',
+            },
             expect: 'none',
           }).catch(() => undefined);
         }
-        await cart.reload();
         router.replace(next);
       }
     } catch (failure) {
-      setErrors({ form: mode === 'in' ? t('failedIn') : failure instanceof Error && failure.message ? failure.message : t('failedUp') });
+      setErrors({
+        form:
+          mode === 'in' ? t('failedIn') : failure instanceof Error && failure.message ? failure.message : t('failedUp'),
+      });
     } finally {
       setBusy(false);
     }
@@ -104,7 +120,15 @@ export function AccountForm() {
   return (
     <div className="account-page">
       <aside className="ph account-aside" data-keep="dark">
-        <Image src={image('mehr-portrait')} alt={t('asideAlt')} fill priority sizes="(max-width: 900px) 100vw, 50vw" className="photo" style={{ objectPosition: '50% 20%' }} />
+        <Image
+          src={image('mehr-portrait')}
+          alt={t('asideAlt')}
+          fill
+          priority
+          sizes="(max-width: 900px) 100vw, 50vw"
+          className="photo"
+          style={{ objectPosition: '50% 20%' }}
+        />
         <div className="account-shade" aria-hidden="true" />
         <Link href="/" className="account-logo" aria-label={BRAND.identity.shortName}>
           <span className="logo shine">{BRAND.identity.shortName}</span>
@@ -137,26 +161,27 @@ export function AccountForm() {
               <p className="bag-muted">{sent ? t('forgotSent') : t('forgotBody')}</p>
             </>
           ) : (
-            <div role="tablist" aria-label={t('tabsAria')} className="auth-tabs">
+            <>
               <h1 id="account-title" className="sr-only">
                 {t('metaTitle')}
               </h1>
-              {(['in', 'up'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  role="tab"
-                  className={`auth-tab${mode === tab ? ' auth-tab-on' : ''}`}
-                  aria-selected={mode === tab}
-                  onClick={() => {
-                    setMode(tab);
-                    setErrors({});
-                  }}
-                >
-                  {tab === 'in' ? t('signIn') : t('create')}
-                </button>
-              ))}
-            </div>
+              <div role="group" aria-label={t('tabsAria')} className="auth-tabs">
+                {(['in', 'up'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    className={`auth-tab${mode === tab ? ' auth-tab-on' : ''}`}
+                    aria-pressed={mode === tab}
+                    onClick={() => {
+                      setMode(tab);
+                      setErrors({});
+                    }}
+                  >
+                    {tab === 'in' ? t('signIn') : t('create')}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
 
           {!(mode === 'forgot' && sent) ? (
@@ -164,27 +189,72 @@ export function AccountForm() {
               {mode === 'up' ? (
                 <div className="two">
                   <Field id="a-first" label={t('firstName')} error={errors.firstName}>
-                    <input id="a-first" className="field" autoComplete="given-name" value={values.firstName} onChange={(event) => set('firstName', event.target.value)} aria-invalid={errors.firstName ? true : undefined} aria-describedby="a-first-error" />
+                    <input
+                      id="a-first"
+                      className="field"
+                      autoComplete="given-name"
+                      value={values.firstName}
+                      onChange={(event) => set('firstName', event.target.value)}
+                      aria-invalid={errors.firstName ? true : undefined}
+                      aria-describedby="a-first-error"
+                    />
                   </Field>
                   <Field id="a-last" label={t('lastName')}>
-                    <input id="a-last" className="field" autoComplete="family-name" value={values.lastName} onChange={(event) => set('lastName', event.target.value)} />
+                    <input
+                      id="a-last"
+                      className="field"
+                      autoComplete="family-name"
+                      value={values.lastName}
+                      onChange={(event) => set('lastName', event.target.value)}
+                    />
                   </Field>
                 </div>
               ) : null}
 
               {mode === 'in' ? (
                 <Field id="a-identifier" label={t('identifier')} error={errors.identifier}>
-                  <input id="a-identifier" className="field" autoComplete="username" dir="ltr" value={values.identifier} onChange={(event) => set('identifier', event.target.value)} aria-invalid={errors.identifier ? true : undefined} aria-describedby="a-identifier-error" />
+                  <input
+                    id="a-identifier"
+                    className="field"
+                    autoComplete="username"
+                    dir="ltr"
+                    value={values.identifier}
+                    onChange={(event) => set('identifier', event.target.value)}
+                    aria-invalid={errors.identifier ? true : undefined}
+                    aria-describedby="a-identifier-error"
+                  />
                 </Field>
               ) : (
                 <Field id="a-email" label={t('email')} error={errors.email}>
-                  <input id="a-email" className="field" type="email" autoComplete="email" dir="ltr" placeholder="you@example.com" value={values.email} onChange={(event) => set('email', event.target.value)} aria-invalid={errors.email ? true : undefined} aria-describedby="a-email-error" />
+                  <input
+                    id="a-email"
+                    className="field"
+                    type="email"
+                    autoComplete="email"
+                    dir="ltr"
+                    placeholder="you@example.com"
+                    value={values.email}
+                    onChange={(event) => set('email', event.target.value)}
+                    aria-invalid={errors.email ? true : undefined}
+                    aria-describedby="a-email-error"
+                  />
                 </Field>
               )}
 
               {mode === 'up' ? (
                 <Field id="a-phone" label={t('phone')} error={errors.phone}>
-                  <input id="a-phone" className="field" type="tel" autoComplete="tel" dir="ltr" placeholder="+971 50 123 4567" value={values.phone} onChange={(event) => set('phone', event.target.value)} aria-invalid={errors.phone ? true : undefined} aria-describedby="a-phone-error" />
+                  <input
+                    id="a-phone"
+                    className="field"
+                    type="tel"
+                    autoComplete="tel"
+                    dir="ltr"
+                    placeholder="+971 50 123 4567"
+                    value={values.phone}
+                    onChange={(event) => set('phone', event.target.value)}
+                    aria-invalid={errors.phone ? true : undefined}
+                    aria-describedby="a-phone-error"
+                  />
                 </Field>
               ) : null}
 
@@ -195,7 +265,14 @@ export function AccountForm() {
                       {t('password')}
                     </label>
                     {mode === 'in' ? (
-                      <button type="button" className="inline-link" onClick={() => { setMode('forgot'); setErrors({}); }}>
+                      <button
+                        type="button"
+                        className="inline-link"
+                        onClick={() => {
+                          setMode('forgot');
+                          setErrors({});
+                        }}
+                      >
                         {t('forgot')}
                       </button>
                     ) : null}
@@ -212,11 +289,20 @@ export function AccountForm() {
                       aria-invalid={errors.password ? true : undefined}
                       aria-describedby="a-password-error"
                     />
-                    <button type="button" className="pw-toggle" aria-label={reveal ? t('hideAria') : t('showAria')} onClick={() => setReveal((value) => !value)}>
+                    <button
+                      type="button"
+                      className="pw-toggle"
+                      aria-label={reveal ? t('hideAria') : t('showAria')}
+                      onClick={() => setReveal((value) => !value)}
+                    >
                       {reveal ? t('hide') : t('show')}
                     </button>
                   </div>
-                  <span id="a-password-error" role={errors.password ? 'alert' : undefined} className="field-error f-error">
+                  <span
+                    id="a-password-error"
+                    role={errors.password ? 'alert' : undefined}
+                    className="field-error f-error"
+                  >
                     {errors.password}
                   </span>
                   {mode === 'up' ? <span className="bag-muted-sm">{t('passwordHint')}</span> : null}
@@ -225,7 +311,11 @@ export function AccountForm() {
 
               {mode === 'up' ? (
                 <label className="terms">
-                  <input type="checkbox" checked={values.list} onChange={(event) => set('list', event.target.checked)} />
+                  <input
+                    type="checkbox"
+                    checked={values.list}
+                    onChange={(event) => set('list', event.target.checked)}
+                  />
                   <span>{t('privateList')}</span>
                 </label>
               ) : null}
@@ -243,7 +333,15 @@ export function AccountForm() {
           ) : null}
 
           {mode === 'forgot' ? (
-            <button type="button" className="inline-link center" onClick={() => { setMode('in'); setSent(false); setErrors({}); }}>
+            <button
+              type="button"
+              className="inline-link center"
+              onClick={() => {
+                setMode('in');
+                setSent(false);
+                setErrors({});
+              }}
+            >
               {t('backToSignIn')}
             </button>
           ) : (

@@ -20,10 +20,23 @@ interface Props {
   onPlace: () => void;
 }
 
-export function ReviewStep({ address, option, payment, agreed, placing, error, total, onAgree, onBack, onPlace }: Props) {
+export function ReviewStep({
+  address,
+  option,
+  payment,
+  agreed,
+  placing,
+  error,
+  total,
+  onAgree,
+  onBack,
+  onPlace,
+}: Props) {
   const t = useTranslations('checkout');
   const locale = useLocale();
-  const place = [address.line2, address.city, address.province !== address.city ? address.province : undefined].filter(Boolean).join(', ');
+  const place = [address.line2, address.city, address.province !== address.city ? address.province : undefined]
+    .filter(Boolean)
+    .join(', ');
 
   return (
     <section className="pane" aria-labelledby="review-title">

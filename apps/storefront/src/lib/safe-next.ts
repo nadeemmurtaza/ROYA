@@ -9,7 +9,8 @@ const LEADING_LOCALE = new RegExp(`^/(${LOCALES.join('|')})(?=/|$)`);
  */
 export function safeNext(value: string | null | undefined, fallback = '/dashboard'): string {
   if (!value) return fallback;
-  if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\') || /[\u0000-\u001f]/.test(value)) return fallback;
+  if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\') || /[\u0000-\u001f]/.test(value))
+    return fallback;
   // The router adds the language itself; one already in the path would double it.
   return value.replace(LEADING_LOCALE, '') || fallback;
 }

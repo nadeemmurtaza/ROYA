@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
+import { alternatesFor } from '@/lib/seo';
 
 /** The pages the footer links to. Their wording lives in the message files, so it is translated and edited like any other copy. */
 const TOPICS = ['delivery', 'alterations', 'sizing', 'care', 'privacy', 'terms'] as const;
@@ -18,7 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, topic } = await params;
   if (!isTopic(topic)) return {};
   const t = await getTranslations({ locale, namespace: 'help' });
-  return { title: t(`${topic}.title`), description: t(`${topic}.lead`), alternates: { canonical: `/${locale}/help/${topic}` } };
+  return {
+    title: t(`${topic}.title`),
+    description: t(`${topic}.lead`),
+    alternates: alternatesFor(locale, `/help/${topic}`),
+  };
 }
 
 export default async function HelpPage({ params }: Props) {

@@ -61,7 +61,8 @@ export function BagView() {
   // The saved choice comes back after mount (storage is not there on the server); a trunk already in the bag wins.
   useEffect(() => setExtras(loadExtras()), []);
   useEffect(() => {
-    if (trunk) setExtras((current) => (current.presentation === 'trunk' ? current : { ...current, presentation: 'trunk' }));
+    if (trunk)
+      setExtras((current) => (current.presentation === 'trunk' ? current : { ...current, presentation: 'trunk' }));
   }, [trunk]);
   useEffect(() => {
     let live = true;
@@ -142,7 +143,13 @@ export function BagView() {
   const options: Array<{ key: Presentation; name: string; description: string }> = [
     { key: 'box', name: t('presBoxName'), description: t('presBoxDesc') },
     ...(trunkOffer || trunk
-      ? [{ key: 'trunk' as const, name: t('presTrunkName'), description: t('presTrunkDesc', { price: formatPrice(trunk?.unitPrice ?? trunkOffer?.price ?? 0) }) }]
+      ? [
+          {
+            key: 'trunk' as const,
+            name: t('presTrunkName'),
+            description: t('presTrunkDesc', { price: formatPrice(trunk?.unitPrice ?? trunkOffer?.price ?? 0) }),
+          },
+        ]
       : []),
     { key: 'plain', name: t('presPlainName'), description: t('presPlainDesc') },
   ];
@@ -174,11 +181,20 @@ export function BagView() {
                 <li key={line.id} className="bag-line fade">
                   <Link href={`/product/${line.slug}`} className="ph bag-thumb" aria-label={line.name}>
                     {line.imageUrl ? (
-                      <Image src={line.imageUrl} alt="" fill sizes="180px" className="photo" style={{ objectPosition: '50% 25%' }} />
+                      <Image
+                        src={line.imageUrl}
+                        alt=""
+                        fill
+                        sizes="180px"
+                        className="photo"
+                        style={{ objectPosition: '50% 25%' }}
+                      />
                     ) : null}
                   </Link>
                   <div className="bag-line-info">
-                    {info ? <span className="eyebrow">{product(TYPE_KEY[info.type], { category: info.category })}</span> : null}
+                    {info ? (
+                      <span className="eyebrow">{product(TYPE_KEY[info.type], { category: info.category })}</span>
+                    ) : null}
                     <Link href={`/product/${line.slug}`} className="serif bag-name">
                       {line.name}
                     </Link>
@@ -193,10 +209,20 @@ export function BagView() {
                     </span>
                     {bespoke ? <span className="bag-badge">{t('deposit')}</span> : null}
                     <div className="bag-actions">
-                      <button type="button" className="lnk" disabled={cart.busy} onClick={() => void moveToWishlist(line)}>
+                      <button
+                        type="button"
+                        className="lnk"
+                        disabled={cart.busy}
+                        onClick={() => void moveToWishlist(line)}
+                      >
                         {t('moveToWishlist')}
                       </button>
-                      <button type="button" className="lnk" disabled={cart.busy} onClick={() => void cart.remove(line.id)}>
+                      <button
+                        type="button"
+                        className="lnk"
+                        disabled={cart.busy}
+                        onClick={() => void cart.remove(line.id)}
+                      >
                         {t('remove')}
                       </button>
                     </div>
@@ -205,7 +231,11 @@ export function BagView() {
                     <span className="serif">
                       <Price minor={line.unitPrice * line.quantity} charged />
                     </span>
-                    {bespoke && info ? <span className="bag-muted-sm">{t('of', { price: formatPrice(info.basePrice * line.quantity) })}</span> : null}
+                    {bespoke && info ? (
+                      <span className="bag-muted-sm">
+                        {t('of', { price: formatPrice(info.basePrice * line.quantity) })}
+                      </span>
+                    ) : null}
                   </div>
                 </li>
               );
@@ -261,7 +291,9 @@ export function BagView() {
           <dl className="summary-lines">
             {pieces.map((line) => (
               <div key={line.id}>
-                <dt>{meta.get(line.slug)?.type === 'bespoke' ? t('summaryDeposit', { name: line.name }) : line.name}</dt>
+                <dt>
+                  {meta.get(line.slug)?.type === 'bespoke' ? t('summaryDeposit', { name: line.name }) : line.name}
+                </dt>
                 <dd>
                   <Price minor={line.unitPrice * line.quantity} charged />
                 </dd>
@@ -285,7 +317,9 @@ export function BagView() {
           </span>
         </div>
         {owed > 0 ? <span className="bag-muted-sm">{t('balanceNote', { price: formatPrice(owed) })}</span> : null}
-        <span className="bag-muted-sm">{t('vatNote', { percent: BRAND.commerce.vatPercent, currency: BRAND.locale.currency })}</span>
+        <span className="bag-muted-sm">
+          {t('vatNote', { percent: BRAND.commerce.vatPercent, currency: BRAND.locale.currency })}
+        </span>
         {pieces.length > 0 ? (
           <>
             <Link className="btn-gold" href="/checkout">

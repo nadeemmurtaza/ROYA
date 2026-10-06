@@ -15,10 +15,7 @@ import type { ShippingOption } from '@/types/api';
 import { Field, describedBy } from './Field';
 
 export type OptionsState =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'ready'; items: ShippingOption[] }
-  | { status: 'error' };
+  { status: 'idle' } | { status: 'loading' } | { status: 'ready'; items: ShippingOption[] } | { status: 'error' };
 
 interface Props {
   form: DeliveryForm;
@@ -73,19 +70,34 @@ export function DeliveryStep({
       </h1>
       {!signedIn ? (
         <p className="pane-note">
-          {t.rich('guest', { link: (chunks) => <Link href={{ pathname: '/account', query: { next: '/checkout' } }}>{chunks}</Link> })}
+          {t.rich('guest', {
+            link: (chunks) => <Link href={{ pathname: '/account', query: { next: '/checkout' } }}>{chunks}</Link>,
+          })}
         </p>
       ) : null}
 
       <div className="field-grid">
         <Field id="d-email" label={t('email')} error={problem('email')}>
-          <input {...bind('email')} type="email" autoComplete="email" inputMode="email" placeholder={t('emailPlaceholder')} />
+          <input
+            {...bind('email')}
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            placeholder={t('emailPlaceholder')}
+          />
         </Field>
         <Field id="d-fullName" label={t('fullName')} error={problem('fullName')}>
           <input {...bind('fullName')} autoComplete="name" />
         </Field>
         <Field id="d-phone" label={t('phone')} error={problem('phone')}>
-          <input {...bind('phone')} type="tel" autoComplete="tel" inputMode="tel" placeholder={t('phonePlaceholder')} dir="ltr" />
+          <input
+            {...bind('phone')}
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            placeholder={t('phonePlaceholder')}
+            dir="ltr"
+          />
         </Field>
         <Field id="d-emirate" label={t('emirate')} error={problem('emirate')}>
           <select {...bind('emirate')} autoComplete="address-level1">
@@ -123,8 +135,16 @@ export function DeliveryStep({
         </span>
         <div role="radiogroup" aria-labelledby="method-label" className="stack" style={{ gap: 14 }}>
           {options.status === 'idle' ? <p className="bag-muted">{t('methodIdle')}</p> : null}
-          {options.status === 'loading' ? <p className="bag-muted" role="status">{t('methodChecking')}</p> : null}
-          {options.status === 'error' ? <p className="field-error" role="alert">{t('methodError')}</p> : null}
+          {options.status === 'loading' ? (
+            <p className="bag-muted" role="status">
+              {t('methodChecking')}
+            </p>
+          ) : null}
+          {options.status === 'error' ? (
+            <p className="field-error" role="alert">
+              {t('methodError')}
+            </p>
+          ) : null}
           {options.status === 'ready' && options.items.length === 0 ? (
             <p className="field-error" role="alert">
               {t('methodNone')}
@@ -145,7 +165,9 @@ export function DeliveryStep({
                     <span className={`dot${on ? ' dot-on' : ''}`} aria-hidden="true" />
                     <span className="stack" style={{ gap: 6 }}>
                       <span className="serif opt-name">{option.label}</span>
-                      <span className="opt-desc">{KNOWN_METHODS.includes(option.methodKey) ? t(`method_${option.methodKey}`) : null}</span>
+                      <span className="opt-desc">
+                        {KNOWN_METHODS.includes(option.methodKey) ? t(`method_${option.methodKey}`) : null}
+                      </span>
                     </span>
                     <span className="opt-price">
                       {option.fee === 0 ? t('free') : <Price minor={option.fee} charged />}
@@ -179,7 +201,12 @@ export function DeliveryStep({
         </p>
       ) : null}
       <div className="pane-actions end">
-        <button type="button" className="btn-gold" onClick={onNext} disabled={options.status === 'ready' && options.items.length === 0}>
+        <button
+          type="button"
+          className="btn-gold"
+          onClick={onNext}
+          disabled={options.status === 'ready' && options.items.length === 0}
+        >
           {t('continuePayment')}
         </button>
       </div>

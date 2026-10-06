@@ -4,13 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { whatsappUrl } from '@/lib/brand-contact';
-import {
-  MADE_TO_MEASURE,
-  fitsOf,
-  shadesOf,
-  variantFor,
-  type PieceType,
-} from '@/lib/product-model';
+import { MADE_TO_MEASURE, fitsOf, shadesOf, variantFor, type PieceType } from '@/lib/product-model';
 import type { ApiVariant } from '@/types/api';
 import { Price } from '@/providers/currency';
 import { useCart } from '@/providers/cart';
@@ -98,10 +92,20 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
         {isBespoke && hasMtm ? (
           <>
             <div className="tabs" role="group" aria-label={t('fit')}>
-              <button type="button" className={`tab${mode === 'mtm' ? ' tab-on' : ''}`} aria-pressed={mode === 'mtm'} onClick={() => setMode('mtm')}>
+              <button
+                type="button"
+                className={`tab${mode === 'mtm' ? ' tab-on' : ''}`}
+                aria-pressed={mode === 'mtm'}
+                onClick={() => setMode('mtm')}
+              >
                 {t('madeToMeasure')}
               </button>
-              <button type="button" className={`tab${mode === 'std' ? ' tab-on' : ''}`} aria-pressed={mode === 'std'} onClick={() => setMode('std')}>
+              <button
+                type="button"
+                className={`tab${mode === 'std' ? ' tab-on' : ''}`}
+                aria-pressed={mode === 'std'}
+                onClick={() => setMode('std')}
+              >
                 {t('atelierSizes')}
               </button>
             </div>

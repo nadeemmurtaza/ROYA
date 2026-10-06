@@ -101,7 +101,9 @@ export function CommissionPortal() {
             <Link className="btn-ink" href="/consultation">
               {t('commissionCta')}
             </Link>
-            <span className="commission-note">{t('commissionNote', { percent: BRAND.commerce.bespokeDepositPercent })}</span>
+            <span className="commission-note">
+              {t('commissionNote', { percent: BRAND.commerce.bespokeDepositPercent })}
+            </span>
           </div>
         </div>
       </div>

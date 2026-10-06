@@ -38,3 +38,4 @@ dump.rdb
 
 # Claude Code agent worktrees: machine-local scratch state
 .claude/worktrees/
+.next-*/

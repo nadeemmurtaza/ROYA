@@ -1,4 +1,4 @@
-import { BRAND } from '@newax/shared';
+import { BRAND, LOCALES } from '@newax/shared';
 import type { ApiProduct } from '@/types/api';
 import { SITE_URL } from './env';
 
@@ -26,5 +26,16 @@ export function productJsonLd(product: ApiProduct, locale: string): Record<strin
       price: (product.basePrice / BRAND.locale.minorUnitsPerMajor).toFixed(2),
       availability: made ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
     },
+  };
+}
+
+/**
+ * canonical + hreflang for a page, so each language points at the other. A page
+ * that sets `alternates` replaces the layout's, so every page that has one uses this.
+ */
+export function alternatesFor(locale: string, path: string): { canonical: string; languages: Record<string, string> } {
+  return {
+    canonical: `/${locale}${path}`,
+    languages: Object.fromEntries(LOCALES.map((code) => [code, `/${code}${path}`])),
   };
 }

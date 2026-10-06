@@ -82,8 +82,7 @@ export function variantFor(
 }
 
 export type GalleryItem =
-  | { kind: 'image'; url: string; alt: string }
-  | { kind: 'film'; url: string; alt: string; film: FilmSources };
+  { kind: 'image'; url: string; alt: string } | { kind: 'film'; url: string; alt: string; film: FilmSources };
 
 /** Photographs first, then the films, as the design lays the gallery out. */
 export function galleryOf(product: Pick<ApiProduct, 'images' | 'name'>): GalleryItem[] {

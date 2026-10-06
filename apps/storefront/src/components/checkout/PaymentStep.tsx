@@ -5,10 +5,7 @@ import { SECOND_LOCALE } from '@newax/shared';
 import { ChevronLeft } from '@/components/icons';
 import type { PaymentMethod } from '@/types/api';
 
-export type PaymentsState =
-  | { status: 'loading' }
-  | { status: 'ready'; items: PaymentMethod[] }
-  | { status: 'error' };
+export type PaymentsState = { status: 'loading' } | { status: 'ready'; items: PaymentMethod[] } | { status: 'error' };
 
 interface Props {
   payments: PaymentsState;
@@ -34,9 +31,21 @@ export function PaymentStep({ payments, paymentKey, onPick, onBack, onNext }: Pr
         {t('paymentTitle')}
       </h1>
 
-      {payments.status === 'loading' ? <p className="bag-muted" role="status">{t('methodChecking')}</p> : null}
-      {payments.status === 'error' ? <p className="field-error" role="alert">{t('paymentError')}</p> : null}
-      {payments.status === 'ready' && payments.items.length === 0 ? <p className="field-error" role="alert">{t('paymentNone')}</p> : null}
+      {payments.status === 'loading' ? (
+        <p className="bag-muted" role="status">
+          {t('methodChecking')}
+        </p>
+      ) : null}
+      {payments.status === 'error' ? (
+        <p className="field-error" role="alert">
+          {t('paymentError')}
+        </p>
+      ) : null}
+      {payments.status === 'ready' && payments.items.length === 0 ? (
+        <p className="field-error" role="alert">
+          {t('paymentNone')}
+        </p>
+      ) : null}
 
       {payments.status === 'ready' && payments.items.length > 0 ? (
         <div role="radiogroup" aria-labelledby="payment-title" className="stack" style={{ gap: 14 }}>
