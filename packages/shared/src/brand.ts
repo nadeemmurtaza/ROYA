@@ -783,6 +783,14 @@ const storefrontLight = {
 const storefront = {
   /** The design opens in dark; light is a toggle, remembered per visitor. */
   defaultTheme: 'dark',
+  /**
+   * The two pieces the design leads with, by catalogue slug: the flagship the
+   * Home hero and the full-width section point at, and a second one the search
+   * overlay offers as a shortcut. A slug is content, so it lives with the
+   * brand and not in a component; the atelier renaming the piece means one
+   * edit here.
+   */
+  featured: { flagship: 'mehr', secondary: 'noir' },
   themes: { dark: storefrontDark, light: storefrontLight },
 
   /**
@@ -797,8 +805,10 @@ const storefront = {
     logo: { family: 'Cinzel', fallback: ['Trajan Pro', 'Georgia', 'serif'] },
     /** Body, labels, controls. */
     sans: { family: 'Jost', fallback: ['Futura', 'Century Gothic', 'sans-serif'] },
-    /** Arabic text, in place of all three above. */
+    /** Arabic display text (headlines, prices), in place of `serif`. */
     arabic: { family: 'Amiri', fallback: ['Times New Roman', 'serif'] },
+    /** Arabic body, labels and buttons, in place of `sans`. */
+    arabicSans: { family: 'IBM Plex Sans Arabic', fallback: ['Jost', 'sans-serif'] },
   },
 
   /** Page width and the side gutter, as the design sets them. */
