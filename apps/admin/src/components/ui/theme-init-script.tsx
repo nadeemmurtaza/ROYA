@@ -1,11 +1,12 @@
-import { themeInitScript } from '@newax/shared';
+import { BRAND, themeInitScript } from '@newax/shared';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * Inline this in the `<head>` of every root layout that renders `<html>`.
  *
  * It puts `data-theme` on <html> before the first paint, from the stored
- * preference or, failing that, the device. Without it a dark-mode visit paints
+ * preference or, failing that, the theme the storefront opens in (so the two
+ * halves of the house greet a first-time visitor alike). Without it a dark-mode visit paints
  * light for a frame and then flips — the flash of white that makes a dark
  * theme feel broken. The script text comes from `@newax/shared`, which the POS
  * also uses, so the two apps apply the rule identically.
@@ -17,5 +18,5 @@ import { STORAGE_KEYS } from '@/constants/storage';
  * by design.
  */
 export function ThemeInitScript() {
-  return <script dangerouslySetInnerHTML={{ __html: themeInitScript(STORAGE_KEYS.theme) }} />;
+  return <script dangerouslySetInnerHTML={{ __html: themeInitScript(STORAGE_KEYS.theme, BRAND.storefront.defaultTheme) }} />;
 }

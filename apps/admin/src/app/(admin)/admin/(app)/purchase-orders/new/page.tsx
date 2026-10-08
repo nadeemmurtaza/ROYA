@@ -113,7 +113,7 @@ export default function NewPurchaseOrderPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">New Purchase Order</h1>
+      <h1 className="mb-1 page-title">New Purchase Order</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Draft a new order to send to a supplier.
       </p>

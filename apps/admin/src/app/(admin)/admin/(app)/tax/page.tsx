@@ -159,7 +159,7 @@ export default function TaxAdminPage() {
     <>
       <ToastStack toasts={toasts} onDismiss={removeToast} />
 
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tax</h1>
+      <h1 className="mb-1 page-title">Tax</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Off by default. Turning it on charges GST at checkout using the classes and rates below —
         see docs/implementation/tax-compliance/15-tax-module.md for the design.

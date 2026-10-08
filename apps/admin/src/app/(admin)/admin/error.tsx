@@ -26,7 +26,7 @@ export default function AdminError({
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-6">
       <div className="card w-full max-w-lg p-6">
-        <h1 className="text-lg font-semibold text-neutral-900">This screen failed to load</h1>
+        <h1 className="page-title">This screen failed to load</h1>
         <p className="mt-2 text-sm text-neutral-900/60">
           The action did not complete. Retrying is safe — nothing was saved.
         </p>

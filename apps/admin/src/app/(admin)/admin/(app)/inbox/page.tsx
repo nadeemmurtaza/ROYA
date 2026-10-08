@@ -44,7 +44,7 @@ export default function AdminInboxPage() {
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-neutral-900">Support Inbox</h1>
+        <h1 className="page-title">Support Inbox</h1>
         <p className="mt-1 text-sm text-neutral-900/60">
           {channel === 'email'
             ? 'Replies pulled from a connected mailbox. Recognised customers are linked automatically — the rest are waiting for you.'
@@ -60,7 +60,7 @@ export default function AdminInboxPage() {
             onClick={() => setChannel(option === 'email' ? null : option)}
             className={cn(
               'rounded-md px-3 py-1.5 text-sm capitalize',
-              channel === option ? 'bg-accent-hover text-white' : 'text-neutral-900/60 hover:bg-neutral-50',
+              channel === option ? 'bg-accent-hover text-on-accent' : 'text-neutral-900/60 hover:bg-neutral-50',
             )}
           >
             {option === 'email' ? 'Email' : 'WhatsApp'}
@@ -141,7 +141,7 @@ function EmailInboxView() {
       <FilterBar
         filters={[]}
         trailing={
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {(['unlinked', 'linked', 'all'] as const).map((option) => (
               <button
                 key={option}
@@ -149,7 +149,7 @@ function EmailInboxView() {
                 onClick={() => setFilterParam(option === 'unlinked' ? null : option)}
                 className={cn(
                   'rounded-md px-3 py-1.5 text-sm capitalize',
-                  filter === option ? 'bg-accent-hover text-white' : 'text-neutral-900/60 hover:bg-neutral-50',
+                  filter === option ? 'bg-accent-hover text-on-accent' : 'text-neutral-900/60 hover:bg-neutral-50',
                 )}
               >
                 {option === 'unlinked' ? 'Needs linking' : option}
@@ -448,7 +448,7 @@ function WhatsAppInboxView() {
       <FilterBar
         filters={[]}
         trailing={
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {(['waiting', 'all'] as const).map((option) => (
               <button
                 key={option}
@@ -456,7 +456,7 @@ function WhatsAppInboxView() {
                 onClick={() => setFilterParam(option === 'waiting' ? null : option)}
                 className={cn(
                   'rounded-md px-3 py-1.5 text-sm capitalize',
-                  filter === option ? 'bg-accent-hover text-white' : 'text-neutral-900/60 hover:bg-neutral-50',
+                  filter === option ? 'bg-accent-hover text-on-accent' : 'text-neutral-900/60 hover:bg-neutral-50',
                 )}
               >
                 {option === 'waiting' ? 'Waiting on you' : 'All'}

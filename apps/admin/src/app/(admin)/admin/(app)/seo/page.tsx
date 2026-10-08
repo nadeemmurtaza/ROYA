@@ -12,7 +12,7 @@ import type { AdminRedirect, SeoHealthRow } from '@/types/api';
 export default function SeoPage() {
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">SEO & redirects</h1>
+      <h1 className="mb-1 page-title">SEO & redirects</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         The publish-gate backlog, and every URL that now 301s somewhere else.
       </p>

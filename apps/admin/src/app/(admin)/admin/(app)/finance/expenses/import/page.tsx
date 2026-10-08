@@ -14,7 +14,7 @@ import { ROUTES } from '@/constants/routes';
 export default function AdminExpensesImportPage() {
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Import expenses</h1>
+      <h1 className="mb-1 page-title">Import expenses</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Load a spreadsheet or paper expense log. Every row always creates a new expense —
         an expense has no natural key to match against, so re-running the same file adds

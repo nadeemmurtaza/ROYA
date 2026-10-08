@@ -27,8 +27,9 @@ const theme = createThemeTailwind({
  * people independently eyeballing "close enough".
  *
  * `neutral` (monochrome ramp) is the whole background/text/border system for
- * both admin and storefront. `accent` (`#0e8294`) is the one brand colour,
- * used sparingly for calls to action, links and focus rings. `star` stays
+ * both admin and storefront. `accent` is the one brand colour (on this brand
+ * the storefront's ink on parchment, pearl on dark), used sparingly for calls
+ * to action, links and focus rings. `star` stays
  * reserved for rating stars — never repurpose it. Error/success/warning use
  * Tailwind's stock `red`/`green`/`amber` scales, already used consistently
  * throughout the app; there is no custom token for those.
@@ -98,26 +99,34 @@ export default {
         auth: 'calc(100vh - theme(spacing.16))',
       },
       fontFamily: {
-        // System stacks, so nothing is fetched at runtime. The second language's
-        // fields use the same stack: every platform's system font sets Arabic.
+        // The storefront's own typefaces, self-hosted from @fontsource (imported in
+        // the root layout), so nothing is fetched from a font CDN and a headline
+        // here is set in the same face as the same headline in the shop.
         sans: [...BRAND.theme.fonts.sansStack],
-        second: [...BRAND.theme.fonts.sansStack],
-        // Storefront reskin typeface (Encode Sans, loaded via next/font/google
-        // in the storefront locale layout as --font-encode-sans). Falls back
-        // to the same system stack as `sans` so nothing blocks first paint
-        // while the font loads.
-        display: [
-          'var(--font-encode-sans)',
-          'Encode Sans',
-          'system-ui',
-          '-apple-system',
-          'Segoe UI',
-          'Roboto',
-          'sans-serif',
-        ],
+        // The second language's fields, in the face the storefront sets that language in.
+        second: [...BRAND.theme.fonts.secondStack],
+        // Headlines and figures.
+        display: [...BRAND.theme.fonts.serifStack],
+        // The logotype, and nothing else.
+        logo: [...BRAND.theme.fonts.logoStack],
       },
       maxWidth: {
         page: '80rem',
+      },
+      /*
+       * The storefront sets its small capitals — nav, labels, buttons, eyebrows —
+       * with wide tracking (0.2 to 0.34em). The back office already writes those
+       * as `tracking-wide` (a section label) and `tracking-wider` (the 11px
+       * eyebrow), forty-odd times, so the two steps are redefined here rather
+       * than each call site edited. Tighter than the shop's widest because a
+       * table head has to fit a 280px screen.
+       */
+      letterSpacing: {
+        wide: '0.14em',
+        wider: '0.2em',
+        // The logotype's: the storefront sets it at 0.45em at 22px; this is the same
+        // proportion at the sizes the back office uses.
+        logo: '0.24em',
       },
       /*
        * Built from packages/shared/src/theme-type.ts rather than left to

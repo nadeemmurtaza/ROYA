@@ -144,7 +144,7 @@ export function Segmented<V extends string | number>({
             className={cn(
               'min-h-11 min-w-0 max-w-full rounded px-3 py-1.5 text-sm transition duration-normal ease-settle fold:min-h-0 enabled:active:scale-[var(--motion-scale-press)] disabled:cursor-not-allowed disabled:opacity-40',
               active
-                ? 'bg-accent font-medium text-white'
+                ? 'bg-accent font-medium text-on-accent'
                 : 'text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900',
               blocker && 'cursor-not-allowed opacity-60 hover:bg-transparent hover:text-neutral-900/60',
             )}

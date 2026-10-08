@@ -181,7 +181,7 @@ function StepLink({
       onClick={onClick}
       className={cn(
         'flex w-full items-center justify-between gap-2 rounded px-2.5 py-1.5 text-start text-sm transition-colors',
-        active ? 'bg-accent font-medium text-white' : 'text-neutral-900/70 hover:bg-neutral-50',
+        active ? 'bg-accent font-medium text-on-accent' : 'text-neutral-900/70 hover:bg-neutral-50',
       )}
     >
       <span className="min-w-0 truncate">{label}</span>
@@ -189,13 +189,13 @@ function StepLink({
         <span
           className={cn(
             'pill shrink-0',
-            active ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-900/60',
+            active ? 'bg-on-accent/20 text-on-accent' : 'bg-neutral-100 text-neutral-900/60',
           )}
         >
           {badge}
         </span>
       ) : done ? (
-        <span className={cn('shrink-0 text-xs', active ? 'text-white/80' : 'text-neutral-900/60')}>✓</span>
+        <span className={cn('shrink-0 text-xs', active ? 'text-on-accent/80' : 'text-neutral-900/60')}>✓</span>
       ) : null}
     </button>
   );

@@ -1265,7 +1265,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
           // the button says which, because a disabled control with no reason
           // is indistinguishable from a broken one.
           submitDisabled={saving || imageUpload.busy || imageUpload.failed}
-          accentClassName="bg-accent-hover text-white"
+          accentClassName="bg-accent-hover text-on-accent"
         />
       </div>
 

@@ -42,7 +42,7 @@ export function PageHeader({
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <Heading className="text-xl font-semibold text-neutral-900">{title}</Heading>
+          <Heading className="page-title">{title}</Heading>
           {description ? (
             <p className="mt-1 max-w-prose text-sm text-neutral-900/60">{description}</p>
           ) : null}

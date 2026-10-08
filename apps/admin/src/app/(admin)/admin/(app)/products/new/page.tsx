@@ -15,7 +15,7 @@ export default function NewProductPage() {
         <span>New</span>
       </nav>
 
-      <h1 className="mb-6 text-xl font-semibold text-neutral-900">Add a product or service</h1>
+      <h1 className="mb-6 page-title">Add a product or service</h1>
       <ProductEditorLoader />
     </>
   );

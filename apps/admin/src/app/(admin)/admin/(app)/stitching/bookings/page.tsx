@@ -44,7 +44,7 @@ export default function BookingsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Stitching bookings</h1>
+      <h1 className="mb-1 page-title">Stitching bookings</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Tailoring on the customer&apos;s own fabric. Log the cloth in when it arrives —
         that is what releases the garments to the workshop.

@@ -132,7 +132,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       </Link>
 
       <div className="mb-6 mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-semibold text-neutral-900">{job.number}</h1>
+        <h1 className="page-title">{job.number}</h1>
         <StageBadge stage={job.stage} />
         <span className="text-sm text-neutral-900/60">
           {job.garmentType.labelEn} · {customer.name} · {customer.reference}

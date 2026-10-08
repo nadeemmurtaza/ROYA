@@ -76,7 +76,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
   return (
     <>
       <div className="mb-1 flex items-center gap-2">
-        <h1 className="text-xl font-semibold text-neutral-900">{variant.sku}</h1>
+        <h1 className="page-title">{variant.sku}</h1>
         {variant.label ? <span className="text-sm text-neutral-900/60">{variant.label}</span> : null}
         <span
           className={cn(

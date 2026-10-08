@@ -49,7 +49,7 @@ export default function FinanceUnitEconomicsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Unit economics</h1>
+      <h1 className="mb-1 page-title">Unit economics</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Contribution per order — what each sale actually earns after courier, gateway and packaging.
       </p>

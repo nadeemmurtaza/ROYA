@@ -70,7 +70,7 @@ export default function AdminPaymentsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Payment approvals</h1>
+      <h1 className="mb-1 page-title">Payment approvals</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Bank transfers waiting on a human. Approving one confirms its order.
       </p>
@@ -116,19 +116,19 @@ export default function AdminPaymentsPage() {
                 <p className="text-sm font-medium text-neutral-900">{payment.order.number}</p>
                 <p className="text-sm text-neutral-900/70">{payment.order.guestName}</p>
                 <dl className="mt-2 space-y-0.5 text-xs text-neutral-900/60">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <dt>Amount</dt>
                     <dd className="font-medium text-neutral-900">{formatMoney(payment.amount)}</dd>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <dt>Method</dt>
                     <dd>{paymentProviderLabel(payment.provider)}</dd>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <dt>Reference</dt>
                     <dd className="font-mono">{payment.reference ?? '—'}</dd>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <dt>Placed</dt>
                     <dd>{formatDateTime(payment.order.placedAt)}</dd>
                   </div>

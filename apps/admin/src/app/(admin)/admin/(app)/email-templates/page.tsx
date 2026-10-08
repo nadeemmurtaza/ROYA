@@ -71,7 +71,7 @@ export default function EmailTemplatesPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Email Templates</h1>
+      <h1 className="mb-1 page-title">Email Templates</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Every email the store can send, what triggers it, and what it actually looks like.
       </p>
@@ -132,7 +132,7 @@ export default function EmailTemplatesPage() {
                         type="button"
                         onClick={() => setLocale('en')}
                         className={`px-3 py-1.5 text-xs font-medium ${
-                          locale === 'en' ? 'bg-accent-hover text-white' : 'bg-white text-neutral-900/70'
+                          locale === 'en' ? 'bg-accent-hover text-on-accent' : 'bg-white text-neutral-900/70'
                         }`}
                       >
                         EN
@@ -141,7 +141,7 @@ export default function EmailTemplatesPage() {
                         type="button"
                         onClick={() => setLocale(SECOND_LOCALE)}
                         className={`px-3 py-1.5 text-xs font-medium ${
-                          locale === SECOND_LOCALE ? 'bg-accent-hover text-white' : 'bg-white text-neutral-900/70'
+                          locale === SECOND_LOCALE ? 'bg-accent-hover text-on-accent' : 'bg-white text-neutral-900/70'
                         }`}
                       >
                         {SECOND_LOCALE.toUpperCase()}

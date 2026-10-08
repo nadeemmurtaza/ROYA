@@ -22,7 +22,7 @@ export default function EditProductPage({
         <span>Edit</span>
       </nav>
 
-      <h1 className="mb-6 text-xl font-semibold text-neutral-900">Edit product</h1>
+      <h1 className="mb-6 page-title">Edit product</h1>
       <ProductEditorLoader productId={id} />
     </>
   );

@@ -188,15 +188,14 @@
    * between the background and the label.
    */
   .btn {
-    @apply relative inline-flex items-center justify-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex items-center justify-center gap-2 font-medium uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-50;
     /*
      * Sized per tier rather than once. min-h-touch is 44px, the smallest target
      * a thumb hits reliably, and it is the floor everywhere a touch screen is
      * plausible — that is most of the range here, not a mobile special case.
-     * Text steps up only at lg, where a pointer is the likely input and 14px
-     * stops looking generous and starts looking small.
+     * The label is 12px tracked capitals, the storefront's own button type.
      */
-    @apply min-h-touch px-4 py-2 text-sm xs:px-5 fold:min-h-control-md lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
+    @apply min-h-touch px-4 py-2 text-xs xs:px-5 fold:min-h-control-md lg:px-5 lg:py-2.5;
     border-radius: var(--radius);
     isolation: isolate;
     overflow: hidden;
@@ -334,14 +333,14 @@
    * ink here would sweep a pale teal under a white label.
    */
   .btn-primary {
-    @apply btn bg-accent text-white;
-    --btn-fill: theme('backgroundColor.accent.hover');
+    @apply btn bg-accent text-on-accent;
+    --btn-fill: rgb(var(--color-accent-fill-hover));
   }
 
   /* The white button the fill was designed for. */
   .btn-secondary {
-    @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-white;
-    --btn-fill: theme('backgroundColor.accent.DEFAULT');
+    @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-on-accent;
+    --btn-fill: rgb(var(--color-accent-fill));
   }
 
   .btn-ghost {
@@ -478,7 +477,7 @@
   }
 
   .chip-selected {
-    @apply border-accent bg-accent text-white;
+    @apply border-accent bg-accent text-on-accent;
   }
 
   .chip-unselected {
@@ -595,6 +594,15 @@
   }
 
   /*
+   * A page's title: the storefront's serif, which is what its own headlines
+   * are set in. One class so the forty-seven pages that write their own <h1>
+   * and `PageHeader` cannot drift apart again.
+   */
+  .page-title {
+    @apply font-display text-3xl font-medium text-neutral-900;
+  }
+
+  /*
    * Navigation that marks the current page with a rule, not a filled pill.
    * A pill is a button's shape; using it for "you are here" makes every nav
    * look like a row of controls. The rule is drawn transparent when
@@ -693,7 +701,7 @@
   }
 
   .metric-value {
-    @apply mt-1 block text-2xl font-medium tabular-nums text-neutral-900 lg:text-metric;
+    @apply mt-1 block font-display text-3xl font-medium tabular-nums text-neutral-900 lg:text-metric;
   }
 
   .metric-delta {

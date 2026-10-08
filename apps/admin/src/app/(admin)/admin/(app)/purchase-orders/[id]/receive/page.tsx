@@ -123,7 +123,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Receive Goods: PO {po.number}</h1>
+      <h1 className="mb-1 page-title">Receive Goods: PO {po.number}</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Record stock entering the warehouse from {po.supplier.name}.
       </p>

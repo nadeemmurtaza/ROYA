@@ -118,10 +118,10 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
 
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Stock Count {count.countNumber}</h1>
+          <h1 className="mb-1 page-title">Stock Count {count.countNumber}</h1>
           <p className="text-sm text-neutral-900/60">Status: {count.status.replace('_', ' ')}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {count.status === 'DRAFT' && (
             <button type="button" className="btn-primary" onClick={handleStart}>
               Start Count

@@ -16,6 +16,7 @@ import {
 } from './nav-registry';
 import { CommandPalette } from './command-palette';
 import { UploadProvider } from './upload-provider';
+import { Wordmark } from './wordmark';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
@@ -118,8 +119,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
             )}
           >
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
-              <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
-                {BRAND.identity.adminName}
+              <Link href={ROUTES.admin.dashboard} aria-label={BRAND.identity.adminName} onClick={() => setIsNavOpen(false)}>
+                <Wordmark className="text-base" />
               </Link>
               <button
                 type="button"
@@ -149,8 +150,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
       <aside className="hidden w-60 shrink-0 border-e border-neutral-100 bg-white lg:block">
         <div className="flex h-14 items-center border-b border-neutral-100 px-4">
-          <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover">
-            {BRAND.identity.adminName}
+          <Link href={ROUTES.admin.dashboard} aria-label={BRAND.identity.adminName}>
+            <Wordmark className="text-base" />
           </Link>
         </div>
 

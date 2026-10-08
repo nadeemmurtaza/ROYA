@@ -291,7 +291,7 @@ export default function AiAdminPage() {
       <div className="mb-3 mt-8 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-semibold text-neutral-900">Review queue</h2>
         {canManage ? (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {selected.size > 0 ? (
               <button type="button" className="btn-secondary" onClick={() => void approveSelected()}>
                 Approve {selected.size} selected

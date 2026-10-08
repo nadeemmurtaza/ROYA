@@ -89,7 +89,7 @@ export default function AdminUsersPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Team & Access</h1>
+      <h1 className="mb-1 page-title">Team & Access</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Back-office accounts — staff, tailors and admins. Permissions come from each user&rsquo;s
         role, editable in bulk from Settings or per-person from their profile here.

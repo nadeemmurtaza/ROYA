@@ -27,7 +27,7 @@ interface MarginRow {
 export default function FinanceMarginsPage() {
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Margins</h1>
+      <h1 className="mb-1 page-title">Margins</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Worst first — the list that changes decisions. Trailing 12 months of delivered orders.
       </p>

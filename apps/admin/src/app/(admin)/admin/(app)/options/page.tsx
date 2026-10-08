@@ -99,7 +99,7 @@ export default function OptionTemplatesPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Options & attributes</h1>
+      <h1 className="mb-1 page-title">Options & attributes</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Reusable option axes — Size, Colour, or anything a product varies by. A product&apos;s
         own editor copies values from here; editing a template afterwards never changes a

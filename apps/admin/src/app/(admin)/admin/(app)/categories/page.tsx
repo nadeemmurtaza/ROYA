@@ -154,7 +154,7 @@ export default function AdminCategoriesPage() {
   return (
     <>
       <div className="mb-1 flex flex-wrap items-start justify-between gap-4">
-        <h1 className="text-xl font-semibold text-neutral-900">Categories</h1>
+        <h1 className="page-title">Categories</h1>
         <button type="button" onClick={openPresetPicker} className="btn-secondary">
           Start from a template
         </button>
@@ -319,7 +319,7 @@ export default function AdminCategoriesPage() {
             Visible on the storefront
           </label>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button type="submit" disabled={busy} className="btn-primary">
               {draft.id ? 'Save' : 'Add'}
             </button>

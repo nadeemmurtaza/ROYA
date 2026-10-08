@@ -66,12 +66,12 @@ export default function AdminProductsPage() {
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Products &amp; services</h1>
+          <h1 className="page-title">Products &amp; services</h1>
           <p className="mt-1 text-sm text-neutral-900/60">
             Ready-to-wear, unstitched fabric and the stitching services you sell.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {canViewInsights ? (
             <Link href={ROUTES.admin.productInsights} className="btn-secondary">
               Insights

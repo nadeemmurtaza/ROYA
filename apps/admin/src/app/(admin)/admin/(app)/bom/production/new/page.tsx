@@ -175,7 +175,7 @@ export default function NewProductionRunPage() {
             Record {runs} run(s) of this recipe? This consumes raw stock and credits finished stock now — it cannot
             be undone from here, only corrected with a reversing inventory adjustment.
           </p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => void record()} disabled={submitting} className="btn-primary">
               {submitting ? 'Recording…' : 'Confirm and record'}
             </button>

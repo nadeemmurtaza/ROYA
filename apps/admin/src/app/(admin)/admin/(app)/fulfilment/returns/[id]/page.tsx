@@ -86,7 +86,7 @@ export default function ReturnDetailPage() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">{request.number}</h1>
+          <h1 className="mb-1 page-title">{request.number}</h1>
           <p className="text-sm text-neutral-900/60">
             Order{' '}
             <Link href={`/admin/orders/${request.order.id}`} className="text-accent-hover hover:underline">

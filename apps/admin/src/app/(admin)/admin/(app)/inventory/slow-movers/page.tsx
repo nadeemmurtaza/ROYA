@@ -28,7 +28,7 @@ interface InventoryVariant {
 export default function SlowMoversPage() {
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Slow Movers</h1>
+      <h1 className="mb-1 page-title">Slow Movers</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Stock that has stopped selling, and what to do about it.
       </p>

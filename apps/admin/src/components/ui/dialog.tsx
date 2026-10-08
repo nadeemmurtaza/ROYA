@@ -217,7 +217,7 @@ export function Dialog({
           header
         ) : (
         <div className="flex items-center justify-between gap-4 border-b border-neutral-100 px-5 py-4">
-          <h2 className="font-display text-base font-semibold text-neutral-900">{title}</h2>
+          <h2 className="font-display text-xl font-medium text-neutral-900">{title}</h2>
           <button
             type="button"
             onClick={onClose}

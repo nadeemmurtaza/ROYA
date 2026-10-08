@@ -85,7 +85,7 @@ function CashFlowView() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Cash flow</h1>
+          <h1 className="mb-1 page-title">Cash flow</h1>
           <p className="text-sm text-neutral-900/60">
             Money in and out of every bank/cash account, plus who is owed and for how long.
           </p>

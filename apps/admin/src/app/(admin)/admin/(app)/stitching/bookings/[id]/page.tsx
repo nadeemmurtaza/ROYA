@@ -74,7 +74,7 @@ export default function BookingDetailPage({
       </Link>
 
       <div className="mb-6 mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="text-xl font-semibold text-neutral-900">{booking.number}</h1>
+        <h1 className="page-title">{booking.number}</h1>
         <span className="rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
           {BOOKING_STATUS_LABELS[booking.status]}
         </span>

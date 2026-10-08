@@ -52,7 +52,7 @@ export default function CountsListPage() {
     <>
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Stock Counts</h1>
+          <h1 className="mb-1 page-title">Stock Counts</h1>
           <p className="text-sm text-neutral-900/60">
             Run physical inventory counts and resolve variances against the ledger.
           </p>

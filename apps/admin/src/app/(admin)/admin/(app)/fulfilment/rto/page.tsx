@@ -58,7 +58,7 @@ export default function RtoRatePage() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">RTO rate</h1>
+          <h1 className="mb-1 page-title">RTO rate</h1>
           <p className="text-sm text-neutral-900/60">
             A shipment reaching RETURNED with no customer return request — by city, product and order value.
           </p>

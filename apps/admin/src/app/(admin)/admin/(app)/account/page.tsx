@@ -39,7 +39,7 @@ export default function AdminAccountPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">My account</h1>
+      <h1 className="mb-1 page-title">My account</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         {user?.firstName ?? user?.email} · {user?.roles.join(', ') || 'No role assigned'}
       </p>

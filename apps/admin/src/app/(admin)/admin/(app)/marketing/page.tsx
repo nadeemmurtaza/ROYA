@@ -58,7 +58,7 @@ export default function MarketingAdminPage() {
     <>
       <ToastStack toasts={toasts} onDismiss={removeToast} />
 
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Marketing automation</h1>
+      <h1 className="mb-1 page-title">Marketing automation</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Off by default. Turning this on lets the store email a logged-in customer automatically —
         an abandoned-cart reminder, a post-delivery review request, a reorder nudge for products

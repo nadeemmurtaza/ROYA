@@ -110,7 +110,7 @@ export default function AdminBrandsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Brands</h1>
+      <h1 className="mb-1 page-title">Brands</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         The labels products are sold under. A brand still used by a product cannot be
         deleted — deactivate it instead, which keeps it on those products but removes it
@@ -257,7 +257,7 @@ export default function AdminBrandsPage() {
             </label>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button type="submit" disabled={busy} className="btn-primary">
               {busy ? 'Saving…' : draft.id ? 'Save changes' : 'Add brand'}
             </button>

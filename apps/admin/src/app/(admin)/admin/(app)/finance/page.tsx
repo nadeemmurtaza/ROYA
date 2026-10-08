@@ -127,7 +127,7 @@ function PnlView() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Profit & loss</h1>
+          <h1 className="mb-1 page-title">Profit & loss</h1>
           <p className="text-sm text-neutral-900/60">
             Every figure is a query over the general ledger — click one to see the accounts behind it.
           </p>

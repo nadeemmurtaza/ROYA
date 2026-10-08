@@ -47,14 +47,19 @@ export function resolveTheme(preference: ThemePreference, systemPrefersDark: boo
  *     query (`prefers-color-scheme`) still gives the right theme — that is the
  *     reason the stylesheet has the `:root:not([data-theme])` fallback.
  *
+ * `fallback` is what a visitor who has not chosen gets: the device by default,
+ * or a brand's own opening theme (ROYA opens dark, like its storefront). A
+ * stored `system` is a choice, so it still follows the device.
+ *
  * Idempotent: running it twice sets the same attribute.
  */
-export function themeInitScript(storageKey: string): string {
+export function themeInitScript(storageKey: string, fallback: ThemePreference = DEFAULT_THEME_PREFERENCE): string {
   const key = JSON.stringify(storageKey);
+  const fb = JSON.stringify(fallback);
   return (
     `(function(){try{` +
     `var p=null;try{p=window.localStorage.getItem(${key})}catch(e){}` +
-    `if(p!=='light'&&p!=='dark')p='system';` +
+    `if(p!=='light'&&p!=='dark'&&p!=='system')p=${fb};` +
     `var d=p==='dark'||(p==='system'&&!!window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);` +
     `document.documentElement.setAttribute('${THEME_ATTRIBUTE}',d?'dark':'light')` +
     `}catch(e){}})();`

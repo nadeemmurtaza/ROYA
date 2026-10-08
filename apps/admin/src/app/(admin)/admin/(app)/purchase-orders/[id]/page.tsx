@@ -69,7 +69,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-xl font-semibold text-neutral-900">PO {po.number}</h1>
+            <h1 className="page-title">PO {po.number}</h1>
             <span className={cn(
               'px-2 py-0.5 rounded text-xs font-medium',
               po.status === 'DRAFT' ? 'bg-neutral-100 text-neutral-900/80' :

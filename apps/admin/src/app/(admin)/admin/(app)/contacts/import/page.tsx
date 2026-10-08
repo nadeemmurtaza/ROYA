@@ -12,7 +12,7 @@ import { ROUTES } from '@/constants/routes';
 export default function AdminContactsImportPage() {
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Import customers</h1>
+      <h1 className="mb-1 page-title">Import customers</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Load an existing customer list. An existing phone or email updates that customer
         instead of creating a duplicate, so this is safe to run again on an updated file.

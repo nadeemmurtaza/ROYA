@@ -98,7 +98,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">{supplier.name}</h1>
+      <h1 className="mb-1 page-title">{supplier.name}</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Supplier details and configuration.
       </p>

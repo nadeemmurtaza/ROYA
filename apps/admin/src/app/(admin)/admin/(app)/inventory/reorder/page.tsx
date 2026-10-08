@@ -128,7 +128,7 @@ export default function ReorderSuggestionsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Reorder Suggestions</h1>
+      <h1 className="mb-1 page-title">Reorder Suggestions</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Variants below their reorder point. Select items to draft purchase orders automatically.
       </p>

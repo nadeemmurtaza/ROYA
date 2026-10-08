@@ -36,7 +36,7 @@ export default function SuppliersListPage() {
     <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Suppliers</h1>
+          <h1 className="mb-1 page-title">Suppliers</h1>
           <p className="text-sm text-neutral-900/60">All registered suppliers and vendors.</p>
         </div>
         {session.can('suppliers.manage') ? <Button onClick={() => setCreating(true)}>New supplier</Button> : null}

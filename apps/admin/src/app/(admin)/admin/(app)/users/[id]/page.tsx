@@ -224,7 +224,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         ← Team & Access
       </button>
 
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">
+      <h1 className="mb-1 page-title">
         {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone}
       </h1>
       <p className="mb-6 text-sm text-neutral-900/60">

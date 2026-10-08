@@ -191,7 +191,7 @@ export function ImageManager({
                   className="object-cover"
                 />
                 {index === 0 ? (
-                  <span className="absolute start-1 top-1 rounded bg-accent-hover px-1.5 py-0.5 text-[10px] font-medium text-white">
+                  <span className="absolute start-1 top-1 rounded bg-accent-hover px-1.5 py-0.5 text-[10px] font-medium text-on-accent">
                     Thumbnail
                   </span>
                 ) : null}
@@ -413,7 +413,7 @@ export function ImageStager({
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                   {index === 0 ? (
-                    <span className="absolute start-1 top-1 rounded bg-accent-hover px-1.5 py-0.5 text-[10px] font-medium text-white">
+                    <span className="absolute start-1 top-1 rounded bg-accent-hover px-1.5 py-0.5 text-[10px] font-medium text-on-accent">
                       Thumbnail
                     </span>
                   ) : null}

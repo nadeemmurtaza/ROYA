@@ -55,7 +55,7 @@ const SIZES: Record<BentoSize, string> = {
 const TONES: Record<BentoTone, string> = {
   surface: 'bg-surface text-neutral-900 shadow-raised',
   quiet: 'bg-neutral-100 text-neutral-900',
-  accent: 'bg-accent text-white',
+  accent: 'bg-accent text-on-accent',
   inverse: 'bg-inverse text-on-inverse',
 };
 
@@ -81,7 +81,7 @@ export function BentoTile({
       className={cn('flex min-w-0 flex-col gap-3 rounded-lg p-5', TONES[tone], SIZES[size], className)}
     >
       {title ? (
-        <h3 className={cn('eyebrow', tone === 'accent' && 'text-white/80', tone === 'inverse' && 'text-on-inverse/70')}>
+        <h3 className={cn('eyebrow', tone === 'accent' && 'text-on-accent/80', tone === 'inverse' && 'text-on-inverse/70')}>
           {title}
         </h3>
       ) : null}

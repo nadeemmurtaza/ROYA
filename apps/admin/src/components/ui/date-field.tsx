@@ -460,7 +460,7 @@ function CalendarPopover({
                     className={cn(
                       GRID_BUTTON,
                       selected
-                        ? 'bg-accent font-medium text-white'
+                        ? 'bg-accent font-medium text-on-accent'
                         : cell.inMonth
                           ? 'text-neutral-900 hover:bg-neutral-50'
                           : 'text-neutral-900/60 hover:bg-neutral-50',
@@ -490,7 +490,7 @@ function CalendarPopover({
               }}
               className={cn(
                 GRID_BUTTON,
-                month === m ? 'bg-accent font-medium text-white' : 'text-neutral-900 hover:bg-neutral-50',
+                month === m ? 'bg-accent font-medium text-on-accent' : 'text-neutral-900 hover:bg-neutral-50',
               )}
             >
               {formatMonthShort(new Date(Date.UTC(y, month - 1, 1)), locale, 'UTC')}
@@ -513,7 +513,7 @@ function CalendarPopover({
               }}
               className={cn(
                 GRID_BUTTON,
-                year === y ? 'bg-accent font-medium text-white' : 'text-neutral-900 hover:bg-neutral-50',
+                year === y ? 'bg-accent font-medium text-on-accent' : 'text-neutral-900 hover:bg-neutral-50',
               )}
             >
               {yearLabel(year, locale)}

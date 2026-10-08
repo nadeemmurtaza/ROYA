@@ -2,7 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from 'react';
 import {
-  DEFAULT_THEME_PREFERENCE,
+  BRAND,
   THEME_ATTRIBUTE,
   THEME_PALETTES,
   isThemePreference,
@@ -26,12 +26,14 @@ import { STORAGE_KEYS } from '@/constants/storage';
  * what keeps a dark-mode visit from flashing white. This hook keeps the
  * attribute in step afterwards.
  *
- * On the server, and for the hydration render, the answer is `system`/`light`
- * — the same thing every server render says — and the client corrects itself
+ * On the server, and for the hydration render, the answer is the default
+ * preference — the same thing every server render says — and the client corrects itself
  * straight after, so there is no hydration mismatch to suppress.
  */
 
 const QUERY = '(prefers-color-scheme: dark)';
+/** Where nobody has chosen yet: the theme the storefront opens in. */
+const DEFAULT_THEME_PREFERENCE: ThemePreference = BRAND.storefront.defaultTheme;
 const listeners = new Set<() => void>();
 
 function readPreference(): ThemePreference {
@@ -84,7 +86,7 @@ function subscribe(listener: () => void): () => void {
 }
 
 export interface UseTheme {
-  /** What the person chose. `system` until they choose. */
+  /** What the person chose. the default (the theme the storefront opens in) until they choose. */
   preference: ThemePreference;
   /** What is painted right now. */
   resolved: ResolvedTheme;

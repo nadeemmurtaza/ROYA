@@ -94,7 +94,7 @@ export default function AdminImportPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Bulk import</h1>
+      <h1 className="mb-1 page-title">Bulk import</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
         Load an existing stock list from a spreadsheet. Re-uploading the same file updates
         the rows it already created, so a weekly stock file is safe to run repeatedly.

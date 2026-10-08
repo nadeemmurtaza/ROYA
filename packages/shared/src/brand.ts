@@ -212,6 +212,14 @@ const colors = {
     hover: '#095865',
   },
   /**
+   * The label on a brand fill (`bg-accent`): a primary button, a selected chip,
+   * the active day in a date picker. White here because this fill is dark in
+   * both themes; a brand whose fill flips between themes (a pale fill in dark)
+   * overrides it per theme, which is why the label is a role of its own and
+   * not `white`.
+   */
+  onAccent: '#ffffff',
+  /**
    * The label colour on a filled button, and on anything else that is always
    * dark behind it. Named because the two error routes that render before any
    * stylesheet need it as a value.
@@ -332,6 +340,7 @@ const colorsDark = {
     DEFAULT: '#3db8cb',
     hover: '#8fdae6',
   },
+  onAccent: '#ffffff',
   white: '#ffffff',
   surface: '#171516',
   overlay: '#242122',
@@ -679,10 +688,11 @@ const feedback = {
 // Storefront
 //
 // Everything the ROYA storefront draws with, taken from the design canvas
-// ("ROYA — Couture Storefront", design/source). The `theme.colors` /
-// `theme.colorsDark` roles above are the Blueprint's back-office palette and
-// are kept verbatim for the admin console, which this repository does not ship
-// yet; the storefront does not read them.
+// ("ROYA — Couture Storefront", design/source). The Blueprint's back-office
+// palette (`colors` / `colorsDark` above) is the base the back office is
+// dressed from; ROYA overrides it role by role from the storefront's, in the
+// block after the storefront below ("The back office wears the storefront"),
+// so `theme.colors` and `theme.colorsDark` are what apps/admin renders.
 //
 // A theme is a set of SEMANTIC roles, not hexes scattered through CSS. Light is
 // a role-for-role inversion of dark (`bg` and `text` swap ends, the pearl
@@ -866,6 +876,96 @@ const storefront = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// The back office wears the storefront
+//
+// One house, one look: the back office reads the same warm ink and parchment,
+// the same pearl on dark, the same square corners and the same three typefaces
+// as the storefront, in both themes. Every colour that has a storefront role
+// IS that role (referenced, not retyped, so the two cannot drift); the few
+// stops the storefront has no name for (a hairline, a control's edge) are the
+// storefront's line colour mixed into its page at the weights the contrast
+// spec holds them to. The Blueprint's feedback greens and reds, star and chart
+// hues stay: "this went up" and "this failed" mean the same in every brand.
+//
+// `packages/shared/src/theme-storefront.spec.ts` pins the correspondence.
+// ---------------------------------------------------------------------------
+
+const adminLight = {
+  ...colors,
+  neutral: {
+    50: storefrontLight.bg,
+    /** Hairline: `lineRgb` at about 10% of the page. */
+    100: '#E1DED9',
+    /** A control's edge: about 28%. */
+    200: '#B8B6B1',
+    300: '#92908C',
+    400: storefrontLight.textDim,
+    500: storefrontLight.textFaint,
+    600: storefrontLight.textMuted,
+    700: storefrontLight.textBody,
+    800: storefrontLight.text2,
+    900: storefrontLight.text,
+  },
+  /** The primary button is ink on parchment, as on the storefront. */
+  accent: { DEFAULT: storefrontLight.accent, hover: storefrontLight.accentHover },
+  onAccent: storefrontLight.onAccent,
+  surface: storefrontLight.bgRaised,
+  overlay: storefrontLight.bgRaised,
+  inverse: storefrontLight.text,
+  onInverse: storefrontLight.bg,
+  scrim: storefrontDark.bg,
+  chart: [storefrontLight.accent, ...colors.chart.slice(1)],
+} as const;
+
+const adminDark = {
+  ...colorsDark,
+  neutral: {
+    50: storefrontDark.bg,
+    /** Hairline: `lineRgb` at about 12% of the raised surface. */
+    100: '#2B2927',
+    /** A control's edge: about 46%, which clears 3:1 on every surface. */
+    200: '#6E6A64',
+    300: '#7F7A73',
+    400: '#938C82',
+    500: storefrontDark.textFaint,
+    600: storefrontDark.textMuted,
+    700: storefrontDark.textBody,
+    800: storefrontDark.text3,
+    900: storefrontDark.text,
+  },
+  /** The primary button is pearl on the dark page, with a dark label. */
+  accent: { DEFAULT: storefrontDark.accent, hover: storefrontDark.accentHover },
+  /** Fill and ink are one colour on this brand, so the ink is the fill. */
+  accentInk: { DEFAULT: storefrontDark.accent, hover: storefrontDark.accentHover },
+  onAccent: storefrontDark.onAccent,
+  surface: storefrontDark.bgRaised,
+  /** One step lighter than the surface, because a dark interface says "higher" by being lighter. */
+  overlay: '#1D1C1A',
+  inverse: storefrontDark.text,
+  onInverse: storefrontDark.bg,
+  scrim: '#000000',
+  chart: [storefrontDark.accent, ...colorsDark.chart.slice(1)],
+} as const;
+
+/** The storefront's corners: square. A circle is `pill`, and does not move. */
+const adminRadii = { ...radii, sharp: 0, lg: 0 } as const;
+
+/** `'Jost', Futura, 'Century Gothic', sans-serif` as the list Tailwind takes. */
+const stackOf = (font: { family: string; fallback: readonly string[] }) => [font.family, ...font.fallback] as const;
+
+const adminFonts = {
+  ...fonts,
+  /** Body, labels and controls: the storefront's sans. */
+  sansStack: stackOf(storefront.fonts.sans),
+  /** Headlines and figures: the storefront's serif. */
+  serifStack: stackOf(storefront.fonts.serif),
+  /** The logotype only. */
+  logoStack: stackOf(storefront.fonts.logo),
+  /** The second language's fields, in the face the storefront sets that language in. */
+  secondStack: stackOf(storefront.fonts.arabicSans),
+} as const;
+
+// ---------------------------------------------------------------------------
 
 export const BRAND = {
   identity,
@@ -874,7 +974,18 @@ export const BRAND = {
   legal,
   banking,
   locale,
-  theme: { colors, colorsDark, radii, type, fonts, space, size, elevation, layers, motion },
+  theme: {
+    colors: adminLight,
+    colorsDark: adminDark,
+    radii: adminRadii,
+    type,
+    fonts: adminFonts,
+    space,
+    size,
+    elevation,
+    layers,
+    motion,
+  },
   storefront,
   assets,
   commerce,
