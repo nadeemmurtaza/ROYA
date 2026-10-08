@@ -156,6 +156,8 @@ export interface AuthUser {
   phone: string | null;
   firstName: string | null;
   lastName: string | null;
+  /** The permission keys the account holds. Sign-in and refresh send them; `/auth/me` does not. The desk reads them to decide what to show; the API still decides what is allowed. */
+  permissions?: string[];
 }
 
 export interface WishlistItem {
@@ -179,4 +181,82 @@ export interface ShippingOption {
   fee: number;
   etaMinDays: number;
   etaMaxDays: number;
+}
+
+// ── The atelier desk (admin endpoints) ──────────────────────────────────────
+
+export interface AdminPayment {
+  id: string;
+  orderId: string;
+  /** `bank_transfer`, `cod`, `account`… */
+  provider: string;
+  status: string;
+  /** Integer fils. */
+  amount: number;
+  currency: string;
+  reference: string | null;
+  receiptUrl: string | null;
+  failureReason: string | null;
+  paidAt: string | null;
+  refundedAt: string | null;
+  refundAmount: number | null;
+  createdAt: string;
+}
+
+/** A payment waiting on a person, with the little of its order the list needs. */
+export interface PaymentToConfirm extends AdminPayment {
+  order: { id: string; number: string; guestName: string | null; grandTotal: number; placedAt: string };
+}
+
+export interface AdminShipment {
+  id: string;
+  courier: string | null;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
+  status: string;
+  dispatchedAt: string | null;
+}
+
+export interface OrderStatusEvent {
+  id: string;
+  fromStatus: string | null;
+  toStatus: string;
+  note: string | null;
+  createdAt: string;
+}
+
+export interface AdminOrder {
+  id: string;
+  number: string;
+  status: string;
+  channel: string;
+  currency: string;
+  guestName: string | null;
+  guestEmail: string | null;
+  guestPhone: string | null;
+  shippingAddress: Record<string, string | null> | null;
+  itemsSubtotal: number;
+  shippingFee: number;
+  grandTotal: number;
+  shippingZone: string | null;
+  customerNote: string | null;
+  staffNote: string | null;
+  cancelReason: string | null;
+  placedAt: string;
+  items: OrderLine[];
+  payments: AdminPayment[];
+  shipments: AdminShipment[];
+  statusEvents: OrderStatusEvent[];
+}
+
+export interface Lead {
+  id: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  message: string | null;
+  source: string;
+  status: 'NEW' | 'CONTACTED' | 'QUOTED' | 'WON' | 'LOST';
+  lostReason: string | null;
+  createdAt: string;
 }

@@ -88,3 +88,58 @@ describe('PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.
     expect(easypaisa.initiate).toHaveBeenCalledTimes(5);
   });
 });
+
+describe('PaymentsService.approve — ROYA fork (docs/ENGINE-FORKS.md #13)', () => {
+  function build(orderStatus: string) {
+    const tx = {
+      payment: { update: jest.fn().mockResolvedValue({ id: 'pay-1', status: 'PAID' }) },
+      order: {
+        findUniqueOrThrow: jest.fn().mockResolvedValue({ id: 'order-1', status: orderStatus }),
+        update: jest.fn().mockResolvedValue({}),
+      },
+      orderStatusEvent: { create: jest.fn().mockResolvedValue({}) },
+    };
+    const prisma = {
+      payment: {
+        findUnique: jest.fn().mockResolvedValue({ id: 'pay-1', orderId: 'order-1', status: 'AWAITING_APPROVAL', provider: 'bank_transfer', amount: 10_000, meta: null }),
+      },
+      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)),
+    };
+    const events = { publish: jest.fn().mockResolvedValue(undefined) };
+    const audit = { record: jest.fn().mockResolvedValue(undefined) };
+    const provider = (key: string) => ({ key });
+    const service = new PaymentsService(
+      prisma as any,
+      events as any,
+      audit as any,
+      {} as any,
+      new CircuitBreakerService(),
+      { isPaymentProviderEnabled: () => true } as any,
+      provider('cod') as any,
+      provider('bank_transfer') as any,
+      provider('jazzcash') as any,
+      provider('easypaisa') as any,
+      provider('giftkarta') as any,
+      provider('account') as any,
+    );
+    return { service, tx };
+  }
+
+  it('records the confirmation in the order’s status history, by whom and why', async () => {
+    const { service, tx } = build('PENDING');
+    await service.approve('staff-1', 'pay-1', 'Seen in the bank');
+    expect(tx.order.update).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 'order-1' }, data: expect.objectContaining({ status: 'CONFIRMED' }) }),
+    );
+    expect(tx.orderStatusEvent.create).toHaveBeenCalledWith({
+      data: { orderId: 'order-1', fromStatus: 'PENDING', toStatus: 'CONFIRMED', note: 'Payment confirmed', actorId: 'staff-1' },
+    });
+  });
+
+  it('leaves an order that has already moved on alone, and writes no history for a move that did not happen', async () => {
+    const { service, tx } = build('PROCESSING');
+    await service.approve('staff-1', 'pay-1');
+    expect(tx.order.update).not.toHaveBeenCalled();
+    expect(tx.orderStatusEvent.create).not.toHaveBeenCalled();
+  });
+});

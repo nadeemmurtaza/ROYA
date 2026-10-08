@@ -9,9 +9,11 @@ import { Field } from '@/components/checkout/Field';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { whatsappUrl } from '@/lib/brand-contact';
+import { deskSections } from '@/lib/desk-model';
 import { image } from '@/lib/media';
 import { safeNext } from '@/lib/safe-next';
 import { useSession } from '@/providers/session';
+import type { AuthUser } from '@/types/api';
 
 type Mode = 'in' | 'up' | 'forgot';
 type Errors = Partial<Record<'identifier' | 'password' | 'firstName' | 'email' | 'phone' | 'form', string>>;
@@ -29,6 +31,9 @@ export function AccountForm() {
   const params = useSearchParams();
   const session = useSession();
   const next = safeNext(params.get('next'));
+  /** Atelier staff who sign in without being sent somewhere land on the desk, not the client dashboard. */
+  const landingFor = (user: AuthUser | null) =>
+    !params.get('next') && deskSections(user?.permissions).length > 0 ? '/desk' : next;
 
   const [mode, setMode] = useState<Mode>(params.get('mode') === 'register' ? 'up' : 'in');
   const [reveal, setReveal] = useState(false);
@@ -46,9 +51,10 @@ export function AccountForm() {
   });
 
   // Already signed in: nothing to do here.
+  const sessionLanding = landingFor(session.user);
   useEffect(() => {
-    if (session.status === 'signed-in' && !busy) router.replace(next);
-  }, [session.status, busy, router, next]);
+    if (session.status === 'signed-in' && !busy) router.replace(sessionLanding);
+  }, [session.status, busy, router, sessionLanding]);
 
   const set = (field: keyof typeof values, value: string | boolean) =>
     setValues((current) => ({ ...current, [field]: value }));
@@ -81,8 +87,8 @@ export function AccountForm() {
         });
         setSent(true);
       } else if (mode === 'in') {
-        await session.login(values.identifier.trim(), values.password);
-        router.replace(next);
+        const signedIn = await session.login(values.identifier.trim(), values.password);
+        router.replace(landingFor(signedIn));
       } else {
         await session.register({
           email: values.email.trim(),

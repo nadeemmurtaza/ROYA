@@ -24,3 +24,29 @@ export function check(condition, message) {
     console.log(`ok    ${message}`);
   }
 }
+
+/** Horizontal overflow on the page as it stands: how wide it scrolls, and the first few elements poking out of the viewport. */
+export async function overflowOf(page) {
+  return page.evaluate(() => {
+    const viewport = document.documentElement.clientWidth;
+    const offenders = [];
+    for (const element of document.querySelectorAll('body *')) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      let clipped = false;
+      for (let parent = element.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+        const overflow = getComputedStyle(parent).overflowX;
+        if (overflow === 'hidden' || overflow === 'auto' || overflow === 'scroll' || overflow === 'clip') {
+          clipped = true;
+          break;
+        }
+      }
+      if (!clipped && (rect.right > viewport + 1 || rect.left < -1)) {
+        offenders.push(
+          `${element.tagName.toLowerCase()}.${String(element.className).split(' ')[0]} (${Math.round(rect.left)}..${Math.round(rect.right)})`,
+        );
+      }
+    }
+    return { scroll: document.documentElement.scrollWidth, viewport, offenders: offenders.slice(0, 4) };
+  });
+}
