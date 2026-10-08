@@ -35,6 +35,13 @@ import { TaxModule } from './money/tax/tax.module';
 import { TrackingModule } from './sales/tracking/tracking.module';
 import { UsersAdminModule } from './system/users/users-admin.module';
 import { WishlistModule } from './sales/wishlist/wishlist.module';
+import { AnalyticsModule } from './money/analytics/analytics.module';
+import { BomModule } from './supply-chain/bom/bom.module';
+import { FinanceModule } from './money/finance/finance.module';
+import { ProductionModule } from './supply-chain/production/production.module';
+import { PurchasingModule } from './supply-chain/purchasing/purchasing.module';
+import { ReportsModule } from './money/reports/reports.module';
+import { SupportModule } from './customers/support/support.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -76,12 +83,18 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },
   { name: 'inventory', module: InventoryModule },
+  { name: 'purchasing', module: PurchasingModule },
+  { name: 'production', module: ProductionModule },
+  { name: 'bom', module: BomModule },
   { name: 'parties', module: PartiesModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
   { name: 'crm', module: CrmModule },
   { name: 'marketing', module: MarketingModule },
+  { name: 'analytics', module: AnalyticsModule },
+  { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
+  { name: 'finance', module: FinanceModule },
   // 145-receivables-credit-limits-dunning.md — CreditNote/DebitNote, customer
   // credit limits/holds and dunning. Posts through domain events only
   // (CreditNoteIssued/DebitNoteIssued -> posting-rules.subscriber.ts), so it
@@ -105,6 +118,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // tables directly by Prisma query), same no-dependency-on-either-being-on
   // shape as `attendance`/`tasks` just above.
   { name: 'notify', module: NotifyModule },
+  // tasks-notifications-support/64-help-desk-support-ticketing.md — a
+  // fully standalone module (doc's own "The absent collaborator" lens):
+  // imports nothing, nothing imports it, reads only its own tables.
+  { name: 'support', module: SupportModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)

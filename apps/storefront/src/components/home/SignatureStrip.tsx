@@ -1,20 +1,15 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import type { PieceCard } from '@/lib/product-model';
+import { stripPlace, stripSnaps, wrapOffset } from '@/lib/strip-model';
 import { Price } from '@/providers/currency';
 import { ChevronLeft, ChevronRight, PauseIcon, PlayIcon } from '../icons';
 
 const ADVANCE_MS = 5200;
-
-/** An offset from the active slide, folded so the strip wraps the short way round: -3..2 for six slides. */
-function wrap(distance: number, count: number): number {
-  const half = Math.floor(count / 2);
-  return ((((distance + half) % count) + count) % count) - half;
-}
 
 /**
  * The signature edit: a strip of pieces where the active one steps forward and
@@ -65,8 +60,7 @@ export function SignatureStrip({ pieces }: { pieces: PieceCard[] }) {
               alt=""
               fill
               sizes="100vw"
-              className="photo"
-              style={{ opacity: index === active ? 1 : 0 }}
+              className={index === active ? 'photo band-img-on' : 'photo'}
             />
           ) : null,
         )}
@@ -74,7 +68,7 @@ export function SignatureStrip({ pieces }: { pieces: PieceCard[] }) {
       <div className="band-shade" aria-hidden="true" />
 
       <div className="band-head">
-        <div className="stack" style={{ gap: 14 }}>
+        <div className="stack u-gap-14">
           <span className="label">{t('signatureEyebrow')}</span>
           <h2 className="serif band-title">
             {t('signatureTitleA')}
@@ -105,24 +99,20 @@ export function SignatureStrip({ pieces }: { pieces: PieceCard[] }) {
 
       <div className="band-track">
         {pieces.map((piece, index) => {
-          const offset = wrap(index - active, count);
-          const was = wrap(index - previous, count);
+          const offset = wrapOffset(index - active, count);
+          const was = wrapOffset(index - previous, count);
           const on = offset === 0;
+          const place = stripPlace(offset);
+          const snap = stripSnaps(offset, was);
           return (
             <button
               key={piece.slug}
               type="button"
-              className={on ? 'scard scard-on' : 'scard'}
+              className={`scard${on ? ' scard-on' : ''}${snap ? ' scard-snap' : ''}`}
+              data-offset={place}
               aria-label={piece.name}
               aria-current={on ? 'true' : undefined}
               onClick={() => go(index)}
-              style={{
-                transform: `translateX(calc(var(--dir, 1) * ${offset} * var(--step))) scale(${on ? 1.22 : 1})`,
-                opacity: Math.abs(offset) > 2 ? 0 : 1,
-                zIndex: 10 - Math.abs(offset),
-                // A card that wraps round the back jumps instead of sweeping across the front.
-                transitionDuration: Math.abs(offset - was) > 1 ? '0s' : '1.4s',
-              }}
             >
               {piece.cover ? <Image src={piece.cover.url} alt="" fill sizes="210px" className="photo" /> : null}
             </button>
@@ -131,14 +121,14 @@ export function SignatureStrip({ pieces }: { pieces: PieceCard[] }) {
       </div>
 
       <div className="band-current">
-        <div className="swap stack" key={current.slug} style={{ alignItems: 'center', gap: 10 }}>
+        <div className="swap stack u-items-center u-gap-10" key={current.slug}>
           <span className="label">{current.tag}</span>
           <span className="serif name">{current.name}</span>
           <span className="meta">
             {current.blurb} · <Price minor={current.price} prefix={current.isFrom ? common('from') : undefined} />
           </span>
         </div>
-        <Link className="btn-line" href={`/product/${current.slug}`} style={{ marginTop: 18 }}>
+        <Link className="btn-line u-mt-18" href={`/product/${current.slug}`}>
           {t('viewPiece')}
         </Link>
       </div>

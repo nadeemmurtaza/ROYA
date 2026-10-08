@@ -1,12 +1,13 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { BRAND } from '@newax/shared';
 import { Link, usePathname } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { formatPrice } from '@/lib/money';
+import { useSearch } from '@/providers/search';
 import { CloseIcon, SearchIcon } from './icons';
 
 interface Hit {
@@ -33,7 +34,7 @@ export function SearchOverlay() {
   const t = useTranslations('shell');
   const locale = useLocale();
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const { open, show, hide } = useSearch();
   const [query, setQuery] = useState('');
   const [state, setState] = useState<State>({ status: 'idle' });
   const trigger = useRef<HTMLButtonElement>(null);
@@ -42,25 +43,25 @@ export function SearchOverlay() {
   const titleId = useId();
 
   const close = useCallback(() => {
-    setOpen(false);
+    hide();
     setQuery('');
     setState({ status: 'idle' });
+    // Below 900px the magnifier is hidden and the menu opened the overlay: focusing a hidden button does nothing, which is fine.
     trigger.current?.focus();
-  }, []);
+  }, [hide]);
 
   // Navigating (picking a result) closes the overlay.
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    hide();
+  }, [pathname, hide]);
 
   // Scroll lock and autofocus while open.
   useEffect(() => {
     if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('scroll-locked');
     input.current?.focus();
     return () => {
-      document.body.style.overflow = previous;
+      document.body.classList.remove('scroll-locked');
     };
   }, [open]);
 
@@ -119,20 +120,14 @@ export function SearchOverlay() {
 
   return (
     <>
-      <button
-        ref={trigger}
-        type="button"
-        className="icon-btn hide-sm"
-        aria-label={t('searchOpen')}
-        onClick={() => setOpen(true)}
-      >
+      <button ref={trigger} type="button" className="icon-btn hide-sm" aria-label={t('searchOpen')} onClick={show}>
         <SearchIcon />
       </button>
 
       {open ? (
         <div ref={overlay} className="search-overlay" role="dialog" aria-modal="true" aria-labelledby={titleId}>
           <div className="search-head">
-            <span className="logo" style={{ fontSize: 22, letterSpacing: '0.5em' }} id={titleId}>
+            <span className="logo u-fs-22 u-ls-wide" id={titleId}>
               <span className="sr-only">{t('searchDialog')}</span>
               <span aria-hidden="true">ROYA</span>
             </span>
@@ -192,16 +187,10 @@ export function SearchOverlay() {
                           ) : null}
                         </span>
                         <span>
-                          <span className="serif" style={{ fontSize: 22 }}>
-                            {hit.name}
-                          </span>
-                          {hit.category ? (
-                            <span className="search-note" style={{ display: 'block', fontSize: 13 }}>
-                              {hit.category}
-                            </span>
-                          ) : null}
+                          <span className="serif u-fs-22">{hit.name}</span>
+                          {hit.category ? <span className="search-note u-block u-fs-13">{hit.category}</span> : null}
                         </span>
-                        <span style={{ fontSize: 14 }}>
+                        <span className="u-fs-14">
                           <bdi dir="ltr">{formatPrice(hit.basePrice)}</bdi>
                         </span>
                       </Link>

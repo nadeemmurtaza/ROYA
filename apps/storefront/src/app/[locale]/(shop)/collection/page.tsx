@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
@@ -32,6 +32,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
   setRequestLocale(locale);
   const query = parseCollectionQuery(await searchParams);
   const t = await getTranslations('collection');
+  const common = await getTranslations('common');
 
   // The catalogue being unreachable is a state the page shows, not an error page.
   const [catalogue, categories] = await Promise.all([
@@ -82,8 +83,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
           fill
           priority
           sizes="100vw"
-          className="photo"
-          style={{ objectPosition: '50% 35%' }}
+          className="photo u-focus-35"
         />
         <div className="banner-shade" aria-hidden="true" />
         <div className="banner-copy">
@@ -115,6 +115,10 @@ export default async function CollectionPage({ params, searchParams }: Props) {
           <div className="empty-inline">
             <h2 className="serif">{t('unavailableTitle')}</h2>
             <p>{t('unavailableBody')}</p>
+            {/* The page is rendered on request, so following its own address asks the catalogue again. */}
+            <Link className="btn-gold" href={pageHref(query.page)}>
+              {common('tryAgain')}
+            </Link>
           </div>
         ) : catalogue.data.length === 0 ? (
           <div className="empty-inline">
@@ -164,19 +168,14 @@ export default async function CollectionPage({ params, searchParams }: Props) {
               alt={t('apptAlt')}
               fill
               sizes="(max-width: 1000px) 100vw, 50vw"
-              className="photo"
-              style={{ objectPosition: '50% 25%' }}
+              className="photo u-focus-25"
             />
           </div>
           <div className="appointment-copy">
             <span className="eyebrow">{t('apptEyebrow')}</span>
             <h2 className="serif appointment-title">{t('apptTitle')}</h2>
             <p>{t('apptBody')}</p>
-            <Link
-              className="btn-gold"
-              href={{ pathname: '/consultation', query: { kind: 'atelier' } }}
-              style={{ alignSelf: 'flex-start' }}
-            >
+            <Link className="btn-gold u-self-start" href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
               {t('apptCta')}
             </Link>
           </div>

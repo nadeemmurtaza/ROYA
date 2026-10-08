@@ -72,7 +72,7 @@ export function OrderActions({
   };
 
   return (
-    <div className="stack" style={{ gap: 18 }}>
+    <div className="stack u-gap-18">
       <div className="desk-state-line">
         <StatusPill status={order.status} />
         {status === 'CANCELLED' && order.cancelReason ? (

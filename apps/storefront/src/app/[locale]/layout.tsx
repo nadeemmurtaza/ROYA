@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 import { BRAND, directionFor, type Locale } from '@newax/shared';
 import { routing } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/env';
-import { themeBootScript, themeCss } from '@/lib/theme-css';
+import { themeBootScript, themeCssHref } from '@/lib/theme-css';
 import { Providers } from '@/providers';
 
 /*
@@ -38,6 +38,7 @@ import '@/styles/home.css';
 import '@/styles/shop.css';
 import '@/styles/checkout.css';
 import '@/styles/account.css';
+import '@/styles/utility.css';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -88,7 +89,8 @@ export default async function LocaleLayout({
     // suppressHydrationWarning: the boot script sets data-theme before React hydrates.
     <html lang={locale} dir={directionFor(locale as Locale)} suppressHydrationWarning>
       <head>
-        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
+        {/* The tokens are a stylesheet like the rest: served from /theme.css, versioned by content so a rebrand busts the cache. */}
+        <link rel="stylesheet" href={themeCssHref()} />
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body>

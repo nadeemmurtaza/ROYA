@@ -37,7 +37,7 @@ const COPY: Record<Locale, WhatsAppAssistantCopy> = {
   },
 };
 
-/** The Arabic Unicode block; Urdu and Persian share it, which is fine: this only decides which fixed sentence to send. */
+/** The Arabic Unicode block, which other Arabic-script languages share; that is fine, this only decides which fixed sentence to send. */
 const SECOND_SCRIPT = /[\u0600-\u06FF]/;
 
 export function detectWhatsAppLocale(text: string): Locale {

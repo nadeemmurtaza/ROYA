@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { BRAND } from '@newax/shared';
 import { balanceDue, piecesIn, trunkIn } from '@/lib/cart-model';
@@ -29,27 +29,18 @@ export function OrderAside({ cart, shippingFee }: { cart: Cart; shippingFee: num
             <li key={line.id}>
               <span className="ph aside-thumb">
                 {line.imageUrl ? (
-                  <Image
-                    src={line.imageUrl}
-                    alt=""
-                    fill
-                    sizes="64px"
-                    className="photo"
-                    style={{ objectPosition: '50% 25%' }}
-                  />
+                  <Image src={line.imageUrl} alt="" fill sizes="64px" className="photo u-focus-25" />
                 ) : null}
               </span>
-              <span className="stack" style={{ gap: 4 }}>
-                <span className="serif" style={{ fontSize: 18 }}>
-                  {line.name}
-                </span>
+              <span className="stack u-gap-4">
+                <span className="serif u-fs-18">{line.name}</span>
                 {bespoke ? (
                   <span className="bag-muted-sm">
                     {t('deposit', { percent: BRAND.commerce.bespokeDepositPercent })}
                   </span>
                 ) : null}
               </span>
-              <span style={{ fontSize: 14 }}>
+              <span className="u-fs-14">
                 <Price minor={line.unitPrice * line.quantity} charged />
               </span>
             </li>
@@ -58,10 +49,8 @@ export function OrderAside({ cart, shippingFee }: { cart: Cart; shippingFee: num
         {trunk ? (
           <li>
             <span aria-hidden="true" />
-            <span className="serif" style={{ fontSize: 18 }}>
-              {trunk.name}
-            </span>
-            <span style={{ fontSize: 14 }}>
+            <span className="serif u-fs-18">{trunk.name}</span>
+            <span className="u-fs-14">
               <Price minor={trunk.unitPrice} charged />
             </span>
           </li>
@@ -92,9 +81,7 @@ export function OrderAside({ cart, shippingFee }: { cart: Cart; shippingFee: num
           : t('processed', { currency: BRAND.locale.currency })}
       </span>
       <div className="aside-help">
-        <span className="serif" style={{ fontSize: 17, color: 'var(--text)' }}>
-          {t('helpTitle')}
-        </span>
+        <span className="serif u-fs-17 u-c-text">{t('helpTitle')}</span>
         <span>
           {t.rich('help', {
             link: (chunks) => (

@@ -41,9 +41,24 @@ export default async function HelpPage({ params }: Props) {
       <p className="help-lead serif">{t(`${topic}.lead`)}</p>
       <p className="help-body">{t(`${topic}.body`)}</p>
       <p className="bag-muted">{t('more')}</p>
-      <Link className="btn-gold" href="/consultation" style={{ alignSelf: 'flex-start' }}>
+      <Link className="btn-gold u-self-start" href="/consultation">
         {t('contact')}
       </Link>
+      {/* Every topic leads to the others: someone reading about delivery is usually also wondering about alterations. */}
+      <nav className="help-topics" aria-labelledby="help-topics">
+        <span className="eyebrow" id="help-topics">
+          {t('topicsTitle')}
+        </span>
+        <ul>
+          {TOPICS.filter((other) => other !== topic).map((other) => (
+            <li key={other}>
+              <Link className="navlink" href={`/help/${other}`}>
+                {t(`${other}.title`)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </article>
   );
 }

@@ -64,6 +64,24 @@ export function themeCss(): string {
   ].join('\n');
 }
 
+/** Where the tokens are served from (app/theme.css/route.ts). */
+export const THEME_CSS_PATH = '/theme.css';
+
+/**
+ * The stylesheet's URL, versioned by its content: a 32-bit FNV-1a hash (8 hex
+ * characters) tells two builds of one brand's tokens apart, which is all the
+ * URL needs it for. A collision could only serve a stale palette until the next
+ * change, and this file is also imported by a client component, so it takes no
+ * Node-only dependency to compute it.
+ */
+export function themeCssHref(): string {
+  let hash = 0x811c9dc5;
+  for (const char of themeCss()) {
+    hash = Math.imul(hash ^ char.charCodeAt(0), 0x01000193) >>> 0;
+  }
+  return `${THEME_CSS_PATH}?v=${hash.toString(16).padStart(8, '0')}`;
+}
+
 /**
  * Runs before first paint so a returning visitor never sees the wrong theme
  * flash. The default (dark) is already in the markup; this only switches when

@@ -103,7 +103,7 @@ export function ConsultationForm() {
         <div className="consult-done fade" role="status">
           <h1 className="serif">{t('doneTitle')}</h1>
           <p>{t('doneBody')}</p>
-          <div className="btn-row" style={{ justifyContent: 'center' }}>
+          <div className="btn-row u-justify-center">
             <a className="btn-gold" href={whatsappUrl} rel="noopener" target="_blank">
               {t('doneWhatsapp')}
             </a>

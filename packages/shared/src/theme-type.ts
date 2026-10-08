@@ -4,7 +4,8 @@ import { BRAND } from './brand';
  * The type scale — a view onto BRAND.theme.type.
  *
  * `line` travels with `size` because React Native derives neither, and
- * Nastaliq descenders collide without an explicit line height.
+ * Arabic script needs room for its marks above and below the line, so
+ * the line height cannot be left to the platform.
  *
  * Web consumes this through tailwind.config.ts, which builds `fontSize`
  * from TAILWIND_FONT_SIZE below, so `text-sm` and mobile's

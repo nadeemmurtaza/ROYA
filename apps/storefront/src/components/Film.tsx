@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useEffect, useRef, useState } from 'react';
 import type { FilmSources } from '@/lib/media';
 
@@ -22,8 +22,8 @@ interface FilmProps {
   film: FilmSources;
   mobile?: FilmSources;
   label?: string;
-  /** CSS object-position for the poster and the film. */
-  position?: string;
+  /** A `u-focus-*` class (styles/utility.css) that sets where the poster and the film are cropped to. */
+  focus?: string;
   /** Load the poster at high priority: for a film at the top of the page. */
   priority?: boolean;
   sizes?: string;
@@ -32,7 +32,7 @@ interface FilmProps {
 
 const PHONE = '(max-width: 767px)';
 
-export function Film({ film, mobile, label, position, priority = false, sizes = '100vw', className }: FilmProps) {
+export function Film({ film, mobile, label, focus, priority = false, sizes = '100vw', className }: FilmProps) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -59,7 +59,7 @@ export function Film({ film, mobile, label, position, priority = false, sizes = 
     return () => observer.disconnect();
   }, [film, mobile]);
 
-  const style = position ? { objectPosition: position } : undefined;
+  const crop = focus ?? '';
 
   return (
     <div className={`film ${className ?? ''}`}>
@@ -69,8 +69,7 @@ export function Film({ film, mobile, label, position, priority = false, sizes = 
         fill
         sizes={sizes}
         priority={priority}
-        className={`photo film-poster ${mobile ? 'film-poster-wide' : ''}`}
-        style={style}
+        className={`photo film-poster ${mobile ? 'film-poster-wide' : ''} ${crop}`}
       />
       {mobile ? (
         <Image
@@ -78,14 +77,12 @@ export function Film({ film, mobile, label, position, priority = false, sizes = 
           alt=""
           fill
           sizes={sizes}
-          className="photo film-poster film-poster-narrow"
-          style={style}
+          className={`photo film-poster film-poster-narrow ${crop}`}
         />
       ) : null}
       <video
         ref={ref}
-        className={`photo film-video ${playing ? 'is-playing' : ''}`}
-        style={style}
+        className={`photo film-video ${playing ? 'is-playing' : ''} ${crop}`}
         muted
         loop
         playsInline

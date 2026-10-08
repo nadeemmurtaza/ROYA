@@ -26,7 +26,7 @@ export function LoadState({ status, onRetry }: { status: 'loading' | 'error'; on
       {t('loading')}
     </p>
   ) : (
-    <div className="stack" style={{ gap: 12, alignItems: 'flex-start' }}>
+    <div className="stack u-gap-12 u-items-start">
       <p className="field-error" role="alert">
         {t('loadFailed')}
       </p>

@@ -10,7 +10,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
+    "check:global-css": "node scripts/check-global-css.mjs",
+    "lint": "node scripts/check-global-css.mjs && turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write \"apps/storefront/**/*.{ts,tsx,mjs,json,css,md}\" \"docs/**/*.md\" \"*.md\"",

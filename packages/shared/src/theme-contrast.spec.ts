@@ -48,9 +48,9 @@ describe.each([
     expect(contrast(c.onInverse, c.inverse)).toBeGreaterThanOrEqual(7);
   });
 
-  it('keeps a white label readable on the brand fill and its pressed shade', () => {
-    expect(contrast(c.white, c.accent.DEFAULT)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast(c.white, c.accent.hover)).toBeGreaterThanOrEqual(4.5);
+  it('keeps the label readable on the brand fill and its pressed shade', () => {
+    expect(contrast(c.onAccent, c.accent.DEFAULT)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(c.onAccent, c.accent.hover)).toBeGreaterThanOrEqual(4.5);
   });
 
   /*

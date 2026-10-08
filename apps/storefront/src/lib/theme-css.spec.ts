@@ -1,12 +1,12 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BRAND } from '@newax/shared';
-import { fontStack, themeCss } from './theme-css';
+import { THEME_CSS_PATH, fontStack, themeCss, themeCssHref } from './theme-css';
 
 const STYLES = join(import.meta.dirname, '..', 'styles');
 
 /** Custom properties a stylesheet sets for itself, outside the brand tokens. */
-const LOCAL_PROPERTIES = new Set(['--step', '--cw', '--dir']);
+const LOCAL_PROPERTIES = new Set(['--step', '--cw', '--dir', '--o', '--s', '--facts']);
 
 describe('themeCss', () => {
   const css = themeCss();
@@ -24,6 +24,11 @@ describe('themeCss', () => {
       expect(css).toContain(theme.text);
       expect(name === 'dark' || name === 'light').toBe(true);
     }
+  });
+
+  it('is linked, not inlined: the href is the route, versioned by an 8-digit hash of the css', () => {
+    expect(themeCssHref()).toMatch(new RegExp(`^${THEME_CSS_PATH.replace('.', '\\.')}\\?v=[0-9a-f]{8}$`));
+    expect(themeCssHref()).toBe(themeCssHref());
   });
 
   it('builds a font stack with quoted multi-word names', () => {

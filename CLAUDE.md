@@ -4,15 +4,16 @@ House of ROYA: a standalone couture storefront on a commerce engine delivered fr
 
 ## Where things live
 
-| Looking for                                       | Open                                                                    |
-| ------------------------------------------------- | ----------------------------------------------------------------------- |
-| The storefront                                    | `apps/storefront` (Next.js 15, next-intl, no Tailwind)                  |
-| The atelier desk (staff: orders, payments)        | `apps/storefront/src/components/desk`, rules in `src/lib/desk-model.ts` |
-| The engine                                        | `apps/api` (NestJS + Prisma + Postgres), `packages/shared`              |
-| The design, as imported                           | `design/` (read-only; the code is the implementation)                   |
-| Every colour, font, width, currency, handle, slug | `packages/shared/src/brand.ts`                                          |
-| UI copy                                           | `apps/storefront/messages/{en,ar}.json`                                 |
-| What is undecided                                 | `docs/OPEN-QUESTIONS.md`                                                |
+| Looking for                                       | Open                                                                                     |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| The storefront                                    | `apps/storefront` (Next.js 15, next-intl, no Tailwind)                                   |
+| The atelier desk (staff: orders, payments)        | `apps/storefront/src/components/desk`, rules in `src/lib/desk-model.ts`                  |
+| The back office (catalogue, stock, finance)       | `apps/admin` (Next.js 15 + Tailwind, English; nav in `components/admin/nav-registry.ts`) |
+| The engine                                        | `apps/api` (NestJS + Prisma + Postgres), `packages/shared`                               |
+| The design, as imported                           | `design/` (read-only; the code is the implementation)                                    |
+| Every colour, font, width, currency, handle, slug | `packages/shared/src/brand.ts`                                                           |
+| UI copy                                           | `apps/storefront/messages/{en,ar}.json`                                                  |
+| What is undecided                                 | `docs/OPEN-QUESTIONS.md`                                                                 |
 
 ## Rules
 
@@ -24,6 +25,7 @@ House of ROYA: a standalone couture storefront on a commerce engine delivered fr
 6. **Reduced motion keeps the information.** Anything animated has a still equivalent under `prefers-reduced-motion`; films are not loaded then.
 7. **An engine edit is a fork.** If you must change `apps/api` or `packages/shared`, add a test that fails without it and a row to `docs/ENGINE-FORKS.md`.
 8. **Never delete data, files or branches without the owner naming them.** Prefer deactivating to deleting (the inherited shipping zones are a worked example).
+9. **All CSS lives in a global stylesheet. None in the markup, not even one declaration.** No `style` prop or attribute, no `<style>` tag, no `el.style` write, no CSS-in-JS, no CSS module, no `next/image` (use the `Image` wrapper, which drops its inline style). A one-off is a class (`styles/utility.css` in the storefront, a Tailwind class in the back office); a state is a `data-*` hook the stylesheet answers; a value only the browser knows (where a popover sits, how full a bar is) goes through `apps/admin/src/lib/dynamic-style.ts`, a rule in a stylesheet attached to the document. `scripts/check-global-css.mjs` fails `pnpm lint` on a violation and on a stale exception. The exceptions are listed in that script with their reasons: HTML email (clients only honour inline CSS) and the two `Image` wrappers. A colour that is catalogue data (a swatch) rides on an SVG `fill` attribute, which is markup, not CSS. Not code of ours, so not covered: Next's route announcer and Recharts' own chart wrappers write inline styles at runtime.
 
 ## Before you commit
 

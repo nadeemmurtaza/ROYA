@@ -1,4 +1,4 @@
-import { isThemePreference, resolveTheme, themeInitScript, THEME_ATTRIBUTE } from './theme-runtime';
+import { isThemePreference, resolveTheme, themeInitScript, THEME_ATTRIBUTE, type ThemePreference } from './theme-runtime';
 
 describe('resolveTheme', () => {
   it('lets an explicit choice beat the device', () => {
@@ -23,7 +23,13 @@ describe('themeInitScript', () => {
   const KEY = 'test.theme';
 
   /** Runs the real script against a fake window/document, the way a browser would. */
-  function run(opts: { stored?: string | null; systemDark?: boolean; storageThrows?: boolean; noMatchMedia?: boolean }) {
+  function run(opts: {
+    stored?: string | null;
+    systemDark?: boolean;
+    storageThrows?: boolean;
+    noMatchMedia?: boolean;
+    fallback?: ThemePreference;
+  }) {
     const attrs: Record<string, string> = {};
     const fakeWindow = {
       localStorage: {
@@ -35,7 +41,7 @@ describe('themeInitScript', () => {
       matchMedia: opts.noMatchMedia ? undefined : () => ({ matches: Boolean(opts.systemDark) }),
     };
     const fakeDocument = { documentElement: { setAttribute: (k: string, v: string) => { attrs[k] = v; } } };
-    new Function('window', 'document', themeInitScript(KEY))(fakeWindow, fakeDocument);
+    new Function('window', 'document', themeInitScript(KEY, opts.fallback))(fakeWindow, fakeDocument);
     return attrs[THEME_ATTRIBUTE];
   }
 
@@ -48,6 +54,15 @@ describe('themeInitScript', () => {
     expect(run({ stored: null, systemDark: true })).toBe('dark');
     expect(run({ stored: 'system', systemDark: false })).toBe('light');
     expect(run({ stored: 'banana', systemDark: true })).toBe('dark');
+  });
+
+  it("opens in a brand's own theme for someone who has not chosen, and still honours a choice", () => {
+    expect(run({ stored: null, systemDark: false, fallback: 'dark' })).toBe('dark');
+    expect(run({ stored: 'banana', systemDark: false, fallback: 'dark' })).toBe('dark');
+    expect(run({ storageThrows: true, systemDark: false, fallback: 'dark' })).toBe('dark');
+    expect(run({ stored: 'light', systemDark: true, fallback: 'dark' })).toBe('light');
+    // `system` is a choice, not an absence of one.
+    expect(run({ stored: 'system', systemDark: false, fallback: 'dark' })).toBe('light');
   });
 
   it('survives storage that throws (a private window), falling back to the device', () => {

@@ -80,11 +80,11 @@ model Brand {
 
 /// House Rule 6: a customer-facing name is a translation row, not a column.
 /// Most brand names are proper nouns that read the same in both languages,
-/// but a shop writing them in Urdu script has somewhere to put that.
+/// but a shop writing them in Arabic script has somewhere to put that.
 model BrandTranslation {
   id          String  @id @default(cuid())
   brandId     String
-  locale      String // "en" | "ur"
+  locale      String // "en" | "ar"
   name        String
   description String?
 
@@ -96,7 +96,7 @@ model BrandTranslation {
 model CategoryTranslation {
   id          String  @id @default(cuid())
   categoryId  String
-  locale      String // "en" | "ur"
+  locale      String // "en" | "ar"
   name        String
   description String?
 
@@ -231,9 +231,10 @@ model ProductTranslation {
   /// style cache, not a live-computed column. `Unsupported`: Prisma has no
   /// tsvector type, so every read and write of it goes through raw SQL in
   /// SearchService, never the generated client. Locale-aware: 'english' text
-  /// search config for `en`, 'simple' for `ur` — Postgres ships no Urdu
-  /// stemmer, and 'simple' (token match, no stemming) is the honest choice
-  /// over silently running Urdu text through the English one.
+  /// search config for `en`, 'simple' for every other locale — 'simple' (token
+  /// match, no stemming) is the honest choice over silently running Arabic
+  /// text through the English stemmer. Postgres does ship an `arabic` config,
+  /// which this does not use yet, so Arabic is matched by whole token.
   searchVector Unsupported("tsvector")?
 
   /// WO-9.5 (09-ai-layer.md). OpenAI text-embedding-3-small's own dimension

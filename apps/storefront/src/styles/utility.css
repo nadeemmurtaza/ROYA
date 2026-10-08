@@ -1,0 +1,157 @@
+/*
+ * Utilities: the one-declaration classes that used to be written as inline
+ * `style={{ … }}` in components.
+ *
+ * Every rule of CSS in the storefront lives in a stylesheet in this folder, none
+ * in a `style` attribute, a <style> tag or a script (scripts/check-global-css.mjs
+ * fails the build on one). This file is where a single declaration that does not
+ * deserve a named class goes, so a component can say "stack, 12px apart, items at
+ * the start" without growing its own rule.
+ *
+ * Rules for this file:
+ *   - It is imported last (app/[locale]/layout.tsx), so on equal specificity it
+ *     wins over the component classes it is combined with, as an inline style did.
+ *   - Colours are custom properties from BRAND.storefront (src/lib/theme-css.ts),
+ *     never a literal. Layout uses logical properties so Arabic mirrors.
+ *   - A step is only here because a component uses it: add one when you need one,
+ *     remove it when the last user goes. The check lists the unused ones.
+ */
+
+/* ── Gap ───────────────────────────────────────────── */
+.u-gap-4 {
+  gap: 4px;
+}
+.u-gap-6 {
+  gap: 6px;
+}
+.u-gap-8 {
+  gap: 8px;
+}
+.u-gap-10 {
+  gap: 10px;
+}
+.u-gap-12 {
+  gap: 12px;
+}
+.u-gap-14 {
+  gap: 14px;
+}
+.u-gap-16 {
+  gap: 16px;
+}
+.u-gap-18 {
+  gap: 18px;
+}
+.u-gap-20 {
+  gap: 20px;
+}
+.u-gap-24 {
+  gap: 24px;
+}
+.u-gap-28 {
+  gap: 28px;
+}
+
+/* ── Type ──────────────────────────────────────────── */
+.u-fs-13 {
+  font-size: 13px;
+}
+.u-fs-14 {
+  font-size: 14px;
+}
+.u-fs-17 {
+  font-size: 17px;
+}
+.u-fs-18 {
+  font-size: 18px;
+}
+.u-fs-22 {
+  font-size: 22px;
+}
+.u-fs-24 {
+  font-size: 24px;
+}
+.u-fs-26 {
+  font-size: 26px;
+}
+.u-fs-28 {
+  font-size: 28px;
+}
+.u-fs-30 {
+  font-size: 30px;
+}
+.u-lh-17 {
+  line-height: 1.7;
+}
+.u-ls-wide {
+  letter-spacing: 0.5em;
+}
+.u-text-start {
+  text-align: start;
+}
+
+/* ── Colour (always a token) ───────────────────────── */
+.u-c-text {
+  color: var(--text);
+}
+.u-c-text3 {
+  color: var(--text3);
+}
+.u-c-accent {
+  color: var(--accent);
+}
+
+/* ── Alignment and size ────────────────────────────── */
+.u-block {
+  display: block;
+}
+.u-items-start {
+  align-items: flex-start;
+}
+.u-items-center {
+  align-items: center;
+}
+.u-items-end {
+  align-items: flex-end;
+}
+.u-justify-center {
+  justify-content: center;
+}
+.u-self-start {
+  align-self: flex-start;
+}
+.u-min-w-0 {
+  min-width: 0;
+}
+.u-max-w-560 {
+  max-width: 560px;
+}
+.u-max-w-640 {
+  max-width: 640px;
+}
+.u-mt-18 {
+  margin-block-start: 18px;
+}
+.u-mt-auto {
+  margin-block-start: auto;
+}
+.u-p-36 {
+  padding: 36px;
+}
+
+/* ── Where a photograph is cropped to ──────────────── */
+.u-focus-20 {
+  object-position: 50% 20%;
+}
+.u-focus-25 {
+  object-position: 50% 25%;
+}
+.u-focus-28 {
+  object-position: 50% 28%;
+}
+.u-focus-30 {
+  object-position: 50% 30%;
+}
+.u-focus-35 {
+  object-position: 50% 35%;
+}

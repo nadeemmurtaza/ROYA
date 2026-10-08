@@ -161,7 +161,7 @@ export function formatWeekdayShort(
  * hand: there was a formatter for the other two, so seven call sites reached
  * for `toLocaleString(intlTag('en'))` instead, each pinning English rather
  * than the reader's locale. Visitor counts, funnel stages and traffic rows
- * all rendered with Latin digits for an Urdu reader because of it.
+ * all rendered with Latin digits for an Arabic reader because of it.
  */
 export function formatNumber(value: number, locale: Locale = 'en'): string {
   return new Intl.NumberFormat(intlTag(locale)).format(value);

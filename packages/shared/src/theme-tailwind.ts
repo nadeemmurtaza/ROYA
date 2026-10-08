@@ -29,6 +29,10 @@ import { spaceRem } from './theme-space';
  *   `colors`           ink  — text, border, ring, divide, fill, stroke
  *   `backgroundColor`  fill — `bg-*`, where a label sits on top
  *
+ * The label on a brand fill is `text-on-accent`, not `text-white`: where the
+ * fill is the same dark colour in both themes the two are the same white, and
+ * where it flips (pale on a dark page) only the role can follow it.
+ *
  * The same split covers `red/green/amber/blue`: a tint (`bg-red-50`) is a dark
  * wash in dark, and a solid (`bg-red-600 text-white`) keeps its stock value.
  * `bg-white` is the surface; `text-white` is the fixed label colour.
@@ -179,6 +183,12 @@ export function themeVars(theme: 'light' | 'dark', stock: StockHues): Vars {
     '--color-scrim': channels(c.scrim),
     '--color-accent-ink': channels(accentInk.DEFAULT),
     '--color-accent-ink-hover': channels(accentInk.hover),
+    // The brand FILL and the label that sits on it. On a brand whose fill is the
+    // same dark colour in both themes these are constants; on one whose fill
+    // flips (a pale fill on a dark page) the label flips with it.
+    '--color-accent-fill': channels(c.accent.DEFAULT),
+    '--color-accent-fill-hover': channels(c.accent.hover),
+    '--color-on-accent': channels(c.onAccent),
     '--color-feedback-positive': channels(c.feedback.positive),
     '--color-feedback-negative': channels(c.feedback.negative),
     ...Object.fromEntries(c.chart.map((hex, i) => [`--color-chart-${i}`, channels(hex)])),
@@ -247,6 +257,7 @@ export function createThemeTailwind(stock: StockHues) {
       ...fixed,
       neutral,
       accent: { DEFAULT: ref('accent-ink'), hover: ref('accent-ink-hover') },
+      'on-accent': ref('on-accent'),
       star: light.star,
       feedback: { positive: ref('feedback-positive'), negative: ref('feedback-negative') },
       surface: ref('surface'),
@@ -263,7 +274,7 @@ export function createThemeTailwind(stock: StockHues) {
     /** Merged into `theme.extend`: where a fill differs from an ink. */
     backgroundColor: {
       white: ref('surface'),
-      accent: { DEFAULT: light.accent.DEFAULT, hover: light.accent.hover },
+      accent: { DEFAULT: ref('accent-fill'), hover: ref('accent-fill-hover') },
       red: fillHue('red', stock.red),
       green: fillHue('green', stock.green),
       amber: fillHue('amber', stock.amber),

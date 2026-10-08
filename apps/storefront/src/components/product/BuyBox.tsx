@@ -71,7 +71,7 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
           <span className="buy-label">
             {t('shade')} · <span className="buy-value">{shade}</span>
           </span>
-          <div role="group" aria-label={t('shade')} className="buy-row" style={{ gap: 12 }}>
+          <div role="group" aria-label={t('shade')} className="buy-row u-gap-12">
             {shades.map((option) => (
               <button
                 key={option.name}
@@ -81,7 +81,10 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
                 aria-pressed={option.name === shade}
                 onClick={() => setShade(option.name)}
               >
-                <span className="sw-dot" style={{ background: option.hex ?? 'transparent' }} />
+                {/* The swatch colour is catalogue data, so it rides on an SVG paint attribute instead of a style. */}
+                <svg className="sw-dot" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
+                  <circle cx="5" cy="5" r="5" fill={option.hex ?? 'none'} />
+                </svg>
               </button>
             ))}
           </div>
@@ -115,7 +118,7 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
 
         {mode === 'std' && sizes.length > 0 ? (
           <>
-            <div role="group" aria-label={t('size')} className="buy-row" style={{ gap: 10 }}>
+            <div role="group" aria-label={t('size')} className="buy-row u-gap-10">
               {sizes.map((option) => (
                 <button
                   key={option}
@@ -137,7 +140,7 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
         ) : null}
       </div>
 
-      <div className="buy-group" style={{ gap: 12 }}>
+      <div className="buy-group u-gap-12">
         <button type="button" className="btn-gold" disabled={!variant || cart.busy} onClick={onAdd}>
           {cart.busy ? (
             t('adding')
@@ -150,6 +153,12 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
         <Link className="btn-line" href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
           {t('fitting')}
         </Link>
+        {/* A shade and size that were never made together: say so, instead of a button that will not press. */}
+        {!variant ? (
+          <p role="status" className="buy-note">
+            {t('unavailable')}
+          </p>
+        ) : null}
         {notice ? (
           <p role="alert" className="field-error">
             {notice}

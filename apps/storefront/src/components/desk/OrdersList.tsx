@@ -119,8 +119,7 @@ export function OrdersList() {
           {filtered ? (
             <button
               type="button"
-              className="btn-line"
-              style={{ alignSelf: 'flex-start' }}
+              className="btn-line u-self-start"
               onClick={() => {
                 setDraft('');
                 router.replace('/desk');

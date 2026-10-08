@@ -2,8 +2,8 @@ import { recommendSize, type SizeChartRow } from './size-recommendation';
 import type { MeasurementFieldDef } from './types';
 
 const fields: MeasurementFieldDef[] = [
-  { key: 'chest', labelEn: 'Chest', labelUr: 'چھاتی', unit: 'INCH', min: 30, max: 50, required: true, order: 1 },
-  { key: 'length', labelEn: 'Length', labelUr: 'لمبائی', unit: 'INCH', min: 24, max: 60, required: true, order: 2 },
+  { key: 'chest', labelEn: 'Chest', labelUr: 'الصدر', unit: 'INCH', min: 30, max: 50, required: true, order: 1 },
+  { key: 'length', labelEn: 'Length', labelUr: 'الطول', unit: 'INCH', min: 24, max: 60, required: true, order: 2 },
 ];
 
 const chart: SizeChartRow[] = [
@@ -127,7 +127,7 @@ describe('recommendSize', () => {
 
   it('returns null when the profile shares no measurement field with any chart row', () => {
     const result = recommendSize({
-      fields: [{ key: 'sleeve', labelEn: 'Sleeve', labelUr: 'آستین', unit: 'INCH', min: 10, max: 30, required: true, order: 1 }],
+      fields: [{ key: 'sleeve', labelEn: 'Sleeve', labelUr: 'الكم', unit: 'INCH', min: 10, max: 30, required: true, order: 1 }],
       profile: { sleeve: 22 },
       chart, // only has chest/length, never sleeve
       availableSizeTokens: ['S', 'M', 'L', 'XL'],

@@ -129,11 +129,11 @@ export function DeliveryStep({
         </Field>
       </div>
 
-      <div className="stack" style={{ gap: 14 }}>
+      <div className="stack u-gap-14">
         <span className="lbl" id="method-label">
           {t('method')}
         </span>
-        <div role="radiogroup" aria-labelledby="method-label" className="stack" style={{ gap: 14 }}>
+        <div role="radiogroup" aria-labelledby="method-label" className="stack u-gap-14">
           {options.status === 'idle' ? <p className="bag-muted">{t('methodIdle')}</p> : null}
           {options.status === 'loading' ? (
             <p className="bag-muted" role="status">
@@ -163,7 +163,7 @@ export function DeliveryStep({
                     onClick={() => onMethod(option.methodKey)}
                   >
                     <span className={`dot${on ? ' dot-on' : ''}`} aria-hidden="true" />
-                    <span className="stack" style={{ gap: 6 }}>
+                    <span className="stack u-gap-6">
                       <span className="serif opt-name">{option.label}</span>
                       <span className="opt-desc">
                         {KNOWN_METHODS.includes(option.methodKey) ? t(`method_${option.methodKey}`) : null}

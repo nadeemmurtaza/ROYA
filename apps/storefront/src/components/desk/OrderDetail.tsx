@@ -35,7 +35,14 @@ export function OrderDetail({ id }: { id: string }) {
     return (
       <>
         {back}
-        <LoadState status={state.status} onRetry={reload} />
+        {/* An order that is not there is a plain answer, not a failure to retry. */}
+        {state.status === 'error' && state.httpStatus === 404 ? (
+          <p className="bag-muted" role="status">
+            {t('orderNotFound')}
+          </p>
+        ) : (
+          <LoadState status={state.status} onRetry={reload} />
+        )}
       </>
     );
   }
@@ -174,7 +181,7 @@ export function OrderDetail({ id }: { id: string }) {
             <ul className="desk-plain desk-items">
               {order.items.map((item) => (
                 <li key={item.id} className="desk-item">
-                  <span className="stack" style={{ gap: 4, minWidth: 0 }}>
+                  <span className="stack u-gap-4 u-min-w-0">
                     <span className="serif desk-piece">
                       {locale === SECOND_LOCALE && item.nameUr ? item.nameUr : item.nameEn}
                     </span>
