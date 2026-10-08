@@ -9,16 +9,18 @@ import { MoonIcon, SunIcon } from './icons';
 type ThemeName = 'dark' | 'light';
 
 /**
- * Dark is the design's default and light a toggle, remembered per visitor. The
- * saved choice is applied before first paint by themeBootScript (layout), so
- * this button only has to read the result and flip it.
+ * The brand's default theme (light) is on :root and the other is a toggle,
+ * remembered per visitor. The saved choice is applied before first paint by
+ * themeBootScript (layout), so this button only has to read the result and flip it.
  */
 export function ThemeToggle() {
   const t = useTranslations('shell');
   const [theme, setTheme] = useState<ThemeName>(BRAND.storefront.defaultTheme);
 
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+    const chosen = document.documentElement.dataset.theme;
+    // No attribute means nothing was saved, so the page is in the default theme.
+    setTheme(chosen === 'light' || chosen === 'dark' ? chosen : BRAND.storefront.defaultTheme);
   }, []);
 
   function flip() {

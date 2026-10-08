@@ -48,7 +48,7 @@ export function resolveTheme(preference: ThemePreference, systemPrefersDark: boo
  *     reason the stylesheet has the `:root:not([data-theme])` fallback.
  *
  * `fallback` is what a visitor who has not chosen gets: the device by default,
- * or a brand's own opening theme (ROYA opens dark, like its storefront). A
+ * or a brand's own opening theme (ROYA opens in its storefront's, light). A
  * stored `system` is a choice, so it still follows the device.
  *
  * Idempotent: running it twice sets the same attribute.

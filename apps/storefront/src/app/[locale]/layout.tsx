@@ -67,8 +67,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export const viewport: Viewport = {
-  themeColor: BRAND.storefront.themes.dark.bg,
-  colorScheme: 'dark light',
+  themeColor: BRAND.storefront.themes[BRAND.storefront.defaultTheme].bg,
+  colorScheme: 'light dark',
 };
 
 export default async function LocaleLayout({
