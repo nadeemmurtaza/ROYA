@@ -55,6 +55,12 @@ The engine's DB-backed specs need the migrated, seeded database from the steps a
 
 Three images from the repo root: `docker build -f apps/api/Dockerfile .` `docker build -f apps/storefront/Dockerfile --build-arg NEXT_PUBLIC_SITE_URL=https://… .` and `docker build -f apps/admin/Dockerfile --build-arg NEXT_PUBLIC_SITE_URL=https://… .`. The storefront and the back office each need `API_INTERNAL_URL` (how it reaches the API) at run time; the API needs the secrets in `.env.example` marked CHANGE-ME (it refuses to start in production on the development defaults), `STOREFRONT_URL` (links in emails), a real `PAYMENT_PROVIDERS`, and SMTP/WhatsApp credentials if notifications should be sent. Run `pnpm db:deploy` on every release; never `migrate diff` against a real database.
 
+### On Vercel
+
+One Vercel project runs the three apps as services of the root [`vercel.json`](vercel.json): `storefront` is public on `/`, `admin` on `/admin`, `api` on `/api`, all on one domain, so the browser still calls its own `/api/v1` and the cookies stay first-party. The storefront's server components reach the API through a service binding, which injects `API_SERVICE_URL` at run time (never set it by hand). The back office makes no server-side API call, so it has no binding, and its framework assets are served under `/admin/_next` so they cannot collide with the storefront's `/_next`. `pnpm lint` runs `scripts/check-vercel-config.mjs`, which keeps the file consistent with itself. `vercel dev` runs all three locally; the per-app commands above still work and need no Vercel at all.
+
+Set per environment in the project: everything the API needs (see Deploy above) including a Postgres with pgvector, a Redis and `STORAGE_DRIVER=s3` (a function has no durable disk), and `NEXT_PUBLIC_SITE_URL` plus `STOREFRONT_URL` for the public origin. The API's scheduled jobs and its outbox dispatcher run in-process, which a function does not keep alive: see item 7 in [`docs/OPEN-QUESTIONS.md`](docs/OPEN-QUESTIONS.md) before relying on this for production.
+
 Before launch work through [`docs/OPEN-QUESTIONS.md`](docs/OPEN-QUESTIONS.md): the TRN, bank details, domain, Arabic review and the choice of a card gateway are not decided by code.
 
 ## Upgrading the engine

@@ -12,8 +12,14 @@ const workspaceRoot = path.join(fileURLToPath(new URL('.', import.meta.url)), '.
  * below. One origin means the cart and refresh cookies are first-party (Safari
  * drops them across registrable domains), no CORS allowlist to keep in step,
  * and the API's address is not baked into the client bundle.
+ *
+ * A rewrite is fixed at build time, and a Vercel service binding only exists at
+ * run time, so on Vercel the rewrite is registered only when API_INTERNAL_URL is
+ * set by hand. Otherwise the platform's own routing (the /api rewrite in the
+ * root vercel.json) sends /api/v1 to the API service before this app sees it,
+ * and a rewrite baked here would only ever point at localhost.
  */
-const API_INTERNAL_URL = process.env.API_INTERNAL_URL || 'http://localhost:3001/api/v1';
+const API_INTERNAL_URL = process.env.API_INTERNAL_URL || (process.env.VERCEL ? '' : 'http://localhost:3001/api/v1');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -46,7 +52,7 @@ const nextConfig = {
     return [{ source: '/:locale/cart', destination: '/:locale/bag', permanent: true }];
   },
   async rewrites() {
-    return [{ source: '/api/v1/:path*', destination: `${API_INTERNAL_URL}/:path*` }];
+    return API_INTERNAL_URL ? [{ source: '/api/v1/:path*', destination: `${API_INTERNAL_URL}/:path*` }] : [];
   },
   async headers() {
     return [
