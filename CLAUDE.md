@@ -4,15 +4,16 @@ House of ROYA: a standalone couture storefront on a commerce engine delivered fr
 
 ## Where things live
 
-| Looking for                                       | Open                                                                    |
-| ------------------------------------------------- | ----------------------------------------------------------------------- |
-| The storefront                                    | `apps/storefront` (Next.js 15, next-intl, no Tailwind)                  |
-| The atelier desk (staff: orders, payments)        | `apps/storefront/src/components/desk`, rules in `src/lib/desk-model.ts` |
-| The engine                                        | `apps/api` (NestJS + Prisma + Postgres), `packages/shared`              |
-| The design, as imported                           | `design/` (read-only; the code is the implementation)                   |
-| Every colour, font, width, currency, handle, slug | `packages/shared/src/brand.ts`                                          |
-| UI copy                                           | `apps/storefront/messages/{en,ar}.json`                                 |
-| What is undecided                                 | `docs/OPEN-QUESTIONS.md`                                                |
+| Looking for                                       | Open                                                                                     |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| The storefront                                    | `apps/storefront` (Next.js 15, next-intl, no Tailwind)                                   |
+| The atelier desk (staff: orders, payments)        | `apps/storefront/src/components/desk`, rules in `src/lib/desk-model.ts`                  |
+| The back office (catalogue, stock, finance)       | `apps/admin` (Next.js 15 + Tailwind, English; nav in `components/admin/nav-registry.ts`) |
+| The engine                                        | `apps/api` (NestJS + Prisma + Postgres), `packages/shared`                               |
+| The design, as imported                           | `design/` (read-only; the code is the implementation)                                    |
+| Every colour, font, width, currency, handle, slug | `packages/shared/src/brand.ts`                                                           |
+| UI copy                                           | `apps/storefront/messages/{en,ar}.json`                                                  |
+| What is undecided                                 | `docs/OPEN-QUESTIONS.md`                                                                 |
 
 ## Rules
 

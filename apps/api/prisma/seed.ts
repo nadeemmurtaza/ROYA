@@ -82,6 +82,7 @@ async function main(): Promise<void> {
   await seedReturnReasons();
   await seedGown();
   const categories = await seedCategories();
+  await seedRawMaterialCategory();
   await seedCatalogue(categories);
   await seedPresentation(categories);
   await seedCollections();
@@ -518,6 +519,30 @@ async function seedCategories(): Promise<Map<string, string>> {
   }
 
   return bySlug;
+}
+
+/**
+ * The category raw materials are filed under (the bom module looks it up by
+ * the BomRawMaterialCategorySlug setting). It is inactive on purpose: the
+ * storefront lists every active category as a filter chip, and nobody shops
+ * for lining and thread. Same "never put it back" upsert as the rest.
+ */
+async function seedRawMaterialCategory(): Promise<void> {
+  const category = await prisma.category.upsert({
+    where: { slug: 'raw-materials' },
+    update: {},
+    create: { slug: 'raw-materials', isActive: false },
+  });
+  for (const [locale, name] of [
+    ['en', 'Raw materials'],
+    [SECOND_LOCALE, 'المواد الخام'],
+  ] as const) {
+    await prisma.categoryTranslation.upsert({
+      where: { categoryId_locale: { categoryId: category.id, locale } },
+      update: {},
+      create: { categoryId: category.id, locale, name },
+    });
+  }
 }
 
 /** The shop's own label, as a Brand row, so seeded products take the same path the back office does. */

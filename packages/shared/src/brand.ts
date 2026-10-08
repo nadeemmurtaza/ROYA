@@ -608,6 +608,13 @@ const commerce = {
   bespokeDepositPercent: 50,
   /** UAE VAT, percent. Prices shown are VAT-inclusive ("Includes 5% UAE VAT"). */
   vatPercent: 5,
+  /**
+   * Where the admin's order-value chart cuts its bands, in major units: below
+   * the first edge, between each pair, and at or above the last. Round numbers
+   * a person recognises, spread across what this house sells (ready-to-wear
+   * from about AED 1,200, a commission's deposit near AED 14,000).
+   */
+  orderValueBandEdges: [1_500, 5_000, 15_000, 30_000],
 } as const;
 
 // ---------------------------------------------------------------------------
