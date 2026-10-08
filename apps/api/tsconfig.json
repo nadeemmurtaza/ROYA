@@ -16,7 +16,13 @@
       // needs its own path alias here for the type checker. Node's own
       // module resolution at runtime (nest build's compiled output, ts-jest)
       // already honours "exports" independently of this setting.
-      "@newax/shared/secret-crypto": ["../../packages/shared/dist/secret-crypto.d.ts"]
+      //
+      // No file extension on the target, on purpose: the type checker finds
+      // secret-crypto.d.ts and a bundler (Vercel builds the API with one, and
+      // follows these paths) finds secret-crypto.js. Spelled out as ".d.ts"
+      // it bundled the declaration file, which exports nothing, so
+      // encryptSecret and decryptSecret were undefined at run time.
+      "@newax/shared/secret-crypto": ["../../packages/shared/dist/secret-crypto"]
     }
   },
   "include": ["src/**/*"],
