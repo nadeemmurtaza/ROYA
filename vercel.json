@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "admin": {
+      "root": "apps/admin",
+      "framework": "nextjs"
+    },
+    "api": {
+      "root": "apps/api",
+      "framework": "nestjs",
+      "buildCommand": "pnpm --filter @newax/shared build && pnpm --filter @newax/api db:generate && pnpm --filter @newax/api build"
+    },
+    "storefront": {
+      "root": "apps/storefront",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "api",
+          "format": "url",
+          "env": "API_SERVICE_URL"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    { "source": "/admin/:path*", "destination": { "service": "admin" } },
+    { "source": "/api/:path*", "destination": { "service": "api" } },
+    { "source": "/(.*)", "destination": { "service": "storefront" } }
+  ]
+}

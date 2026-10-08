@@ -8,8 +8,23 @@ const workspaceRoot = path.join(fileURLToPath(new URL('.', import.meta.url)), '.
  * address: it calls the back office's own /api/v1, which is rewritten to it
  * below. One origin means the session cookie is first-party and there is no
  * CORS allowlist to keep in step.
+ *
+ * A rewrite is fixed at build time, so on Vercel it is registered only when
+ * API_INTERNAL_URL is set by hand. Otherwise the platform's own routing (the
+ * /api rewrite in the root vercel.json) sends /api/v1 to the API service before
+ * this app sees it. The back office makes no server-side API call of its own, so
+ * it needs no service binding.
  */
-const API_INTERNAL_URL = process.env.API_INTERNAL_URL || 'http://localhost:3001/api/v1';
+const API_INTERNAL_URL = process.env.API_INTERNAL_URL || (process.env.VERCEL ? '' : 'http://localhost:3001/api/v1');
+
+/**
+ * Where this app's framework assets are served from. On one domain the
+ * storefront owns /_next, and its files have different hashes from these, so
+ * the back office's own scripts and styles would 404 there. Under its own path
+ * (the same /admin the root vercel.json sends here) they cannot collide; the
+ * rewrite below maps the path back onto the folder Next serves them from.
+ */
+const ASSET_PREFIX = '/admin';
 
 /**
  * The 8 hand-built insight pages the report registry replaced, each now an
@@ -45,6 +60,7 @@ const nextConfig = {
     return config;
   },
   poweredByHeader: false,
+  assetPrefix: ASSET_PREFIX,
   images: {
     // Uploads served by the API's own files controller.
     remotePatterns: [
@@ -59,7 +75,10 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    return [{ source: '/api/v1/:path*', destination: `${API_INTERNAL_URL}/:path*` }];
+    return [
+      { source: `${ASSET_PREFIX}/_next/:path*`, destination: '/_next/:path*' },
+      ...(API_INTERNAL_URL ? [{ source: '/api/v1/:path*', destination: `${API_INTERNAL_URL}/:path*` }] : []),
+    ];
   },
   async headers() {
     return [
