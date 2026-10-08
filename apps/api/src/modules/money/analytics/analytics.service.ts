@@ -1539,8 +1539,8 @@ export class AnalyticsService {
    * switches to once row count justifies it.
    */
   async purchasingSpend(days: number): Promise<PurchasingSpend> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const start = this.windowStart(days, timeZone);
 
     const [orderedRows, receivedRows, billedTotal, unpaidRows, categoryRows] = await Promise.all([
       this.prisma.$queryRawUnsafe<Array<{ day: string; ordered: bigint }>>(
@@ -1881,8 +1881,8 @@ export class AnalyticsService {
    * "one axis" idiom `comparison()`'s own docstring names.
    */
   async productsCategories(days: number): Promise<ProductsCategories> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const start = this.windowStart(days, timeZone);
     const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
 
     const [categoryRows, seriesRows] = await Promise.all([
@@ -1958,8 +1958,8 @@ export class AnalyticsService {
    * component for what is otherwise an identical rendering job.
    */
   async categoryVelocity(days: number = 14): Promise<CategoryVelocitySeries> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const start = this.windowStart(days, timeZone);
     const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
     const TOP_N = 5;
 
@@ -2136,8 +2136,8 @@ export class AnalyticsService {
    * codebase currently consumes.
    */
   async inventoryMovements(days: number): Promise<InventoryMovements> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const start = this.windowStart(days, timeZone);
 
     const [seriesRows, reasonRows, recent] = await Promise.all([
       this.prisma.$queryRawUnsafe<Array<{ day: string; in: bigint; out: bigint }>>(
@@ -2381,8 +2381,8 @@ export class AnalyticsService {
    * are what the planner uses once row count justifies it.
    */
   async workshopOutput(days: number): Promise<WorkshopOutput> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const start = this.windowStart(days, timeZone);
 
     const [startedRows, completedRows, stageRows, tailorRows] = await Promise.all([
       this.prisma.$queryRawUnsafe<Array<{ day: string; started: bigint }>>(
@@ -2506,8 +2506,17 @@ export class AnalyticsService {
     return this.buildMonthlyTarget(targetAmount, achieved);
   }
 
-  /** Midnight `days` ago, matching summary()'s seriesStart convention. */
-  private windowStart(days: number): Date {
+  /**
+   * Midnight `days` ago, matching summary()'s seriesStart convention.
+   *
+   * Pass the shop's time zone for a window that is bucketed into shop-local days
+   * (`shopDayKeys`): the day axis and the rows must name the same days. Without
+   * it the window starts at the server's own midnight, which for a server on UTC
+   * and a shop at UTC+4 leaves today off the axis for the first four hours of
+   * the shop's day (ROYA fork 23).
+   */
+  private windowStart(days: number, timeZone?: string): Date {
+    if (timeZone) return startOfShopDaysAgo(new Date(), days, timeZone);
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
     startOfToday.setDate(startOfToday.getDate() - (days - 1));

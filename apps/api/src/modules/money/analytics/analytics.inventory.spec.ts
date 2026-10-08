@@ -5,6 +5,8 @@ import { SettingsService } from '../../../core/settings/settings.service';
 import { AppConfigService } from '../../../core/config/app-config.service';
 import { AnalyticsService } from './analytics.service';
 import { MetricRegistryService } from '../../../core/metrics/metric-registry.service';
+import { BRAND } from '@newax/shared';
+import { shopDayKey, startOfShopDayFromKey } from '../../../core/time/shop-time';
 
 /**
  * WO-D.4 (10-admin-dashboard.md Track D) — covers only `inventoryValuation()`
@@ -155,6 +157,45 @@ describe('AnalyticsService — WO-D.4 inventory valuation/movements', () => {
       const totalOut = result.series.reduce((sum, point) => sum + point.out, 0);
       expect(totalIn).toBeGreaterThanOrEqual(20);
       expect(totalOut).toBeGreaterThanOrEqual(5);
+    });
+
+    // ROYA fork 23. The window and the rows must name the same days. The server's clock is UTC; the shop is not, so
+    // for part of every shop day the server's "today" is the shop's "yesterday". Only the Date is pinned: the
+    // database driver still needs its timers.
+    it('counts a movement made just after the shop’s midnight, though the server clock is still on the day before', async () => {
+      const zone = BRAND.locale.timeZone;
+      const at = new Date(startOfShopDayFromKey('2026-10-09', zone).getTime() + 30 * 60_000);
+      jest.useFakeTimers({
+        now: at,
+        doNotFake: [
+          'hrtime',
+          'nextTick',
+          'performance',
+          'queueMicrotask',
+          'requestAnimationFrame',
+          'cancelAnimationFrame',
+          'requestIdleCallback',
+          'cancelIdleCallback',
+          'setImmediate',
+          'clearImmediate',
+          'setInterval',
+          'clearInterval',
+          'setTimeout',
+          'clearTimeout',
+        ],
+      });
+      try {
+        const product = await makeProduct();
+        const variant = await makeVariant(product.id, { stock: 10, costPrice: 100 });
+        await makeMovement(variant.id, { delta: 20, reason: 'PURCHASE_RECEIPT', createdAt: at });
+
+        const result = await service.inventoryMovements(7);
+
+        const today = result.series.find((point) => point.date === shopDayKey(at, zone));
+        expect(today?.in).toBeGreaterThanOrEqual(20);
+      } finally {
+        jest.useRealTimers();
+      }
     });
 
     it('groups by reason with correct in/out magnitude and count', async () => {
