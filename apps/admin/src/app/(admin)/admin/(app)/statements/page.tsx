@@ -96,6 +96,7 @@ export default function StatementsPage() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Search customer by name or phone..."
+                aria-label="Search customer by name or phone"
               />
               {options.length > 0 ? (
                 <ul className="mt-2 divide-y divide-neutral-100 rounded border border-neutral-100">

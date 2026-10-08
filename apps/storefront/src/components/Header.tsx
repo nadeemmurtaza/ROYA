@@ -60,7 +60,11 @@ export async function Header() {
           <Link className="icon-btn" href="/account" aria-label={t('account')}>
             <AccountIcon />
           </Link>
-          <Link className="icon-btn hide-sm" href="/dashboard" aria-label={t('wishlist')}>
+          <Link
+            className="icon-btn hide-sm"
+            href={{ pathname: '/dashboard', query: { tab: 'wishlist' } }}
+            aria-label={t('wishlist')}
+          >
             <HeartIcon />
           </Link>
           <BagLink />

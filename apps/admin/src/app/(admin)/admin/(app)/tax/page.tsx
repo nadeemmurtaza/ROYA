@@ -264,6 +264,7 @@ export default function TaxAdminPage() {
                         min={0}
                         step="0.01"
                         placeholder="e.g. 17"
+                        aria-label={`New rate for ${taxClass.name} (percent)`}
                         className="field-input w-24"
                         value={rateDraftByClassId[taxClass.id] ?? ''}
                         onChange={(e) =>

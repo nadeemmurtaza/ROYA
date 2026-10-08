@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import { useEnabledModules } from '@/components/admin/deployment-modules';
 import { CustomFieldFormSection } from '@/components/admin/custom-field-form-section';
+import { SupplierProducts } from '@/components/admin/supplier-products';
 import { EntityAttributeEditor } from '@/components/admin/entity-attribute-editor';
 import { FragmentMountPoint } from '@/components/admin/fragment-mount-point';
 import { MetadataDrivenEntityForm } from '@/components/admin/metadata-driven-entity-form';
@@ -189,6 +190,8 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
           {linkSaved ? <p className="mt-2 text-sm text-green-700">Saved.</p> : null}
         </div>
       ) : null}
+
+      <SupplierProducts supplierId={id} />
 
       <CustomFieldFormSection entityType="Supplier" entityId={id} />
       <EntityAttributeEditor entityType="Supplier" entityId={id} />

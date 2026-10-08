@@ -108,6 +108,7 @@ export default function ShipmentsPage() {
                 return (
                   <select
                     className="field-input py-1 text-sm"
+                    aria-label={`Update status of the shipment for order ${row.order.number}`}
                     disabled={busyId === row.id}
                     value=""
                     onChange={(event) => {

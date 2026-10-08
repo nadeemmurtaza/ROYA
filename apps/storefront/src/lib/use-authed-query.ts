@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { apiAuthed } from '@/lib/api';
+import { ApiError, apiAuthed } from '@/lib/api';
 
-type State<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error' };
+/** `httpStatus` is the API's answer when there was one (a 404 is "that is not there", not "try again"). */
+type State<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error'; httpStatus?: number };
 
 /** One signed-in read, with a retry. A failed read is a state to show, never a thrown error. */
 export function useAuthedQuery<T>(path: string, query?: Record<string, unknown>) {
@@ -15,7 +16,10 @@ export function useAuthedQuery<T>(path: string, query?: Record<string, unknown>)
     setState({ status: 'loading' });
     apiAuthed<T>(path, { query: query as Record<string, unknown> | undefined })
       .then((data) => live && setState({ status: 'ready', data }))
-      .catch(() => live && setState({ status: 'error' }));
+      .catch(
+        (error) =>
+          live && setState({ status: 'error', httpStatus: error instanceof ApiError ? error.status : undefined }),
+      );
     return () => {
       live = false;
     };

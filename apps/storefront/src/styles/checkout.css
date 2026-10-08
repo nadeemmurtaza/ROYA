@@ -197,17 +197,6 @@ html[dir='rtl'] input[dir='ltr'] {
   color: var(--text-faint);
   line-height: 1.6;
 }
-.bag-empty {
-  padding: 72px 0;
-  border-block: 1px solid rgb(var(--line-rgb) / 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-}
-.bag-empty > .serif {
-  font-size: 34px;
-}
 
 /* ── Bag lines ──────────────────────────────────────── */
 .bag-lines {

@@ -1,5 +1,6 @@
 import type { PermissionKey } from '@/constants/permissions';
 import type { DashboardGroupKey, ValueFormat } from '@/components/admin/dashboard/card-registry';
+import type { RangeAs } from './range-query';
 
 /**
  * 25 detail pages are 25 config objects and one catch-all route
@@ -59,6 +60,8 @@ export interface AnalyticsReport {
   /** API path — decoupled from the page path (D4): the owner's page tree need not match the endpoint owner. */
   endpoint: string;
   ranges?: readonly number[];
+  /** How `endpoint` takes its period: `days` (the default) or `from`/`to`. See `range-query.ts`. */
+  rangeAs?: RangeAs;
   /** URL-synced, forwarded to `endpoint` as query params. */
   filters?: readonly FilterSpec[];
   blocks: readonly ReportBlock[];
@@ -562,7 +565,9 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
         title: 'Top customers',
         path: 'rows',
         columns: [
-          { key: 'name', header: 'Customer', format: 'text', href: '/admin/customers/{contactId}' },
+          // Not a link: `/admin/customers/:id` is a store-credit page keyed by a sign-in account, and a row here is a CRM contact
+          // (walk-in customers have no account at all), so the link ended on "Customer not found".
+          { key: 'name', header: 'Customer', format: 'text' },
           { key: 'city', header: 'City', format: 'text' },
           { key: 'orders', header: 'Orders', format: 'integer', align: 'right' },
           { key: 'lifetimeValue', header: 'Lifetime value', format: 'money', align: 'right' },
@@ -631,6 +636,7 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
     permissions: ['finance.view'],
     module: 'finance',
     endpoint: '/admin/finance/expenses/summary',
+    rangeAs: 'dates',
     blocks: [
       {
         kind: 'kpis',
@@ -659,6 +665,7 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
     permissions: ['finance.view'],
     module: 'finance',
     endpoint: '/admin/finance/expenses/by-category',
+    rangeAs: 'dates',
     parent: 'expenses/summary',
     blocks: [
       { kind: 'kpis', items: [{ label: 'Vs. revenue', path: 'vsRevenueBps', format: 'percent-bps' }] },
@@ -684,6 +691,7 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
     permissions: ['finance.view'],
     module: 'finance',
     endpoint: '/admin/finance/expenses/trend',
+    rangeAs: 'dates',
     parent: 'expenses/summary',
     blocks: [
       {

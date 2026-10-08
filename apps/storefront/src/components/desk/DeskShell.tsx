@@ -93,24 +93,24 @@ export function DeskShell({ children }: { children: ReactNode }) {
 
   if (session.status !== 'signed-in' || !session.user) {
     return (
-      <div className="desk-single">
+      <main id="content" className="desk-single">
         <p className="bag-muted" role="status">
           {t('loading')}
         </p>
-      </div>
+      </main>
     );
   }
 
   if (sections.length === 0) {
     return (
-      <div className="desk-single">
+      <main id="content" className="desk-single">
         <span className="eyebrow">{t('eyebrow')}</span>
         <h1 className="serif desk-title">{t('noAccessTitle')}</h1>
         <p className="bag-muted">{t('noAccessBody')}</p>
         <Link className="btn-gold" href="/">
           {t('noAccessHome')}
         </Link>
-      </div>
+      </main>
     );
   }
 

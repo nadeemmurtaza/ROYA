@@ -153,6 +153,12 @@ export function BuyBox({ productId, type, variants, price }: BuyBoxProps) {
         <Link className="btn-line" href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
           {t('fitting')}
         </Link>
+        {/* A shade and size that were never made together: say so, instead of a button that will not press. */}
+        {!variant ? (
+          <p role="status" className="buy-note">
+            {t('unavailable')}
+          </p>
+        ) : null}
         {notice ? (
           <p role="alert" className="field-error">
             {notice}

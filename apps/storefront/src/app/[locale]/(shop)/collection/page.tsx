@@ -32,6 +32,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
   setRequestLocale(locale);
   const query = parseCollectionQuery(await searchParams);
   const t = await getTranslations('collection');
+  const common = await getTranslations('common');
 
   // The catalogue being unreachable is a state the page shows, not an error page.
   const [catalogue, categories] = await Promise.all([
@@ -114,6 +115,10 @@ export default async function CollectionPage({ params, searchParams }: Props) {
           <div className="empty-inline">
             <h2 className="serif">{t('unavailableTitle')}</h2>
             <p>{t('unavailableBody')}</p>
+            {/* The page is rendered on request, so following its own address asks the catalogue again. */}
+            <Link className="btn-gold" href={pageHref(query.page)}>
+              {common('tryAgain')}
+            </Link>
           </div>
         ) : catalogue.data.length === 0 ? (
           <div className="empty-inline">

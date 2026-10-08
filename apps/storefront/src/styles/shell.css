@@ -125,6 +125,19 @@ html[dir='rtl'] .ar-link {
     display: flex;
   }
 }
+/* The panel's second group: search, wishlist, consultation. A button wears the same type as the links around it. */
+.nav-mob-more {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-block-start: 20px;
+  border-block-start: 1px solid rgb(var(--line-rgb) / 0.16);
+}
+.nav-mob-more button.navlink {
+  align-self: flex-start;
+  border: 0;
+  cursor: pointer;
+}
 .nav-mob-panel {
   position: absolute;
   inset-inline-start: 0;

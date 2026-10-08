@@ -56,8 +56,9 @@ export default function NewRequisitionPage() {
     }
     setSearching(true);
     const handle = setTimeout(() => {
-      adminFetch<{ data: VariantSearchResult[] }>('/admin/inventory', { query: { search } })
-        .then((res) => setResults(res.data.slice(0, 8)))
+      // The stock list answers with a plain array, not a page.
+      adminFetch<VariantSearchResult[]>('/admin/inventory', { query: { search } })
+        .then((list) => setResults(list.slice(0, 8)))
         .catch(() => setResults([]))
         .finally(() => setSearching(false));
     }, 300);

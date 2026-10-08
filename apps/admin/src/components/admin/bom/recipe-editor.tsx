@@ -317,6 +317,7 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
                       value={row.note}
                       onChange={(event) => updateRow(index, { note: event.target.value })}
                       placeholder="Note"
+                      aria-label={`Note for line ${index + 1}`}
                       className="field-input"
                     />
                     <button

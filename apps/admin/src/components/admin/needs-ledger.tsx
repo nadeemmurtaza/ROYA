@@ -1,8 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Loading } from '@/components/ui/loading';
+import { PageHeader } from '@/components/ui/page-header';
+import { ROUTES } from '@/constants/routes';
 import { pageGate } from '@/utils/module-gate';
 import { useEnabledModules } from './deployment-modules';
 
@@ -38,10 +41,24 @@ export function NeedsLedger({ what, children }: { what: string; children: ReactN
   const gate = pageGate('accounting', enabledModules, gaveUp);
   if (gate === 'wait') return <Loading label={`Loading ${what}`} />;
   if (gate === 'show') return <>{children}</>;
+  // Off is a page with a name and a way out, not a blank screen: the views that work without the ledger are one click away.
   return (
-    <EmptyState
-      title={`${what} reads the general ledger`}
-      description="The ledger is switched off for this deployment. Margins, unit economics and expenses work without it."
-    />
+    <>
+      <PageHeader title={what} description="This view reads the general ledger, which is switched off for this deployment." />
+      <EmptyState
+        title={`${what} needs the general ledger`}
+        description="Margins, unit economics and expenses work without it."
+        action={
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href={ROUTES.admin.financeMargins} className="btn-primary">
+              Margins
+            </Link>
+            <Link href={ROUTES.admin.financeExpenses} className="btn-secondary">
+              Expenses
+            </Link>
+          </div>
+        }
+      />
+    </>
   );
 }

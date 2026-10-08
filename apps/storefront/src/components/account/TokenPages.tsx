@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Field } from '@/components/checkout/Field';
 import { Link } from '@/i18n/navigation';
-import { api } from '@/lib/api';
+import { api, apiAuthed } from '@/lib/api';
+import { useSession } from '@/providers/session';
 
 /**
  * The three pages an email links to, each carrying a one-time token in its
@@ -54,7 +55,10 @@ export function ResetPassword() {
           <p role="alert" className="field-error">
             {token ? t('resetFailed') : t('resetNoToken')}
           </p>
-          <Link className="btn-line" href="/account">
+          <Link className="btn-gold" href={{ pathname: '/account', query: { mode: 'forgot' } }}>
+            {t('resetNewLink')}
+          </Link>
+          <Link className="navlink u-self-start" href="/account">
             {t('backToSignIn')}
           </Link>
         </>
@@ -94,8 +98,11 @@ export function ResetPassword() {
 
 export function VerifyEmail() {
   const t = useTranslations('account');
+  const common = useTranslations('common');
+  const session = useSession();
   const token = useSearchParams().get('token');
   const [state, setState] = useState<'working' | 'done' | 'failed'>(token ? 'working' : 'failed');
+  const [resend, setResend] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
 
   useEffect(() => {
     if (!token) return;
@@ -108,8 +115,21 @@ export function VerifyEmail() {
     };
   }, [token]);
 
+  async function resendLink() {
+    setResend('sending');
+    try {
+      await apiAuthed('/auth/resend-verification', { method: 'POST', expect: 'none' });
+      setResend('sent');
+    } catch {
+      setResend('failed');
+    }
+  }
+
+  const title =
+    state === 'working' ? t('verifyTitle') : state === 'done' ? t('verifyDoneTitle') : t('verifyFailedTitle');
+
   return (
-    <Frame title={t('verifyTitle')}>
+    <Frame title={title}>
       {state === 'working' ? (
         <p role="status" className="bag-muted">
           {t('working')}
@@ -121,12 +141,38 @@ export function VerifyEmail() {
         </p>
       ) : null}
       {state === 'failed' ? (
-        <p role="alert" className="field-error">
-          {t('verifyFailed')}
-        </p>
+        <>
+          <p role="alert" className="field-error">
+            {t('verifyFailed')}
+          </p>
+          {/* An expired link is recoverable: a signed-in client asks for another, anyone else signs in first. */}
+          {resend === 'sent' ? (
+            <p role="status" className="bag-muted">
+              {t('verifyResent')}
+            </p>
+          ) : session.status === 'signed-in' ? (
+            <>
+              {resend === 'failed' ? (
+                <p role="alert" className="field-error">
+                  {common('somethingWrong')}
+                </p>
+              ) : null}
+              <button type="button" className="btn-line" disabled={resend === 'sending'} onClick={resendLink}>
+                {resend === 'sending' ? t('working') : t('verifyResend')}
+              </button>
+            </>
+          ) : session.status === 'anonymous' ? (
+            <>
+              <p className="bag-muted">{t('verifySignIn')}</p>
+              <Link className="btn-line" href={{ pathname: '/account', query: { next: '/verify-email' } }}>
+                {t('signIn')}
+              </Link>
+            </>
+          ) : null}
+        </>
       ) : null}
       {state !== 'working' ? (
-        <Link className="btn-gold" href="/dashboard">
+        <Link className={state === 'done' ? 'btn-gold' : 'navlink u-self-start'} href="/dashboard">
           {t('verifyCta')}
         </Link>
       ) : null}

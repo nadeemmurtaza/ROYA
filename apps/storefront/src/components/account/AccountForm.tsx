@@ -35,7 +35,9 @@ export function AccountForm() {
   const landingFor = (user: AuthUser | null) =>
     !params.get('next') && deskSections(user?.permissions).length > 0 ? '/desk' : next;
 
-  const [mode, setMode] = useState<Mode>(params.get('mode') === 'register' ? 'up' : 'in');
+  const [mode, setMode] = useState<Mode>(
+    params.get('mode') === 'register' ? 'up' : params.get('mode') === 'forgot' ? 'forgot' : 'in',
+  );
   const [reveal, setReveal] = useState(false);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);

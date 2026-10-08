@@ -161,6 +161,7 @@ export default function ReorderSuggestionsPage() {
                 <input
                   type="checkbox"
                   className="field-check"
+                  aria-label="Select every suggestion"
                   checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
                   onChange={toggleAll}
                 />
@@ -169,6 +170,7 @@ export default function ReorderSuggestionsPage() {
                 <input
                   type="checkbox"
                   className="field-check"
+                  aria-label={`Select ${variant.sku}`}
                   checked={selectedIds.has(variant.id)}
                   onChange={() => toggleOne(variant.id)}
                 />

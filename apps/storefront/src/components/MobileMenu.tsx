@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useId, useState } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
+import { useSearch } from '@/providers/search';
 import { CloseIcon, MenuIcon } from './icons';
 import { NAV } from './nav';
 
@@ -10,6 +11,7 @@ export function MobileMenu() {
   const t = useTranslations('shell');
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const search = useSearch();
   const panelId = useId();
 
   // Following a link closes the menu; so does Escape.
@@ -41,6 +43,25 @@ export function MobileMenu() {
               {t(`nav.${item.key}`)}
             </Link>
           ))}
+          {/* Search, the wishlist and the consultation have no room in the header below 900px; the menu is where they live. */}
+          <div className="nav-mob-more">
+            <button
+              type="button"
+              className="navlink"
+              onClick={() => {
+                setOpen(false);
+                search.show();
+              }}
+            >
+              {t('searchOpen')}
+            </button>
+            <Link className="navlink" href={{ pathname: '/dashboard', query: { tab: 'wishlist' } }}>
+              {t('wishlist')}
+            </Link>
+            <Link className="navlink" href="/consultation">
+              {t('consult')}
+            </Link>
+          </div>
         </nav>
       ) : null}
     </>

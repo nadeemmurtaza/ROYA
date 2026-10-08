@@ -1,6 +1,8 @@
 'use client';
 
 import { Image } from '@/components/Image';
+import { BagLoadError } from './BagLoadError';
+import { EmptyBag } from './EmptyBag';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { BRAND } from '@newax/shared';
@@ -126,18 +128,10 @@ export function BagView() {
     );
   }
 
-  if (!cart.cart) {
-    return (
-      <div className="bag-page">
-        <div className="bag-empty">
-          <span className="serif">{t('loadError')}</span>
-          <button type="button" className="btn-gold" onClick={() => void cart.reload()}>
-            {t('retry')}
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (!cart.cart) return <BagLoadError onRetry={() => void cart.reload()} />;
+
+  // Nothing in it: the page is the empty bag and the way back to the collection, not a hollow bag beside an empty summary.
+  if (pieces.length === 0) return <EmptyBag />;
 
   const count = pieces.reduce((total, line) => total + line.quantity, 0);
   const options: Array<{ key: Presentation; name: string; description: string }> = [
@@ -164,77 +158,67 @@ export function BagView() {
           </span>
         </div>
 
-        {pieces.length === 0 ? (
-          <div className="bag-empty">
-            <span className="serif">{t('emptyTitle')}</span>
-            <span className="bag-muted">{t('emptyBody')}</span>
-            <Link className="btn-gold" href="/collection">
-              {t('emptyCta')}
-            </Link>
-          </div>
-        ) : (
-          <ul className="bag-lines">
-            {pieces.map((line) => {
-              const info = meta.get(line.slug);
-              const bespoke = info?.type === 'bespoke';
-              return (
-                <li key={line.id} className="bag-line fade">
-                  <Link href={`/product/${line.slug}`} className="ph bag-thumb" aria-label={line.name}>
-                    {line.imageUrl ? (
-                      <Image src={line.imageUrl} alt="" fill sizes="180px" className="photo u-focus-25" />
-                    ) : null}
+        <ul className="bag-lines">
+          {pieces.map((line) => {
+            const info = meta.get(line.slug);
+            const bespoke = info?.type === 'bespoke';
+            return (
+              <li key={line.id} className="bag-line fade">
+                <Link href={`/product/${line.slug}`} className="ph bag-thumb" aria-label={line.name}>
+                  {line.imageUrl ? (
+                    <Image src={line.imageUrl} alt="" fill sizes="180px" className="photo u-focus-25" />
+                  ) : null}
+                </Link>
+                <div className="bag-line-info">
+                  {info ? (
+                    <span className="eyebrow">{product(TYPE_KEY[info.type], { category: info.category })}</span>
+                  ) : null}
+                  <Link href={`/product/${line.slug}`} className="serif bag-name">
+                    {line.name}
                   </Link>
-                  <div className="bag-line-info">
-                    {info ? (
-                      <span className="eyebrow">{product(TYPE_KEY[info.type], { category: info.category })}</span>
+                  <span className="bag-detail">
+                    {describe(line)}
+                    {info && info.type !== 'accessory' ? (
+                      <>
+                        <br />
+                        {bespoke ? t('labelNote') : t('boxNote')}
+                      </>
                     ) : null}
-                    <Link href={`/product/${line.slug}`} className="serif bag-name">
-                      {line.name}
-                    </Link>
-                    <span className="bag-detail">
-                      {describe(line)}
-                      {info && info.type !== 'accessory' ? (
-                        <>
-                          <br />
-                          {bespoke ? t('labelNote') : t('boxNote')}
-                        </>
-                      ) : null}
-                    </span>
-                    {bespoke ? <span className="bag-badge">{t('deposit')}</span> : null}
-                    <div className="bag-actions">
-                      <button
-                        type="button"
-                        className="lnk"
-                        disabled={cart.busy}
-                        onClick={() => void moveToWishlist(line)}
-                      >
-                        {t('moveToWishlist')}
-                      </button>
-                      <button
-                        type="button"
-                        className="lnk"
-                        disabled={cart.busy}
-                        onClick={() => void cart.remove(line.id)}
-                      >
-                        {t('remove')}
-                      </button>
-                    </div>
+                  </span>
+                  {bespoke ? <span className="bag-badge">{t('deposit')}</span> : null}
+                  <div className="bag-actions">
+                    <button
+                      type="button"
+                      className="lnk"
+                      disabled={cart.busy}
+                      onClick={() => void moveToWishlist(line)}
+                    >
+                      {t('moveToWishlist')}
+                    </button>
+                    <button
+                      type="button"
+                      className="lnk"
+                      disabled={cart.busy}
+                      onClick={() => void cart.remove(line.id)}
+                    >
+                      {t('remove')}
+                    </button>
                   </div>
-                  <div className="bag-price">
-                    <span className="serif">
-                      <Price minor={line.unitPrice * line.quantity} charged />
+                </div>
+                <div className="bag-price">
+                  <span className="serif">
+                    <Price minor={line.unitPrice * line.quantity} charged />
+                  </span>
+                  {bespoke && info ? (
+                    <span className="bag-muted-sm">
+                      {t('of', { price: formatPrice(info.basePrice * line.quantity) })}
                     </span>
-                    {bespoke && info ? (
-                      <span className="bag-muted-sm">
-                        {t('of', { price: formatPrice(info.basePrice * line.quantity) })}
-                      </span>
-                    ) : null}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+                  ) : null}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
 
         {pieces.length > 0 ? (
           <section aria-labelledby="presentation-title" className="presentation">

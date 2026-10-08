@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation';
 import { api, apiAuthed } from '@/lib/api';
 import { isFilled } from '@/lib/brand-contact';
 import { formatPrice } from '@/lib/money';
+import { owedTransfer } from '@/lib/order-model';
 import { image } from '@/lib/media';
 import type { BankAccount, Order } from '@/types/api';
 import { useSession } from '@/providers/session';
@@ -23,7 +24,9 @@ function readRemembered(number: string): RememberedOrder | null {
   }
 }
 
-type State = { status: 'loading' } | { status: 'found'; remembered: RememberedOrder } | { status: 'lookup' };
+/** `fresh`: the order was handed over by checkout a moment ago, as opposed to opened again later. */
+type State =
+  { status: 'loading' } | { status: 'found'; remembered: RememberedOrder; fresh: boolean } | { status: 'lookup' };
 
 /**
  * The confirmation. It shows the order straight after it is placed (handed over
@@ -33,6 +36,7 @@ type State = { status: 'loading' } | { status: 'found'; remembered: RememberedOr
  */
 export function OrderView({ number }: { number: string }) {
   const t = useTranslations('order');
+  const account = useTranslations('dashboard');
   const locale = useLocale();
   const session = useSession();
   const [state, setState] = useState<State>({ status: 'loading' });
@@ -40,7 +44,7 @@ export function OrderView({ number }: { number: string }) {
   useEffect(() => {
     const remembered = readRemembered(number);
     if (remembered) {
-      setState({ status: 'found', remembered });
+      setState({ status: 'found', remembered, fresh: true });
       return;
     }
     if (session.status === 'loading') return;
@@ -49,7 +53,12 @@ export function OrderView({ number }: { number: string }) {
       apiAuthed<Order>(`/orders/${encodeURIComponent(number)}`)
         .then(
           (order) =>
-            live && setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } }),
+            live &&
+            setState({
+              status: 'found',
+              remembered: { order, bespoke: isCommission(order), balance: 0 },
+              fresh: false,
+            }),
         )
         .catch(() => live && setState({ status: 'lookup' }));
       return () => {
@@ -74,18 +83,25 @@ export function OrderView({ number }: { number: string }) {
       <Lookup
         number={number}
         onFound={(order) =>
-          setState({ status: 'found', remembered: { order, bespoke: isCommission(order), balance: 0 } })
+          setState({
+            status: 'found',
+            remembered: { order, bespoke: isCommission(order), balance: 0 },
+            fresh: false,
+          })
         }
       />
     );
   }
 
   const { order, bespoke, balance } = state.remembered;
+  const { fresh } = state;
   const first = (order.guestName ?? order.shippingAddress?.fullName ?? '').trim().split(/\s+/)[0] ?? '';
-  const accounts = (order.payment?.meta?.accounts ?? []).filter(
-    (account) => isFilled(account.iban) || isFilled(account.accountNumber),
+  // Straight after checkout the response says what is owed; on a later visit the order's own payments do.
+  const owed = order.payment ? { ...order.payment, receiptSent: false } : owedTransfer(order);
+  const accounts = (owed?.meta?.accounts ?? []).filter(
+    (bankAccount) => isFilled(bankAccount.iban) || isFilled(bankAccount.accountNumber),
   );
-  const bank = order.payment && order.payment.redirectUrl === null && order.payment.meta?.accounts !== undefined;
+  const bank = owed && owed.redirectUrl === null && owed.meta?.accounts !== undefined;
   const timeline = bespoke
     ? [
         [t('t1When'), t('t1Title'), t('t1Body')],
@@ -114,7 +130,15 @@ export function OrderView({ number }: { number: string }) {
       </svg>
 
       <div className="rise d1 confirm-head">
-        <span className="eyebrow">{t('eyebrow', { number: order.number })}</span>
+        <span className="eyebrow">
+          {/* Just placed: the order is confirmed. Opened later: whatever it is now, not a stale "confirmed". */}
+          {fresh
+            ? t('eyebrow', { number: order.number })
+            : t('eyebrowStatus', {
+                number: order.number,
+                status: account(`status_${order.status}` as 'status_PENDING'),
+              })}
+        </span>
         <h1 className="serif">
           {first ? t.rich('thanksName', { name: first, em: (chunks) => <em>{chunks}</em> }) : t('thanks')}
         </h1>
@@ -132,12 +156,12 @@ export function OrderView({ number }: { number: string }) {
               <dt>{t('payReference')}</dt>
               <dd dir="ltr">{order.number}</dd>
             </div>
-            {accounts.map((account) => (
-              <BankDetails key={account.iban || account.accountNumber} account={account} />
+            {accounts.map((bankAccount) => (
+              <BankDetails key={bankAccount.iban || bankAccount.accountNumber} account={bankAccount} />
             ))}
           </dl>
           {accounts.length === 0 ? <p className="bag-muted">{t('payPending', { number: order.number })}</p> : null}
-          {order.payment ? <ReceiptUpload paymentId={order.payment.paymentId} /> : null}
+          {owed ? <ReceiptUpload paymentId={owed.paymentId} sent={owed.receiptSent} /> : null}
         </section>
       ) : null}
 
@@ -235,10 +259,10 @@ function BankDetails({ account }: { account: BankAccount }) {
   );
 }
 
-function ReceiptUpload({ paymentId }: { paymentId: string }) {
+function ReceiptUpload({ paymentId, sent }: { paymentId: string; sent: boolean }) {
   const t = useTranslations('order');
   const [file, setFile] = useState<File | null>(null);
-  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>(sent ? 'done' : 'idle');
 
   async function submit(event: FormEvent) {
     event.preventDefault();

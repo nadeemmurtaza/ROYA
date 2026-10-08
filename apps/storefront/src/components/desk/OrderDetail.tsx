@@ -35,7 +35,14 @@ export function OrderDetail({ id }: { id: string }) {
     return (
       <>
         {back}
-        <LoadState status={state.status} onRetry={reload} />
+        {/* An order that is not there is a plain answer, not a failure to retry. */}
+        {state.status === 'error' && state.httpStatus === 404 ? (
+          <p className="bag-muted" role="status">
+            {t('orderNotFound')}
+          </p>
+        ) : (
+          <LoadState status={state.status} onRetry={reload} />
+        )}
       </>
     );
   }

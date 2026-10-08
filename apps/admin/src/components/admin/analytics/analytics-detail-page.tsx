@@ -18,6 +18,7 @@ import { TableBlock } from './blocks/table-block';
 import { FunnelBlock } from './blocks/funnel-block';
 import { GaugeBlock } from './blocks/gauge-block';
 import { DynamicTimeSeriesBlock } from './blocks/dynamic-timeseries-block';
+import { rangeQuery } from './range-query';
 
 /** Walks a report's own `parent` chain up to its group index, for the breadcrumb — the report-registry's own tree (D3), independent of the sidebar's nav tree. */
 function breadcrumbFor(report: AnalyticsReport): Array<{ label: string; href: string }> {
@@ -58,7 +59,7 @@ export function AnalyticsDetailPage({ report }: { report: AnalyticsReport }) {
     let cancelled = false;
     setData(null);
     setError(null);
-    adminFetch<unknown>(report.endpoint, { query: { days } })
+    adminFetch<unknown>(report.endpoint, { query: rangeQuery(report.rangeAs, days) })
       .then((response) => {
         if (!cancelled) setData(response);
       })
@@ -68,7 +69,7 @@ export function AnalyticsDetailPage({ report }: { report: AnalyticsReport }) {
     return () => {
       cancelled = true;
     };
-  }, [report.endpoint, days, canSee]);
+  }, [report.endpoint, report.rangeAs, days, canSee]);
 
   const trail = breadcrumbFor(report);
   const context = (

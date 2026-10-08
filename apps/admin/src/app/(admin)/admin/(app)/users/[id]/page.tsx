@@ -419,6 +419,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
               cell: (permission) => (
                 <input
                   type="checkbox"
+                  aria-label={`Grant ${permission.key}`}
                   checked={effective.has(permission.key)}
                   onChange={() => toggle(permission.key)}
                   className="field-check"

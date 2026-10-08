@@ -2,8 +2,10 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { BagLoadError } from '@/components/bag/BagLoadError';
+import { EmptyBag } from '@/components/bag/EmptyBag';
 import { FocusHeader } from '@/components/FocusHeader';
-import { Link, useRouter } from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { ApiError, api, apiAuthed } from '@/lib/api';
 import { DEFAULT_EXTRAS, PRESENTATION_LABEL, balanceDue, parseExtras, piecesIn } from '@/lib/cart-model';
 import { useLineMeta } from '@/lib/use-line-meta';
@@ -273,18 +275,21 @@ export function CheckoutFlow() {
 
   const stepLabels = [t('stepDelivery'), t('stepPayment'), t('stepReview')];
 
+  // The bag could not be fetched: say so, rather than claim it is empty.
+  if (!cart.loading && !cart.cart && !placing) {
+    return (
+      <>
+        <FocusHeader backHref="/bag" backLabel={focus('backToBag')} />
+        <BagLoadError onRetry={() => void cart.reload()} />
+      </>
+    );
+  }
+
   if (!cart.loading && pieces.length === 0 && !placing) {
     return (
       <>
         <FocusHeader backHref="/bag" backLabel={focus('backToBag')} />
-        <div className="bag-page">
-          <div className="bag-empty">
-            <span className="serif">{t('emptyTitle')}</span>
-            <Link className="btn-gold" href="/collection">
-              {t('emptyCta')}
-            </Link>
-          </div>
-        </div>
+        <EmptyBag />
       </>
     );
   }

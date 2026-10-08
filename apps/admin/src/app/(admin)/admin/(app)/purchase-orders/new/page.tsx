@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
+import { ROUTES } from '@/constants/routes';
 import { CURRENCY, formatMoney, toMajor, toMinor } from '@newax/shared';
 import { PartyPicker } from '@/components/admin/party-picker';
 import { DataTable, Loading } from '@/components/ui';
@@ -28,6 +30,7 @@ export default function NewPurchaseOrderPage() {
 
   const [supplierProducts, setSupplierProducts] = useState<SupplierProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [catalogueError, setCatalogueError] = useState(false);
 
   // Line items state
   const [lines, setLines] = useState<Array<{ variantId: string; qty: number; cost: number; sku: string; name: string }>>([]);
@@ -48,9 +51,10 @@ export default function NewPurchaseOrderPage() {
       return;
     }
     setLoadingProducts(true);
+    setCatalogueError(false);
     adminFetch<{ data: SupplierProduct[] }>(`/admin/suppliers/${supplierId}/products`)
       .then((res) => setSupplierProducts(res.data))
-      .catch(console.error)
+      .catch(() => setCatalogueError(true))
       .finally(() => setLoadingProducts(false));
   }, [supplierId]);
 
@@ -176,7 +180,7 @@ export default function NewPurchaseOrderPage() {
               </div>
               {lines.length === 0 ? (
                 <div className="p-8 text-center text-neutral-900/60 text-sm">
-                  Add items from the catalogue.
+                  Add items from the supplier&apos;s catalogue on the right.
                 </div>
               ) : (
                 <DataTable
@@ -303,8 +307,18 @@ export default function NewPurchaseOrderPage() {
               <h2 className="font-medium text-neutral-900 mb-4">Supplier Catalogue</h2>
               {loadingProducts ? (
                 <Loading label="Loading catalogue" />
+              ) : catalogueError ? (
+                <p role="alert" className="notice notice-error">
+                  We could not load this supplier&apos;s items. Choose the supplier again to retry.
+                </p>
               ) : supplierProducts.length === 0 ? (
-                <p className="text-sm text-neutral-900/60">This supplier has no products linked.</p>
+                <p className="text-sm text-neutral-900/60">
+                  This supplier has no items linked yet.{' '}
+                  <Link href={ROUTES.admin.supplier(supplierId)} className="font-medium text-accent-hover hover:underline">
+                    Link items to this supplier
+                  </Link>{' '}
+                  and they will appear here.
+                </p>
               ) : (
                 <ul className="space-y-3">
                   {supplierProducts.map(sp => (

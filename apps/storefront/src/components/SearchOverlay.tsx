@@ -7,6 +7,7 @@ import { BRAND } from '@newax/shared';
 import { Link, usePathname } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { formatPrice } from '@/lib/money';
+import { useSearch } from '@/providers/search';
 import { CloseIcon, SearchIcon } from './icons';
 
 interface Hit {
@@ -33,7 +34,7 @@ export function SearchOverlay() {
   const t = useTranslations('shell');
   const locale = useLocale();
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const { open, show, hide } = useSearch();
   const [query, setQuery] = useState('');
   const [state, setState] = useState<State>({ status: 'idle' });
   const trigger = useRef<HTMLButtonElement>(null);
@@ -42,16 +43,17 @@ export function SearchOverlay() {
   const titleId = useId();
 
   const close = useCallback(() => {
-    setOpen(false);
+    hide();
     setQuery('');
     setState({ status: 'idle' });
+    // Below 900px the magnifier is hidden and the menu opened the overlay: focusing a hidden button does nothing, which is fine.
     trigger.current?.focus();
-  }, []);
+  }, [hide]);
 
   // Navigating (picking a result) closes the overlay.
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    hide();
+  }, [pathname, hide]);
 
   // Scroll lock and autofocus while open.
   useEffect(() => {
@@ -118,13 +120,7 @@ export function SearchOverlay() {
 
   return (
     <>
-      <button
-        ref={trigger}
-        type="button"
-        className="icon-btn hide-sm"
-        aria-label={t('searchOpen')}
-        onClick={() => setOpen(true)}
-      >
+      <button ref={trigger} type="button" className="icon-btn hide-sm" aria-label={t('searchOpen')} onClick={show}>
         <SearchIcon />
       </button>
 

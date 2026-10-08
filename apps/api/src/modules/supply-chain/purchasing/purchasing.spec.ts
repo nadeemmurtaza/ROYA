@@ -127,6 +127,35 @@ describe('PurchasingService', () => {
     });
   });
 
+  describe('getProducts — ROYA fork 22', () => {
+    const link = (sku: string, translations: Array<{ name: string }>) => ({
+      id: `sp-${sku}`,
+      supplierId: 'sup1',
+      variantId: `v-${sku}`,
+      lastCost: 1250,
+      variant: { id: `v-${sku}`, sku, product: { id: `p-${sku}`, translations } },
+    });
+
+    it('names each linked item by its product, because a purchase order lists items by name', async () => {
+      prisma.supplierProduct = { findMany: jest.fn().mockResolvedValue([link('SILK-IV', [{ name: 'Ivory silk' }])]) };
+
+      const rows = await service.getProducts('sup1');
+
+      expect(prisma.supplierProduct.findMany.mock.calls[0][0].where).toEqual({ supplierId: 'sup1' });
+      expect(rows[0]!.variant.product).toEqual({ id: 'p-SILK-IV', name: 'Ivory silk' });
+      expect(rows[0]!.variant.sku).toBe('SILK-IV');
+      expect(rows[0]!.lastCost).toBe(1250);
+    });
+
+    it('falls back to the SKU when a product has no name in the default language', async () => {
+      prisma.supplierProduct = { findMany: jest.fn().mockResolvedValue([link('TRIM-9', [])]) };
+
+      const rows = await service.getProducts('sup1');
+
+      expect(rows[0]!.variant.product.name).toBe('TRIM-9');
+    });
+  });
+
   describe('createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021', () => {
     function stubTx() {
       return {

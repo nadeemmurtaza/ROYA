@@ -131,6 +131,15 @@ export interface OrderPayment {
   meta?: { accounts?: BankAccount[] } | null;
 }
 
+/** One payment as the order lists it, newest first. */
+export interface OrderPaymentRow {
+  id: string;
+  provider: string;
+  status: string;
+  receiptUrl: string | null;
+  meta?: { accounts?: BankAccount[] } | null;
+}
+
 export interface Order {
   id: string;
   number: string;
@@ -148,6 +157,8 @@ export interface Order {
   items: OrderLine[];
   /** Present on the response to placing the order only. */
   payment?: OrderPayment;
+  /** On every later read of the order: its payments, newest first. */
+  payments?: OrderPaymentRow[];
 }
 
 export interface AuthUser {

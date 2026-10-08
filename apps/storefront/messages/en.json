@@ -71,7 +71,7 @@
     "tiktok": "TikTok · {handle}",
     "journal": "Journal",
     "rights": "© {year} {name} · {country}",
-    "payments": "Visa · Mastercard · American Express · Apple Pay · Bank transfer",
+    "payments": "Payment by bank transfer",
     "privacy": "Privacy",
     "terms": "Terms"
   },
@@ -430,7 +430,8 @@
     "lookupCta": "Find my order",
     "lookupFailed": "We could not find an order with those details.",
     "loading": "Finding your order…",
-    "items": "In your order"
+    "items": "In your order",
+    "eyebrowStatus": "Order {number} · {status}"
   },
   "account": {
     "metaTitle": "Account",
@@ -492,7 +493,13 @@
     "unsubWorking": "One moment…",
     "unsubDone": "You are unsubscribed.",
     "unsubFailed": "This link is not valid.",
-    "unsubCta": "Back to the house"
+    "unsubCta": "Back to the house",
+    "verifyDoneTitle": "Email verified",
+    "verifyFailedTitle": "This link no longer works",
+    "verifyResend": "Send me a new link",
+    "verifyResent": "A new link is on its way to your email.",
+    "verifySignIn": "Sign in to ask for a new link.",
+    "resetNewLink": "Request a new link"
   },
   "dashboard": {
     "metaTitle": "Your account",
@@ -644,7 +651,8 @@
       "title": "Terms of sale",
       "lead": "The short version.",
       "body": "Prices are in dirhams (AED) and include 5% UAE VAT. A bespoke gown begins with a deposit, which is non-refundable once the fabric is cut, and the balance is settled at the final fitting. Ready-to-wear pieces are described on their pages, and the designer will help with any question before you order. By placing an order you agree to these terms."
-    }
+    },
+    "topicsTitle": "More from client services"
   },
   "desk": {
     "metaTitle": "Atelier desk",

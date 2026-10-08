@@ -13,7 +13,7 @@ import { SerializedUnitsService } from '../inventory/serialized-units.service';
 import { PartiesService } from '../../customers/parties/parties.service';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { Prisma } from '../../../core/prisma/client';
-import { allocateLandedCost, weightedAverageCost, convertToBase, BRAND } from '@newax/shared';
+import { allocateLandedCost, weightedAverageCost, convertToBase, BRAND, DEFAULT_LOCALE } from '@newax/shared';
 import { DomainEvent } from '../../../core/events/domain-events';
 import { EventBusService } from '../../../core/events/event-bus.service';
 import { BranchPolicyRegistry } from '../../../core/extension-points/branch-policy.registry';
@@ -187,10 +187,27 @@ export class PurchasingService {
     return deleted;
   }
 
+  /**
+   * The items a supplier sells, each named by its product ("Mehr · FR 38"): a
+   * variant alone is only a SKU, and a product's name lives in its translations.
+   * A product with no name in the default language is shown by its SKU, never blank.
+   */
   async getProducts(supplierId: string) {
-    return this.prisma.supplierProduct.findMany({
+    const rows = await this.prisma.supplierProduct.findMany({
       where: { supplierId },
-      include: { variant: true }
+      include: {
+        variant: {
+          include: {
+            product: {
+              select: { id: true, translations: { where: { locale: DEFAULT_LOCALE }, take: 1, select: { name: true } } },
+            },
+          },
+        },
+      },
+    });
+    return rows.map(({ variant, ...row }) => {
+      const { product, ...rest } = variant;
+      return { ...row, variant: { ...rest, product: { id: product.id, name: product.translations[0]?.name ?? variant.sku } } };
     });
   }
 

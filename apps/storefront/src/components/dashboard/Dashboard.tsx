@@ -43,8 +43,13 @@ export function Dashboard() {
   const tab: Tab = TABS.includes(requested as Tab) ? (requested as Tab) : 'overview';
 
   useEffect(() => {
-    if (session.status === 'anonymous') router.replace({ pathname: '/account', query: { next: '/dashboard' } });
-  }, [session.status, router]);
+    // Signing in brings the visitor back to the tab they asked for, not the overview.
+    if (session.status === 'anonymous')
+      router.replace({
+        pathname: '/account',
+        query: { next: tab === 'overview' ? '/dashboard' : `/dashboard?tab=${tab}` },
+      });
+  }, [session.status, router, tab]);
 
   if (session.status !== 'signed-in' || !session.user) {
     return (

@@ -92,6 +92,8 @@ export function FilterBar({
             <input
               key={filter.key}
               type="search"
+              // A placeholder is a hint that disappears, not a name: the box is named for assistive technology too.
+              aria-label={filter.placeholder ?? filter.key}
               placeholder={filter.placeholder}
               value={draft}
               onChange={(event) => onSearchChange(filter.key, event.target.value)}
@@ -104,6 +106,7 @@ export function FilterBar({
           return (
             <select
               key={filter.key}
+              aria-label={filter.placeholder ?? filter.key}
               value={currentValue}
               onChange={(event) => setParam(filter.key, event.target.value)}
               className="field-input w-auto min-w-0 max-w-full"
