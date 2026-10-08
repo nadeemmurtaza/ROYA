@@ -23,7 +23,7 @@ import { Badge, SwapText, type BadgeTone } from '@/components/ui';
  * The label hands over in place when the status changes (`SwapText`), so a
  * record that moves from Pending to Paid is seen to move.
  *
- * `label` exists because the customer surface shows these in Urdu as well as
+ * `label` exists because the customer surface shows these in Arabic as well as
  * English: the tone is decided here, the wording comes from the translation
  * files. Admin passes nothing and gets `statusLabel`.
  */

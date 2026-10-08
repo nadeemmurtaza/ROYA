@@ -41,3 +41,4 @@ What the build could not decide, or was not given. Each item says what is affect
 - Variant (shade) names are free text in English; the storefront translates the four ROYA uses (`shades.*` in the messages).
 - The wishlist API returns English product names; the dashboard re-reads names in the visitor's language from the catalogue.
 - Landlines are rejected on purpose (the shop collects mobiles); numbers from other countries are accepted in E.164.
+- Arabic search matches whole words only (Postgres text search config `simple`, no stemming). Postgres 16 ships an `arabic` config that `search.service.ts` does not use yet; using it means re-indexing the stored search vectors.

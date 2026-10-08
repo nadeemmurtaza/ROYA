@@ -15,7 +15,7 @@ import { useCssVars } from '@/lib/dynamic-style';
  * in a corner is seen to appear), leaves (`animate-leave`, the `fast` exit, for
  * the one exit duration `useToast` keeps it mounted), and carries a thin timer
  * line that runs down for as long as it will stay. The line is a `scaleX` on a
- * transform-origin at the inline start, so it drains the right way in Urdu too,
+ * transform-origin at the inline start, so it drains the right way in Arabic too,
  * and its duration is the toast's own `duration`, written as a rule in the
  * dynamic stylesheet (`TimerLine`) because it is data rather than a design
  * value. A toast with `duration: 0` stays until dismissed and has no line,

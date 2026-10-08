@@ -263,7 +263,7 @@ describe('MarketingAutomationCron', () => {
       number: 'ORD-1',
       userId: 'user1',
       user: { email: 'buyer@example.com', firstName: 'Ayesha' },
-      items: [{ nameEn: 'Lawn Suit', nameUr: 'لان سوٹ', imageUrl: null, unitPrice: 450000 }],
+      items: [{ nameEn: 'Lawn Suit', nameUr: 'طقم قطني', imageUrl: null, unitPrice: 450000 }],
       ...overrides,
     });
 

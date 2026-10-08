@@ -163,8 +163,8 @@ describe('scrambleFrame', () => {
   });
 
   it('counts characters, not UTF-16 units', () => {
-    expect(scrambleFrame('اردو', 1, sequence(0.1))).toBe('اردو');
-    expect(Array.from(scrambleFrame('اردو', 0.5, sequence(0.1)))).toHaveLength(4);
+    expect(scrambleFrame('عربي', 1, sequence(0.1))).toBe('عربي');
+    expect(Array.from(scrambleFrame('عربي', 0.5, sequence(0.1)))).toHaveLength(4);
   });
 });
 

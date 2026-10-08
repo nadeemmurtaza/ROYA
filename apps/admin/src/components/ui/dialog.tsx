@@ -61,7 +61,7 @@ export function Dialog({
   /**
    * `top` for a palette, which should not jump as its result count changes.
    * `end` for a side sheet: the panel is full height against the inline-end
-   * edge (right in English, left in Urdu) and the page behind stays visible
+   * edge (right in English, left in Arabic) and the page behind stays visible
    * past its edge — the detail of one row, opened without leaving the list.
    * It keeps everything a dialog has: Escape, the backdrop, the close button,
    * the focus trap and the scroll lock.

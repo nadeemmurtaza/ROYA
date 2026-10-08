@@ -33,7 +33,7 @@ describe('ImportAssistantService', () => {
     it('skips the AI call entirely when every header already matches a canonical column', async () => {
       const file = csv([
         ['sku', 'name_en', 'name_ur', 'price_pkr', 'stock'],
-        ['SKU-1', 'Lawn Suit', 'لان سوٹ', '3000', '10'],
+        ['SKU-1', 'Lawn Suit', 'طقم قطني', '3000', '10'],
       ]);
 
       const result = await service.assist(file);
@@ -52,7 +52,7 @@ describe('ImportAssistantService', () => {
     it('asks the AI to map relabeled headers onto canonical columns', async () => {
       const file = csv([
         ['Product Code', 'Product Name', 'Arabic Name', 'Price'],
-        ['SKU-1', 'Lawn Suit', 'لان سوٹ', '3000'],
+        ['SKU-1', 'Lawn Suit', 'طقم قطني', '3000'],
       ]);
       ai.complete.mockResolvedValue({
         text: JSON.stringify([
@@ -259,7 +259,7 @@ describe('ImportAssistantService', () => {
     it('does nothing when the shop has no active categories at all', async () => {
       const file = csv([
         ['sku', 'name_en', 'name_ur'],
-        ['SKU-1', 'Printed Lawn Suit', 'لان سوٹ'],
+        ['SKU-1', 'Printed Lawn Suit', 'طقم قطني'],
       ]);
       prisma.category.findMany.mockResolvedValue([]);
 
@@ -275,10 +275,10 @@ describe('ImportAssistantService', () => {
       const file = csv([
         ['sku', 'name_en', 'name_ur'],
         ['SKU-1', 'Lawn Suit', ''],
-        ['SKU-2', 'Silk Suit', 'ریشمی سوٹ'],
+        ['SKU-2', 'Silk Suit', 'طقم حريري'],
       ]);
       ai.complete.mockResolvedValue({
-        text: JSON.stringify([{ row: 2, field: 'name_ur', suggestedText: 'لان سوٹ' }]),
+        text: JSON.stringify([{ row: 2, field: 'name_ur', suggestedText: 'طقم قطني' }]),
         inputTokens: 1,
         outputTokens: 1,
         model: 'test',
@@ -286,7 +286,7 @@ describe('ImportAssistantService', () => {
 
       const result = await service.assist(file);
 
-      expect(result.translationSuggestions).toEqual([{ row: 2, field: 'name_ur', suggestedText: 'لان سوٹ' }]);
+      expect(result.translationSuggestions).toEqual([{ row: 2, field: 'name_ur', suggestedText: 'طقم قطني' }]);
     });
 
     it('rejects a suggestion for a row/field pair that was never asked for', async () => {
@@ -295,7 +295,7 @@ describe('ImportAssistantService', () => {
         ['SKU-1', 'Lawn Suit', ''],
       ]);
       ai.complete.mockResolvedValue({
-        text: JSON.stringify([{ row: 99, field: 'name_ur', suggestedText: 'انجانا' }]),
+        text: JSON.stringify([{ row: 99, field: 'name_ur', suggestedText: 'غير معروف' }]),
         inputTokens: 1,
         outputTokens: 1,
         model: 'test',
@@ -309,7 +309,7 @@ describe('ImportAssistantService', () => {
     it('does nothing when nothing needs translating', async () => {
       const file = csv([
         ['sku', 'name_en', 'name_ur'],
-        ['SKU-1', 'Lawn Suit', 'لان سوٹ'],
+        ['SKU-1', 'Lawn Suit', 'طقم قطني'],
       ]);
 
       const result = await service.assist(file);

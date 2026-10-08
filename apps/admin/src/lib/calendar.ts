@@ -276,7 +276,7 @@ export function dateOrderFor(tag: string): DateOrder {
 /**
  * The calendar day an instant falls on in `timeZone`, as ISO. Latin digits and
  * the Gregorian calendar are forced because the parts are read back as numbers;
- * an Urdu locale would otherwise return Arabic-Indic digits.
+ * an Arabic locale such as `ar-EG` would otherwise return Arabic-Indic digits.
  */
 export function isoInZone(instant: Date, timeZone: string, tag: string): string {
   const locale = new Intl.Locale(tag, { numberingSystem: 'latn', calendar: 'gregory' });

@@ -11,37 +11,37 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
   {
     key: 'kameez',
     labelEn: 'Kameez',
-    labelUr: 'قمیض',
+    labelUr: 'قميص',
     order: 1,
     fields: [
       {
         key: 'length',
         labelEn: 'Kameez length',
-        labelUr: 'قمیض کی لمبائی',
+        labelUr: 'طول القميص',
         unit: 'INCH',
         min: 24,
         max: 60,
         required: true,
         order: 1,
         helpEn: 'From shoulder seam down to the desired hem.',
-        helpUr: 'کندھے سے مطلوبہ لمبائی تک۔',
+        helpUr: 'من درزة الكتف نزولًا إلى الذيل المطلوب.',
       },
       {
         key: 'chest',
         labelEn: 'Chest',
-        labelUr: 'چھاتی',
+        labelUr: 'الصدر',
         unit: 'INCH',
         min: 24,
         max: 60,
         required: true,
         order: 2,
         helpEn: 'Around the fullest part of the chest.',
-        helpUr: 'چھاتی کے سب سے چوڑے حصے کے گرد۔',
+        helpUr: 'حول أعرض جزء من الصدر.',
       },
       {
         key: 'waist',
         labelEn: 'Waist',
-        labelUr: 'کمر',
+        labelUr: 'الخصر',
         unit: 'INCH',
         min: 22,
         max: 60,
@@ -51,7 +51,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'hips',
         labelEn: 'Hips',
-        labelUr: 'ہپس',
+        labelUr: 'الأرداف',
         unit: 'INCH',
         min: 26,
         max: 66,
@@ -61,7 +61,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'shoulder',
         labelEn: 'Shoulder',
-        labelUr: 'کندھا',
+        labelUr: 'الكتف',
         unit: 'INCH',
         min: 10,
         max: 24,
@@ -71,7 +71,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'sleeve_length',
         labelEn: 'Sleeve length',
-        labelUr: 'آستین کی لمبائی',
+        labelUr: 'طول الكم',
         unit: 'INCH',
         min: 4,
         max: 30,
@@ -81,7 +81,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'sleeve_opening',
         labelEn: 'Sleeve opening (mohri)',
-        labelUr: 'آستین کا موہری',
+        labelUr: 'فتحة الكم',
         unit: 'INCH',
         min: 6,
         max: 20,
@@ -91,7 +91,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'armhole',
         labelEn: 'Armhole',
-        labelUr: 'بازو کا گھیر',
+        labelUr: 'فتحة الإبط',
         unit: 'INCH',
         min: 12,
         max: 28,
@@ -101,7 +101,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'neck_front',
         labelEn: 'Front neck depth',
-        labelUr: 'اگلا گلا',
+        labelUr: 'عمق الرقبة من الأمام',
         unit: 'INCH',
         min: 2,
         max: 18,
@@ -111,7 +111,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'neck_back',
         labelEn: 'Back neck depth',
-        labelUr: 'پچھلا گلا',
+        labelUr: 'عمق الرقبة من الخلف',
         unit: 'INCH',
         min: 2,
         max: 18,
@@ -129,7 +129,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'length',
         labelEn: 'Shalwar length',
-        labelUr: 'شلوار کی لمبائی',
+        labelUr: 'طول الشلوار',
         unit: 'INCH',
         min: 28,
         max: 50,
@@ -139,7 +139,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'waist',
         labelEn: 'Waist',
-        labelUr: 'کمر',
+        labelUr: 'الخصر',
         unit: 'INCH',
         min: 22,
         max: 60,
@@ -149,7 +149,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'hips',
         labelEn: 'Hips',
-        labelUr: 'ہپس',
+        labelUr: 'الأرداف',
         unit: 'INCH',
         min: 26,
         max: 66,
@@ -159,7 +159,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'thigh',
         labelEn: 'Thigh',
-        labelUr: 'ران',
+        labelUr: 'الفخذ',
         unit: 'INCH',
         min: 14,
         max: 40,
@@ -169,7 +169,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'bottom',
         labelEn: 'Bottom opening (pancha)',
-        labelUr: 'پائنچہ',
+        labelUr: 'فتحة أسفل الساق',
         unit: 'INCH',
         min: 8,
         max: 26,
@@ -181,13 +181,13 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
   {
     key: 'trouser',
     labelEn: 'Trouser',
-    labelUr: 'ٹراؤزر',
+    labelUr: 'البنطال',
     order: 3,
     fields: [
       {
         key: 'length',
         labelEn: 'Trouser length',
-        labelUr: 'ٹراؤزر کی لمبائی',
+        labelUr: 'طول البنطال',
         unit: 'INCH',
         min: 28,
         max: 50,
@@ -197,7 +197,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'waist',
         labelEn: 'Waist',
-        labelUr: 'کمر',
+        labelUr: 'الخصر',
         unit: 'INCH',
         min: 22,
         max: 60,
@@ -207,7 +207,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'hips',
         labelEn: 'Hips',
-        labelUr: 'ہپس',
+        labelUr: 'الأرداف',
         unit: 'INCH',
         min: 26,
         max: 66,
@@ -217,7 +217,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'thigh',
         labelEn: 'Thigh',
-        labelUr: 'ران',
+        labelUr: 'الفخذ',
         unit: 'INCH',
         min: 14,
         max: 40,
@@ -227,7 +227,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'knee',
         labelEn: 'Knee',
-        labelUr: 'گھٹنا',
+        labelUr: 'الركبة',
         unit: 'INCH',
         min: 10,
         max: 30,
@@ -237,7 +237,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'bottom',
         labelEn: 'Bottom opening',
-        labelUr: 'پائنچہ',
+        labelUr: 'فتحة أسفل الساق',
         unit: 'INCH',
         min: 8,
         max: 26,
@@ -249,13 +249,13 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
   {
     key: 'kurta',
     labelEn: 'Kurta (men)',
-    labelUr: 'کرتا (مردانہ)',
+    labelUr: 'كورتا (رجالي)',
     order: 4,
     fields: [
       {
         key: 'length',
         labelEn: 'Kurta length',
-        labelUr: 'کرتے کی لمبائی',
+        labelUr: 'طول الكورتا',
         unit: 'INCH',
         min: 30,
         max: 60,
@@ -265,7 +265,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'chest',
         labelEn: 'Chest',
-        labelUr: 'چھاتی',
+        labelUr: 'الصدر',
         unit: 'INCH',
         min: 28,
         max: 62,
@@ -275,7 +275,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'shoulder',
         labelEn: 'Shoulder',
-        labelUr: 'کندھا',
+        labelUr: 'الكتف',
         unit: 'INCH',
         min: 12,
         max: 26,
@@ -285,7 +285,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'sleeve_length',
         labelEn: 'Sleeve length',
-        labelUr: 'آستین کی لمبائی',
+        labelUr: 'طول الكم',
         unit: 'INCH',
         min: 8,
         max: 30,
@@ -295,7 +295,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'collar',
         labelEn: 'Collar / neck',
-        labelUr: 'کالر / گلا',
+        labelUr: 'الياقة / الرقبة',
         unit: 'INCH',
         min: 12,
         max: 24,
@@ -305,7 +305,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'cuff',
         labelEn: 'Cuff',
-        labelUr: 'کف',
+        labelUr: 'الأسورة',
         unit: 'INCH',
         min: 6,
         max: 16,
@@ -317,13 +317,13 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
   {
     key: 'waistcoat',
     labelEn: 'Waistcoat',
-    labelUr: 'واسکٹ',
+    labelUr: 'الصدرية',
     order: 5,
     fields: [
       {
         key: 'length',
         labelEn: 'Waistcoat length',
-        labelUr: 'واسکٹ کی لمبائی',
+        labelUr: 'طول الصدرية',
         unit: 'INCH',
         min: 20,
         max: 40,
@@ -333,7 +333,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'chest',
         labelEn: 'Chest',
-        labelUr: 'چھاتی',
+        labelUr: 'الصدر',
         unit: 'INCH',
         min: 28,
         max: 62,
@@ -343,7 +343,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'shoulder',
         labelEn: 'Shoulder',
-        labelUr: 'کندھا',
+        labelUr: 'الكتف',
         unit: 'INCH',
         min: 12,
         max: 26,
@@ -353,7 +353,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'waist',
         labelEn: 'Waist',
-        labelUr: 'کمر',
+        labelUr: 'الخصر',
         unit: 'INCH',
         min: 24,
         max: 60,
@@ -365,13 +365,13 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
   {
     key: 'blouse',
     labelEn: 'Blouse / choli',
-    labelUr: 'بلاؤز / چولی',
+    labelUr: 'بلوزة / تشولي',
     order: 6,
     fields: [
       {
         key: 'length',
         labelEn: 'Blouse length',
-        labelUr: 'بلاؤز کی لمبائی',
+        labelUr: 'طول البلوزة',
         unit: 'INCH',
         min: 10,
         max: 30,
@@ -381,7 +381,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'bust',
         labelEn: 'Bust',
-        labelUr: 'بسٹ',
+        labelUr: 'محيط الصدر',
         unit: 'INCH',
         min: 26,
         max: 58,
@@ -391,7 +391,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'under_bust',
         labelEn: 'Under bust',
-        labelUr: 'انڈر بسٹ',
+        labelUr: 'تحت الصدر',
         unit: 'INCH',
         min: 22,
         max: 54,
@@ -401,7 +401,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'waist',
         labelEn: 'Waist',
-        labelUr: 'کمر',
+        labelUr: 'الخصر',
         unit: 'INCH',
         min: 22,
         max: 56,
@@ -411,7 +411,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'shoulder',
         labelEn: 'Shoulder',
-        labelUr: 'کندھا',
+        labelUr: 'الكتف',
         unit: 'INCH',
         min: 10,
         max: 24,
@@ -421,7 +421,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'sleeve_length',
         labelEn: 'Sleeve length',
-        labelUr: 'آستین کی لمبائی',
+        labelUr: 'طول الكم',
         unit: 'INCH',
         min: 2,
         max: 28,
@@ -431,7 +431,7 @@ export const DEFAULT_GARMENT_TYPES: GarmentTypeDef[] = [
       {
         key: 'armhole',
         labelEn: 'Armhole',
-        labelUr: 'بازو کا گھیر',
+        labelUr: 'فتحة الإبط',
         unit: 'INCH',
         min: 12,
         max: 28,

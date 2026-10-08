@@ -369,7 +369,7 @@ const radii = {
 
 /**
  * Type scale in px, size and line height together. React Native derives
- * neither, and Nastaliq descenders collide without an explicit line height.
+ * neither, and Arabic script needs room for its marks above and below the line.
  * These are Tailwind's own steps, because web uses those utilities at 817
  * call sites.
  */
@@ -407,10 +407,10 @@ const fonts = {
   googleFont: 'Encode_Sans',
   displayStack: ['var(--font-display)', 'Encode Sans', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
   sansStack: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-  /** Nastaliq where the reader has it, then anything that renders Urdu. */
-  rtlStack: ['Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'system-ui', 'sans-serif'],
-  /** Urdu in Nastaliq needs this much leading or the descenders collide. */
-  rtlLineHeight: 2.1,
+  /** Arabic-script text where `secondStack` is not used: a face that has the letters, then anything that renders them. */
+  rtlStack: ['Noto Naskh Arabic', 'system-ui', 'sans-serif'],
+  /** Arabic in a naskh or sans face reads at the storefront's own body leading (1.5). */
+  rtlLineHeight: 1.5,
 } as const;
 
 /**

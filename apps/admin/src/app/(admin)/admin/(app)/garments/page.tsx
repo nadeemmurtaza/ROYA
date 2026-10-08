@@ -77,7 +77,7 @@ export default function AdminGarmentsPage() {
                 </Link>
                 {/*
                  * inline-block, not block. `dir="rtl"` is right for the
-                 * text — it shapes the parentheses in "کرتا (مردانہ)"
+                 * text — it shapes the parentheses in "كورتا (رجالي)"
                  * correctly — but on a block it also drags the name to
                  * the far edge of the cell, stranding it half a column
                  * away from the English one it belongs to. Shrunk to its

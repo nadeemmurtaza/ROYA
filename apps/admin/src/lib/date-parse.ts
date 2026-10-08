@@ -19,7 +19,7 @@ import {
  * the same answer in a test, a render and a replay. The caller supplies the
  * deployment's day order (day first or month first) from its locale; nothing
  * here knows which country it is in. Month names are English: the admin is
- * English-only by design, and a typed Urdu month name is a separate parser.
+ * English-only by design, and a typed Arabic month name is a separate parser.
  *
  * A date it cannot use is refused with a reason that says what to type (FLO-7),
  * never just "invalid".

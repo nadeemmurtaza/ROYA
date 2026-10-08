@@ -100,7 +100,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   const isEdit = Boolean(effectiveProduct);
 
   const englishTranslation = product?.translations.find((t) => t.locale === 'en');
-  const urduTranslation = product?.translations.find((t) => t.locale === SECOND_LOCALE);
+  const secondTranslation = product?.translations.find((t) => t.locale === SECOND_LOCALE);
 
   // WO-3.1's option axes — only meaningful once the product has an id, same
   // constraint as Images. Loaded once here rather than duplicated per step.
@@ -150,21 +150,21 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   const [featuredRank, setFeaturedRank] = useState(String(product?.featuredRank ?? 0));
 
   const [nameEn, setNameEn] = useState(englishTranslation?.name ?? '');
-  const [nameUr, setNameUr] = useState(urduTranslation?.name ?? '');
+  const [nameUr, setNameUr] = useState(secondTranslation?.name ?? '');
   const [descriptionEn, setDescriptionEn] = useState(englishTranslation?.description ?? '');
-  const [descriptionUr, setDescriptionUr] = useState(urduTranslation?.description ?? '');
+  const [descriptionUr, setDescriptionUr] = useState(secondTranslation?.description ?? '');
   const [careEn, setCareEn] = useState(englishTranslation?.careInstructions ?? '');
-  const [careUr, setCareUr] = useState(urduTranslation?.careInstructions ?? '');
+  const [careUr, setCareUr] = useState(secondTranslation?.careInstructions ?? '');
 
   // WO-3.7 — the SEO section. Meta fields per locale, plus the two toggles
   // that only ever apply site-wide-rarely, so they live here rather than
   // getting their own step.
   const [metaTitleEn, setMetaTitleEn] = useState(englishTranslation?.metaTitle ?? '');
-  const [metaTitleUr, setMetaTitleUr] = useState(urduTranslation?.metaTitle ?? '');
+  const [metaTitleUr, setMetaTitleUr] = useState(secondTranslation?.metaTitle ?? '');
   const [metaDescriptionEn, setMetaDescriptionEn] = useState(englishTranslation?.metaDescription ?? '');
-  const [metaDescriptionUr, setMetaDescriptionUr] = useState(urduTranslation?.metaDescription ?? '');
+  const [metaDescriptionUr, setMetaDescriptionUr] = useState(secondTranslation?.metaDescription ?? '');
   const [focusKeywordEn, setFocusKeywordEn] = useState(englishTranslation?.focusKeyword ?? '');
-  const [focusKeywordUr, setFocusKeywordUr] = useState(urduTranslation?.focusKeyword ?? '');
+  const [focusKeywordUr, setFocusKeywordUr] = useState(secondTranslation?.focusKeyword ?? '');
   const [noindex, setNoindex] = useState(product?.noindex ?? false);
   const [canonicalOverride, setCanonicalOverride] = useState(product?.canonicalOverride ?? '');
   const [code, setCode] = useState(product?.code ?? '');
@@ -233,16 +233,16 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     const check = referenceChecks[index];
     if (!check?.reference) return;
     const en = check.reference.translations.find((t) => t.locale === 'en');
-    const ur = check.reference.translations.find((t) => t.locale === SECOND_LOCALE);
+    const second = check.reference.translations.find((t) => t.locale === SECOND_LOCALE);
     if (en) {
       setNameEn(en.name);
       setDescriptionEn(en.description ?? '');
       setCareEn(en.careInstructions ?? '');
     }
-    if (ur) {
-      setNameUr(ur.name);
-      setDescriptionUr(ur.description ?? '');
-      setCareUr(ur.careInstructions ?? '');
+    if (second) {
+      setNameUr(second.name);
+      setDescriptionUr(second.description ?? '');
+      setCareUr(second.careInstructions ?? '');
     }
     setReferenceChecks((current) => ({ ...current, [index]: { ...check, accepted: true } }));
   }

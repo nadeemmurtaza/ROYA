@@ -26,6 +26,22 @@ describe('default garment definitions', () => {
     }
   });
 
+  it("writes the second-language labels and help in Arabic, not in the Blueprint's Urdu", () => {
+    // Letters Urdu writes and Arabic does not: ٹ ڈ ڑ ں ھ ہ ے گ ک ی چ پ ژ ۓ and the full stop ۔.
+    const urduOnly = /[ٹڈڑںھہےگکیچپژۓ۔]/;
+    const arabicScript = /[؀-ۿ]/;
+    const texts: string[] = [];
+    for (const garment of DEFAULT_GARMENT_TYPES) {
+      texts.push(garment.labelUr);
+      for (const field of garment.fields) texts.push(field.labelUr, ...(field.helpUr ? [field.helpUr] : []));
+    }
+    expect(texts.length).toBeGreaterThan(40);
+    for (const text of texts) {
+      expect(text).toMatch(arabicScript);
+      expect(text).not.toMatch(urduOnly);
+    }
+  });
+
   it('uses unique field keys within each garment', () => {
     for (const garment of DEFAULT_GARMENT_TYPES) {
       const keys = garment.fields.map((f) => f.key);

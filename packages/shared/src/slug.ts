@@ -1,6 +1,6 @@
 /**
- * URL slugs. Product names arrive in English or Urdu; Urdu characters cannot go
- * in a slug, so an Urdu-only name falls back to a supplied prefix plus a short
+ * URL slugs. Product names arrive in English or Arabic; Arabic characters cannot go
+ * in a slug, so an Arabic-only name falls back to a supplied prefix plus a short
  * random suffix rather than producing an empty slug.
  */
 export function slugify(input: string): string {

@@ -285,6 +285,6 @@ describe('locale facts', () => {
 
   it('returns Latin digits whatever the locale writes in', () => {
     const instant = new Date('2026-09-06T12:00:00Z');
-    expect(isoInZone(instant, 'UTC', 'ur-PK')).toBe('2026-09-06');
+    expect(isoInZone(instant, 'UTC', 'ar-EG')).toBe('2026-09-06');
   });
 });

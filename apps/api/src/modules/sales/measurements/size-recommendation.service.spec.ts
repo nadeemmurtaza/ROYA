@@ -10,11 +10,11 @@ describe('SizeRecommendationService', () => {
   const kameez = {
     id: 'garment1',
     labelEn: 'Kameez',
-    labelUr: 'قمیض',
+    labelUr: 'قميص',
     isActive: true,
     order: 1,
     fields: [
-      { id: 'f1', key: 'chest', labelEn: 'Chest', labelUr: 'چھاتی', unit: 'INCH', min: 30, max: 50, required: true, order: 1, isActive: true, helpEn: null, helpUr: null },
+      { id: 'f1', key: 'chest', labelEn: 'Chest', labelUr: 'الصدر', unit: 'INCH', min: 30, max: 50, required: true, order: 1, isActive: true, helpEn: null, helpUr: null },
     ],
     sizeChart: [
       { sizeToken: 'M', values: { chest: 40 } },
@@ -121,7 +121,7 @@ describe('SizeRecommendationService', () => {
 
     const result = await service.recommendForProduct('user1', 'prod1', SECOND_LOCALE);
 
-    expect(result?.garmentTypeLabel).toBe('قمیض');
+    expect(result?.garmentTypeLabel).toBe('قميص');
   });
 
   it('falls through to the next linked garment type when the customer has no profile for the first', async () => {

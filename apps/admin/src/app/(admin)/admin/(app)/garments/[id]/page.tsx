@@ -32,7 +32,7 @@ import { SECOND_LANGUAGE_NAME } from '@/lib/second-language';
  * Two saves, not one, and deliberately: the fields and the size chart are
  * separate endpoints, and the size-chart PUT replaces whichever rows it is
  * sent. Folding them into one button would mean rewriting the size chart
- * every time somebody corrected a typo in the Urdu name.
+ * every time somebody corrected a typo in the Arabic name.
  */
 export default function AdminGarmentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);

@@ -389,7 +389,7 @@ export interface GarmentType {
   fields: MeasurementFieldRow[];
   /** Flat PDF-benchmark fabric requirement in Gaz, used when the yardage formula can't be applied. */
   baseFabricGaz: number | null;
-  /** Regional/Urdu synonyms surfaced as search aliases, e.g. "Anarkali" -> "Kalidar Frock". */
+  /** Regional/Arabic synonyms surfaced as search aliases, e.g. "Anarkali" -> "Kalidar Frock". */
   aliasesEn: string[];
   aliasesUr: string[];
 }
