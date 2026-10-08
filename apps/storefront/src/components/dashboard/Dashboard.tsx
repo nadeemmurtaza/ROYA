@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { BRAND } from '@newax/shared';
 import { Link, useRouter } from '@/i18n/navigation';
 import { whatsappUrl } from '@/lib/brand-contact';
+import { deskSections } from '@/lib/desk-model';
 import { useSession } from '@/providers/session';
 import { AddressesPane, FittingsPane, MeasurementsPane, OrdersPane, WishlistPane } from './Panes';
 
@@ -83,6 +84,14 @@ export function Dashboard() {
               </span>
             </Link>
           ))}
+          {deskSections(user.permissions).length > 0 ? (
+            <Link href="/desk" className="side">
+              {t('deskLink')}
+              <span aria-hidden="true" className="flip-rtl">
+                →
+              </span>
+            </Link>
+          ) : null}
           <button
             type="button"
             className="side"

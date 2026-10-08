@@ -1,4 +1,4 @@
-import { leadFrom, validateConsultation, type ConsultationForm } from './consultation-model';
+import { leadFrom, parseLeadMessage, validateConsultation, type ConsultationForm } from './consultation-model';
 
 const form: ConsultationForm = {
   kind: 'atelier',
@@ -59,5 +59,37 @@ describe('leadFrom', () => {
 
   it('stays within what the CRM holds', () => {
     expect(leadFrom({ ...form, message: 'x'.repeat(5000) }).message.length).toBeLessThanOrEqual(2000);
+  });
+});
+
+describe('parseLeadMessage', () => {
+  it('reads back what leadFrom wrote', () => {
+    const lead = leadFrom({ ...form, where: 'Villa 4, Jumeirah', orderNumber: 'RY-2026-0007' });
+    expect(parseLeadMessage(lead.message)).toEqual({
+      kind: 'atelier',
+      preferred: '2026-10-12, afternoon',
+      where: 'Villa 4, Jumeirah',
+      orderNumber: 'RY-2026-0007',
+      text: 'A wedding in March.',
+    });
+  });
+
+  it('keeps the whole message of a lead that did not come from the form', () => {
+    expect(parseLeadMessage('Called the atelier.\nWants a fitting in March.')).toEqual({
+      kind: null,
+      preferred: null,
+      where: null,
+      orderNumber: null,
+      text: 'Called the atelier.\nWants a fitting in March.',
+    });
+  });
+
+  it('survives an empty or missing message', () => {
+    expect(parseLeadMessage(null).text).toBe('');
+    expect(parseLeadMessage('').kind).toBeNull();
+  });
+
+  it('does not mistake the client’s own "Order:" line for a fact when the lead has no kind', () => {
+    expect(parseLeadMessage('Order: my sister’s dress').orderNumber).toBeNull();
   });
 });

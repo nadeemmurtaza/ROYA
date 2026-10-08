@@ -15,6 +15,10 @@ docs/             OPEN-QUESTIONS, CONTENT-MODEL, LOCALES, design-tokens, ENGINE-
 
 Browse the collection (filter, sort, paginate), open a piece (gallery with atelier films, shades, made-to-measure or atelier sizes), search live, keep a bag with a presentation choice and a handwritten note, check out as a guest in three steps (delivery priced by the engine, payment, review), pay by bank transfer and upload the receipt, find an order again with its number and mobile, request a consultation (atelier, home, video), sign in / register / reset a password, and keep an account with orders, measurements, a wishlist and addresses. The bespoke "Mehr" is sold as its 50% deposit.
 
+## What the atelier can do
+
+Staff sign in on the same account page and land on the **atelier desk** (`/en/desk`, `/ar/desk`): every order with search and a status filter, one order with its next step (confirm, start work, finish, hand to a courier with a tracking number, deliver; cancel or return behind a confirmation), the bank-transfer receipts waiting to be checked against the statement, and the consultation requests with one tap to WhatsApp, call or email. The desk shows only what a person's permissions allow; the engine enforces them on every call. Catalogue editing is not built yet, see [OPEN-QUESTIONS](docs/OPEN-QUESTIONS.md).
+
 ## Run it
 
 Needs Node 22, pnpm 10, Docker (Postgres with pgvector, Redis).
@@ -30,7 +34,7 @@ pnpm --filter @newax/api build && node apps/api/dist/main.js     # API on :3001
 pnpm --filter @newax/storefront dev                              # storefront on :3000  → /en  /ar
 ```
 
-Demo accounts (development only): `admin@roya.example` / `admin12345`, `mariam@example.com` / `customer12345`. In production the seed requires `SEED_ADMIN_PASSWORD` and creates no demo accounts.
+Demo accounts (development only): `admin@roya.example` / `admin12345`, `staff@roya.example` / `staff12345`, `mariam@example.com` / `customer12345`. In production the seed requires `SEED_ADMIN_PASSWORD` and creates no demo accounts.
 
 ## Check it
 
@@ -38,6 +42,7 @@ Demo accounts (development only): `admin@roya.example` / `admin12345`, `mariam@e
 pnpm lint && pnpm typecheck && pnpm test           # engine + storefront
 pnpm --filter @newax/storefront build              # production build
 node apps/storefront/e2e/purchase.mjs en           # a real purchase in a real browser (stack running)
+node apps/storefront/e2e/desk.mjs                  # the atelier desk: place an order, confirm the payment, ship it, in a real browser
 node apps/storefront/e2e/sweep.mjs                 # every page × 7 widths × 2 themes × 2 languages, fails on overflow
 ```
 

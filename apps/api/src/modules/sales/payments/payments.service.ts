@@ -343,6 +343,17 @@ export class PaymentsService {
           where: { id: order.id },
           data: { status: 'CONFIRMED', confirmedAt: new Date() },
         });
+        // ROYA fork (docs/ENGINE-FORKS.md #13): the status history is the order's trail, and a
+        // confirmation that skipped it left "new" followed straight by "in production".
+        await tx.orderStatusEvent.create({
+          data: {
+            orderId: order.id,
+            fromStatus: 'PENDING',
+            toStatus: 'CONFIRMED',
+            note: 'Payment confirmed',
+            actorId,
+          },
+        });
       }
 
       await this.events.publish(

@@ -64,3 +64,33 @@ export function leadFrom(form: ConsultationForm): {
     source: `consultation-${form.kind}`,
   };
 }
+
+export interface ParsedLead {
+  /** The kind of appointment asked for, when the lead came from the consultation form. */
+  kind: Kind | null;
+  preferred: string | null;
+  where: string | null;
+  orderNumber: string | null;
+  /** What the client wrote, once the lines `leadFrom` adds are taken out. */
+  text: string;
+}
+
+/**
+ * The inverse of `leadFrom`: the desk reads a request's message back into
+ * facts. A lead that came from anywhere else (a WhatsApp enquiry typed in by
+ * hand) simply has no kind and keeps its whole message as text.
+ */
+export function parseLeadMessage(message: string | null | undefined): ParsedLead {
+  const parsed: ParsedLead = { kind: null, preferred: null, where: null, orderNumber: null, text: '' };
+  const rest: string[] = [];
+  for (const line of (message ?? '').split('\n')) {
+    const consultation = /^Consultation request:\s*(\w+)\s*$/.exec(line);
+    if (consultation && isKind(consultation[1])) parsed.kind = consultation[1];
+    else if (parsed.kind && /^Preferred:\s*(.+)$/.test(line)) parsed.preferred = line.replace(/^Preferred:\s*/, '');
+    else if (parsed.kind && /^Where:\s*(.+)$/.test(line)) parsed.where = line.replace(/^Where:\s*/, '');
+    else if (parsed.kind && /^Order:\s*(.+)$/.test(line)) parsed.orderNumber = line.replace(/^Order:\s*/, '');
+    else rest.push(line);
+  }
+  parsed.text = rest.join('\n').trim();
+  return parsed;
+}
