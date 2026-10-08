@@ -17,13 +17,18 @@
  *                   or one that names an unknown service or the service itself
  *   binding-env     two bindings on one service with the same variable, or a
  *                   variable that is not UPPER_SNAKE_CASE
+ *   edge-runtime    source that opts into the Edge runtime; a service cannot
+ *                   contain Edge Function output, so the deploy fails with
+ *                   "Edge Runtime is not supported in services"
+ *   middleware-runtime  a Next.js middleware that does not say
+ *                   `runtime: 'nodejs'`, because Next defaults to Edge
  *
  * What it cannot see is how Vercel forwards a path or what a binding resolves
  * to; docs/OPEN-QUESTIONS.md lists what a first deploy has to confirm.
  *
  * Usage: node scripts/check-vercel-config.mjs [--self-test]
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,6 +46,13 @@ const SERVICE_ONLY_KEYS = [
 ];
 
 const BINDING_FIELDS = ['type', 'service', 'format', 'env'];
+
+/** `runtime: 'edge'` in a config object, or `export const runtime = 'edge'` in a route. */
+const EDGE_RUNTIME = /\bruntime\s*[:=]\s*['"](?:edge|experimental-edge)['"]/;
+const NODE_RUNTIME = /\bruntime\s*:\s*['"]nodejs['"]/;
+/** Where Next.js looks for a middleware, relative to a service root. */
+const MIDDLEWARE_PATHS = ['src/middleware.ts', 'src/middleware.js', 'middleware.ts', 'middleware.js'];
+const SOURCE_FILE = /\.(?:[cm]?[jt]sx?)$/;
 
 /** A source that matches every path, so nothing after it can ever be reached. */
 const isCatchAll = (source) => ['/(.*)', '/:path*', '/:path(.*)', '/(.*)*'].includes(source);
@@ -96,6 +108,34 @@ export function validate(config, rootExists) {
   return problems;
 }
 
+/**
+ * A service can hold no Edge Function output, and Next.js builds a middleware
+ * for the Edge unless it says otherwise.
+ *
+ * @param {{ service: string, path: string, text: string }[]} files a service's source files, `path` relative to the service root
+ * @returns {{ id: string, message: string }[]}
+ */
+export function validateRuntimes(files) {
+  const problems = [];
+  for (const { service, path, text } of files) {
+    if (EDGE_RUNTIME.test(text)) {
+      problems.push({ id: 'edge-runtime', message: `service "${service}": ${path} opts into the Edge runtime, which services do not support` });
+    }
+    if (MIDDLEWARE_PATHS.includes(path) && !NODE_RUNTIME.test(text)) {
+      problems.push({ id: 'middleware-runtime', message: `service "${service}": ${path} must export config with runtime: 'nodejs' (Next.js defaults a middleware to the Edge)` });
+    }
+  }
+  return problems;
+}
+
+/** Every source file under a service root, skipping dependencies and build output. */
+function sourceFiles(service, root) {
+  const base = join(ROOT, root);
+  return readdirSync(base, { recursive: true, encoding: 'utf8' })
+    .filter((path) => SOURCE_FILE.test(path) && !/(?:^|[\\/])(?:node_modules|\.next[^\\/]*|dist)[\\/]/.test(path))
+    .map((path) => ({ service, path: path.split('\\').join('/'), text: readFileSync(join(base, path), 'utf8') }));
+}
+
 function run() {
   const file = join(ROOT, 'vercel.json');
   let config;
@@ -106,6 +146,11 @@ function run() {
     process.exit(1);
   }
   const problems = validate(config, (root) => existsSync(join(ROOT, root, 'package.json')));
+  for (const [name, service] of Object.entries(config.services ?? {})) {
+    if (service?.root && existsSync(join(ROOT, service.root, 'package.json'))) {
+      problems.push(...validateRuntimes(sourceFiles(name, service.root)));
+    }
+  }
   if (problems.length > 0) {
     console.error(`check-vercel-config: ${problems.length} problem(s)\n  ${problems.map((p) => `${p.id}: ${p.message}`).join('\n  ')}`);
     process.exit(1);
@@ -161,6 +206,13 @@ function selfTest() {
   expect('catches a binding to an unknown service', withBinding({ type: 'service', service: 'ghost', format: 'url', env: 'X_URL' }).includes('binding-shape'));
   expect('catches a binding to itself', withBinding({ type: 'service', service: 'web', format: 'url', env: 'X_URL' }).includes('binding-shape'));
   expect('catches a variable that is not UPPER_SNAKE_CASE', withBinding({ type: 'service', service: 'api', format: 'url', env: 'apiUrl' }).includes('binding-env'));
+
+  const runtimeIds = (files) => validateRuntimes(files.map((file) => ({ service: 'web', ...file }))).map((p) => p.id);
+  expect('accepts a Node.js middleware', runtimeIds([{ path: 'src/middleware.ts', text: "export const config = { runtime: 'nodejs', matcher: ['/'] };" }]).length === 0);
+  expect('catches a middleware that defaults to the Edge', runtimeIds([{ path: 'src/middleware.ts', text: "export const config = { matcher: ['/'] };" }]).includes('middleware-runtime'));
+  expect('catches a middleware that asks for the Edge', runtimeIds([{ path: 'middleware.ts', text: 'export const config = { runtime: "edge" };' }]).includes('edge-runtime'));
+  expect('catches a route that opts into the Edge', runtimeIds([{ path: 'src/app/api/x/route.ts', text: "export const runtime = 'edge';" }]).includes('edge-runtime'));
+  expect('ignores a file that merely mentions a runtime', runtimeIds([{ path: 'src/lib/x.ts', text: "const runtime = 'nodejs';" }]).length === 0);
 
   if (failures.length > 0) {
     console.error(`check-vercel-config self-test: ${failures.length} failed\n  ${failures.join('\n  ')}`);
