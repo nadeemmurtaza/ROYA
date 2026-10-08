@@ -1,5 +1,7 @@
-import type { CSSProperties } from 'react';
+'use client';
+
 import { cn } from '@/utils/cn';
+import { useCssVars } from '@/lib/dynamic-style';
 import { progressFraction } from '@/lib/motion';
 
 /**
@@ -47,10 +49,13 @@ export function ProgressBar({
   className?: string;
 }) {
   const fraction = progressFraction(value, max);
+  // `--p` is the whole of the bar's state: the fill and the head both read it, so a value is one write.
+  const fill = useCssVars<HTMLDivElement>({ '--p': fraction });
   // An unusable `max` is an empty bar of the default scale, so the ARIA range stays valid (max above min).
   const top = Number.isFinite(max) && max > 0 ? max : 100;
   return (
     <div
+      ref={fill}
       role="progressbar"
       aria-label={label}
       aria-valuemin={0}
@@ -59,8 +64,6 @@ export function ProgressBar({
       aria-valuetext={valueText}
       data-tone={tone}
       className={cn('progress', className)}
-      // `--p` is the whole of the bar's state: the fill and the head both read it, so a value is one write.
-      style={{ '--p': fraction } as CSSProperties}
     >
       <div className="progress-track" data-segmented={segmented ? '' : undefined}>
         <div className="progress-fill" />

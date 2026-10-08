@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import { BRAND } from '@newax/shared';
 import { settle, staggerDelayMs } from '@/lib/motion';
 import { CONTEXT, HOVER_WASH, SURFACE } from './chart-theme';
@@ -148,12 +147,18 @@ export function pointPopDelayMs(index: number, count: number, drawMs = CHART_DRA
 }
 
 /**
- * The `--pop-delay` that `.chart-point` reads (globals.css), for one marker:
- * `<g className="chart-point" style={pointPopStyle(i, n, CHART_DRAW_MS, s)}>`.
+ * The `--pop-delay` that `.chart-point` reads (globals.css), for one marker. It is
+ * data, not a design value, so `PopGroup` (chart-pop.tsx) writes it as a rule in
+ * the dynamic stylesheet rather than a style attribute.
  * Under reduced motion the stylesheet zeroes every delay, so this needs no flag.
  */
-export function pointPopStyle(index: number, count: number, drawMs = CHART_DRAW_MS, seriesIndex = 0): CSSProperties {
-  return { ['--pop-delay' as string]: `${pointPopDelayMs(index, count, drawMs, seriesIndex)}ms` };
+export function pointPopVars(
+  index: number,
+  count: number,
+  drawMs = CHART_DRAW_MS,
+  seriesIndex = 0,
+): { '--pop-delay': string } {
+  return { '--pop-delay': `${pointPopDelayMs(index, count, drawMs, seriesIndex)}ms` };
 }
 
 /**

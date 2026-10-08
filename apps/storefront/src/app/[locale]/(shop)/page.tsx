@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { connection } from 'next/server';
 import { BRAND, type Locale } from '@newax/shared';
@@ -36,7 +36,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
           <div className="sp sp-c">
             <div className="drift">
-              <Film film={film('hero-desktop')} mobile={film('hero-mobile')} priority position="50% 30%" />
+              <Film film={film('hero-desktop')} mobile={film('hero-mobile')} priority focus="u-focus-30" />
             </div>
           </div>
           <div className="sp sp-r">
@@ -85,14 +85,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* 4 · MEHR, full width */}
       <section aria-label={t('mehrAria')} className="mehr-wrap">
         <div className="widen ph" data-keep="dark">
-          <Image
-            src={image('mehr-walking-veil')}
-            alt={t('mehrAlt')}
-            fill
-            sizes="100vw"
-            className="photo"
-            style={{ objectPosition: '50% 28%' }}
-          />
+          <Image src={image('mehr-walking-veil')} alt={t('mehrAlt')} fill sizes="100vw" className="photo u-focus-28" />
           <div className="widen-shade" aria-hidden="true" />
           <div className="widen-txt">
             <div className="heading-block">
@@ -135,7 +128,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="reveal section-head">
           <div className="heading-block">
             <span className="eyebrow">{t('atelierEyebrow')}</span>
-            <h2 className="serif h-section" style={{ maxWidth: 640 }}>
+            <h2 className="serif h-section u-max-w-640">
               {t.rich('atelierTitle', { em: (chunks) => <em>{chunks}</em> })}
             </h2>
           </div>
@@ -185,7 +178,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
         <div className="box-copy">
-          <div className="reveal stack" style={{ gap: 18 }}>
+          <div className="reveal stack u-gap-18">
             <span className="eyebrow">{t('boxEyebrow')}</span>
             <h2 className="serif h-section">{t('boxTitle')}</h2>
             <p className="box-body">{t('boxBody')}</p>
@@ -231,10 +224,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           className="photo closing-photo"
         />
         <div className="closing-inner">
-          <div className="stack" style={{ gap: 10 }}>
-            <span className="label" style={{ color: 'var(--accent)' }}>
-              {t('closingEyebrow')}
-            </span>
+          <div className="stack u-gap-10">
+            <span className="label u-c-accent">{t('closingEyebrow')}</span>
             <p className="serif closing-title">{t('closingTitle')}</p>
           </div>
           <div className="btn-row">

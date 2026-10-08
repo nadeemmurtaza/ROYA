@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
+import { staggerStep } from '@/lib/motion';
 
 /** The SVG shapes that have a stroke to draw. A lucide icon is made of these and nothing else. */
 const SHAPES = 'path, line, polyline, polygon, circle, ellipse, rect';
@@ -33,13 +34,13 @@ export function DrawIcon({ children, className }: { children: ReactNode; classNa
     const shapes = Array.from(root.querySelectorAll<SVGGeometryElement>(SHAPES));
     shapes.forEach((shape, index) => {
       shape.setAttribute('pathLength', '1');
-      shape.style.setProperty('--draw-index', String(index));
+      shape.dataset.stagger = String(staggerStep(index));
       shape.classList.add('draw-path');
     });
     return () => {
       shapes.forEach((shape) => {
         shape.classList.remove('draw-path');
-        shape.style.removeProperty('--draw-index');
+        delete shape.dataset.stagger;
       });
     };
   }, [reduced]);

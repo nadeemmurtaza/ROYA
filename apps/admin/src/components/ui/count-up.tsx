@@ -1,9 +1,9 @@
 'use client';
 
-import { useLayoutEffect, useRef, type CSSProperties } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { cn } from '@/utils/cn';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
-import { MOTION_MS, countUpValue, reelParts, staggerDelayMs } from '@/lib/motion';
+import { MOTION_MS, countUpValue, reelParts, staggerStep } from '@/lib/motion';
 
 const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
@@ -150,16 +150,19 @@ function ReelFigure({
     const origin = reelParts(start.current.format(start.current.from)).flatMap((part) =>
       part.kind === 'digit' ? [part.digit] : [],
     );
-    const settled = () => strips.forEach((strip) => strip.style.setProperty('--d', strip.dataset.digit ?? '0'));
+    const settled = () =>
+      strips.forEach((strip) => {
+        strip.dataset.d = strip.dataset.digit ?? '0';
+      });
 
     strips.forEach((strip, i) => {
-      strip.style.transition = 'none';
+      strip.dataset.snap = '';
       // Digits line up from the right, as a figure does: a shorter origin is padded with zeros on the left.
-      strip.style.setProperty('--d', String(origin[i - (strips.length - origin.length)] ?? 0));
+      strip.dataset.d = String(origin[i - (strips.length - origin.length)] ?? 0);
     });
     void el.offsetWidth; // commit the starting digits before the transition comes back on
     strips.forEach((strip) => {
-      strip.style.transition = '';
+      delete strip.dataset.snap;
     });
     const frame = requestAnimationFrame(settled);
     return () => {
@@ -177,10 +180,14 @@ function ReelFigure({
           // Keyed from the right, so a strip keeps its place (and rolls) when the figure gains a digit on the left.
           const key = all.length - i;
           if (part.kind === 'fixed') return <span key={key}>{part.char}</span>;
-          const style = { '--d': part.digit, '--reel-delay': `${staggerDelayMs(order++)}ms` } as CSSProperties;
           return (
             <span key={key} className="reel-digit">
-              <span className="reel-strip" data-digit={part.digit} style={style}>
+              <span
+                className="reel-strip"
+                data-digit={part.digit}
+                data-d={part.digit}
+                data-stagger={staggerStep(order++)}
+              >
                 {DIGITS.map((digit) => (
                   <span key={digit}>{digit}</span>
                 ))}

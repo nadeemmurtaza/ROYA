@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { BRAND } from '@newax/shared';
@@ -9,11 +9,12 @@ import { image } from '@/lib/media';
 
 const ADVANCE_MS = 5000;
 
+/** `crop` is a class in styles/home.css: where each photograph is cropped to inside the shape. */
 const SHOTS = [
-  { name: 'mehr-portrait', key: 'shotBride', position: '50% 22%' },
-  { name: 'lilas-blossom', key: 'shotPearls', position: '50% 50%' },
-  { name: 'noir-corset-inside', key: 'shotCorset', position: '40% 50%' },
-  { name: 'lilas-in-box', key: 'shotLabel', position: '50% 40%' },
+  { name: 'mehr-portrait', key: 'shotBride', crop: 'mimg-at-50-22' },
+  { name: 'lilas-blossom', key: 'shotPearls', crop: 'mimg-at-50-50' },
+  { name: 'noir-corset-inside', key: 'shotCorset', crop: 'mimg-at-40-50' },
+  { name: 'lilas-in-box', key: 'shotLabel', crop: 'mimg-at-50-40' },
 ] as const;
 
 const STEPS = [1, 2, 3, 4] as const;
@@ -52,12 +53,7 @@ export function CommissionPortal() {
                   alt={t(shot.key)}
                   fill
                   sizes="(max-width: 700px) 90vw, 480px"
-                  className="photo mimg"
-                  style={{
-                    opacity: index === active ? 1 : 0,
-                    transform: `scale(${index === active ? 1.06 : 1.14})`,
-                    objectPosition: shot.position,
-                  }}
+                  className={`photo mimg ${shot.crop}${index === active ? ' mimg-on' : ''}`}
                 />
               ))}
             </div>
@@ -66,7 +62,7 @@ export function CommissionPortal() {
         </div>
 
         <div className="commission-copy">
-          <div className="reveal stack" style={{ gap: 16 }}>
+          <div className="reveal stack u-gap-16">
             <span className="eyebrow">{t('commissionEyebrow')}</span>
             <h2 className="serif commission-title">{t('commissionTitle')}</h2>
             <p className="commission-lede">{t('commissionBody')}</p>
@@ -97,7 +93,7 @@ export function CommissionPortal() {
             })}
           </ol>
 
-          <div className="btn-row" style={{ alignItems: 'center' }}>
+          <div className="btn-row u-items-center">
             <Link className="btn-ink" href="/consultation">
               {t('commissionCta')}
             </Link>

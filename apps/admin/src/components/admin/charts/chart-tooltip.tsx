@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-interface TooltipEntry {
+export interface TooltipEntry {
   name?: string | number;
   value?: unknown;
   color?: string;
@@ -21,11 +21,14 @@ export function ChartTooltip({
   payload,
   label,
   formatValue,
+  formatEntry,
 }: {
   active?: boolean;
   payload?: readonly TooltipEntry[];
   label?: ReactNode;
   formatValue: (value: number) => string;
+  /** A chart whose series are in different units formats each entry itself; the rest use `formatValue`. */
+  formatEntry?: (entry: TooltipEntry) => string;
 }) {
   if (!active || !payload || payload.length === 0) return null;
 
@@ -41,7 +44,9 @@ export function ChartTooltip({
             <svg width="12" height="4" viewBox="0 0 12 4" aria-hidden="true" className="shrink-0">
               <rect width="12" height="4" rx="2" fill={entry.color} />
             </svg>
-            <span className="font-semibold tabular-nums text-neutral-900">{formatValue(Number(entry.value ?? 0))}</span>
+            <span className="font-semibold tabular-nums text-neutral-900">
+              {formatEntry ? formatEntry(entry) : formatValue(Number(entry.value ?? 0))}
+            </span>
             <span className="text-neutral-900/70">{entry.name}</span>
           </li>
         ))}

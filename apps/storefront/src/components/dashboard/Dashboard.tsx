@@ -64,9 +64,9 @@ export function Dashboard() {
   return (
     <div className="dash-page">
       <nav aria-label={t('navAria')} className="dash-nav">
-        <div className="stack" style={{ gap: 8 }}>
+        <div className="stack u-gap-8">
           <span className="eyebrow">{t('eyebrow')}</span>
-          <span className="serif" style={{ fontSize: 30 }}>
+          <span className="serif u-fs-30">
             {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email}
           </span>
         </div>
@@ -112,13 +112,10 @@ export function Dashboard() {
             <div className="dash-cards">
               <section className="card-box" aria-label={t('apptEyebrow')}>
                 <span className="eyebrow">{t('apptEyebrow')}</span>
-                <span className="serif" style={{ fontSize: 28 }}>
-                  {t('apptTitle')}
-                </span>
+                <span className="serif u-fs-28">{t('apptTitle')}</span>
                 <span className="bag-muted">{t('apptBody')}</span>
                 <Link
-                  className="btn-gold"
-                  style={{ marginTop: 'auto', alignSelf: 'flex-start' }}
+                  className="btn-gold u-mt-auto u-self-start"
                   href={{ pathname: '/consultation', query: { kind: 'atelier' } }}
                 >
                   {t('apptCta')}
@@ -133,13 +130,7 @@ export function Dashboard() {
                   <span className="bag-muted-sm">{t('designerRole', { house: BRAND.identity.name })}</span>
                 </div>
                 <span className="bag-muted">{t('designerBody')}</span>
-                <a
-                  className="btn-gold"
-                  style={{ marginTop: 'auto', alignSelf: 'flex-start' }}
-                  href={whatsappUrl}
-                  rel="noopener"
-                  target="_blank"
-                >
+                <a className="btn-gold u-mt-auto u-self-start" href={whatsappUrl} rel="noopener" target="_blank">
                   {t('designerCta')}
                 </a>
               </section>

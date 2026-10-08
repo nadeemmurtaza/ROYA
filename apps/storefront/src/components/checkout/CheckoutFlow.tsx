@@ -308,7 +308,7 @@ export function CheckoutFlow() {
           })}
         </ol>
         <div className="progress">
-          <div className="bar" style={{ width: `${(step / 3) * 100}%` }} />
+          <div className="bar" data-step={step} />
         </div>
       </FocusHeader>
 

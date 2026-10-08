@@ -119,8 +119,19 @@ html[dir='rtl'] .ck-step {
 }
 .progress .bar {
   height: 1px;
+  width: 0;
   background: var(--accent);
   transition: width 0.8s var(--ease-settle);
+}
+/* The three steps of the flow: a third, two thirds, all of it. */
+.progress .bar[data-step='1'] {
+  width: calc(100% / 3);
+}
+.progress .bar[data-step='2'] {
+  width: calc(100% * 2 / 3);
+}
+.progress .bar[data-step='3'] {
+  width: 100%;
 }
 html[dir='rtl'] input[dir='ltr'] {
   /* A number or address stays left-to-right, but sits on the reading side. */

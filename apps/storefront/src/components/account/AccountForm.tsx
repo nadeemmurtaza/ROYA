@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
@@ -132,8 +132,7 @@ export function AccountForm() {
           fill
           priority
           sizes="(max-width: 900px) 100vw, 50vw"
-          className="photo"
-          style={{ objectPosition: '50% 20%' }}
+          className="photo u-focus-20"
         />
         <div className="account-shade" aria-hidden="true" />
         <Link href="/" className="account-logo" aria-label={BRAND.identity.shortName}>

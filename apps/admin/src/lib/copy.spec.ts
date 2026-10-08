@@ -60,7 +60,7 @@ interface Harness {
   calls: string[];
   writeText: ReturnType<typeof vi.fn>;
   execCommand: ReturnType<typeof vi.fn>;
-  field: { value: string; readOnly: boolean; style: { cssText: string }; remove: ReturnType<typeof vi.fn> };
+  field: { value: string; readOnly: boolean; className: string; remove: ReturnType<typeof vi.fn> };
   body: { appendChild: ReturnType<typeof vi.fn> };
   dialog: { appendChild: ReturnType<typeof vi.fn> };
   insideDialog: { closest: (selector: string) => unknown };
@@ -96,7 +96,7 @@ function stubBrowser(options: {
     value: '',
     readOnly: false,
     tabIndex: 0,
-    style: { cssText: '' },
+    className: '',
     setAttribute: vi.fn(),
     focus: vi.fn(() => calls.push('field.focus')),
     select: vi.fn(() => calls.push('field.select')),
@@ -205,6 +205,13 @@ describe('copyText (CPY-3, CPY-5)', () => {
     await copyText('x', page.outsideDialog as unknown as Element);
     expect(page.body.appendChild).toHaveBeenCalledTimes(1);
     expect(page.dialog.appendChild).not.toHaveBeenCalled();
+  });
+
+  it('hides the scratch field with a stylesheet class, not an inline style', async () => {
+    const page = stubBrowser({ api: 'absent' });
+    await copyText('x');
+    expect(page.field.className).toBe('copy-shim');
+    expect(page.field).not.toHaveProperty('style');
   });
 
   it('removes the scratch field, and gives back focus and selection, after a copy', async () => {

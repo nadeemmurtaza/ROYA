@@ -101,7 +101,17 @@ export function revealedCount(total: number, progress: number): number {
  * globals.css, which is the same ramp in `animation-delay`.
  */
 export function staggerDelayMs(index: number): number {
-  return Math.min(Math.max(0, index), stagger.steps) * stagger.step;
+  return staggerStep(index) * stagger.step;
+}
+
+/**
+ * Which place of the capped ramp the item at `index` takes: 0 to `stagger.steps`.
+ * This is what goes on an element as `data-stagger`, because the stylesheet owns
+ * the delay (`[data-stagger='n']` in globals.css multiplies it by the step), so
+ * a component never writes a duration of its own.
+ */
+export function staggerStep(index: number): number {
+  return Math.min(Math.max(0, index), stagger.steps);
 }
 
 /**

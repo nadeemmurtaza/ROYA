@@ -1,24 +1,15 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  type TooltipValueType,
-} from 'recharts';
+import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { formatDateShort, formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK_FAINT, compactMoney, dashFor, markerFor, paletteColor, type ValueFormat } from './chart-theme';
 import { ChartMarker } from './chart-marker';
+import { dayLabel } from './chart-label';
+import { ChartTooltip } from './chart-tooltip';
+import { ChartSwatch } from './chart-swatch';
 import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 
 export interface TimeSeriesSeriesDef {
@@ -82,14 +73,19 @@ export function TimeSeriesChart({
           <Tooltip
             {...chartTooltipMotion(reduced)}
             cursor={chartCursor.crosshair}
-            contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
-            labelFormatter={(label: ReactNode) => formatDateShort(String(label), 'en', { withWeekday: true })}
-            formatter={(value: TooltipValueType | undefined, name: ReactNode) => {
-              const numeric = Number(value ?? 0);
-              const def = series.find((s) => s.label === name);
-              const formatted = def ? formatValue(def.format, numeric) : formatNumber(numeric);
-              return [formatted, name] as [string, ReactNode];
-            }}
+            content={(props) => (
+              <ChartTooltip
+                active={props.active}
+                payload={props.payload}
+                label={dayLabel(props.active, props.label)}
+                formatValue={formatNumber}
+                formatEntry={(entry) => {
+                  const numeric = Number(entry.value ?? 0);
+                  const def = series.find((s) => s.label === entry.name);
+                  return def ? formatValue(def.format, numeric) : formatNumber(numeric);
+                }}
+              />
+            )}
           />
           {series.map((s, index) =>
             chart === 'area' && series.length === 1 ? (
@@ -146,7 +142,7 @@ export function TimeSeriesChart({
         <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-neutral-900/60" aria-hidden="true">
           {series.map((s, index) => (
             <li key={s.key} className="flex items-center gap-1.5">
-              <span className="inline-block h-0.5 w-4" style={{ backgroundColor: paletteColor(index) }} />
+              <ChartSwatch color={paletteColor(index)} />
               {s.label}
             </li>
           ))}

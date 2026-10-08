@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { clearCssVars, setCssVars } from '@/lib/dynamic-style';
 import { HOLD_IDLE, HOLD_MS, holdProgress, nextHold, type HoldEvent, type HoldState } from '@/lib/guard';
 
 /**
@@ -28,8 +29,8 @@ import { HOLD_IDLE, HOLD_MS, holdProgress, nextHold, type HoldEvent, type HoldSt
  *     time limit would be a barrier of its own, WCAG 2.2.1) and ends when focus
  *     leaves or Escape is pressed.
  *
- * The ring follows the clock, not a transition: `--hold` is written on the
- * button each frame from `performance.now()`, so under reduced motion it is the
+ * The ring follows the clock, not a transition: `--hold` is written for the
+ * button each frame from `performance.now()` (a rule in the dynamic sheet, `lib/dynamic-style.ts`, not a style attribute), so under reduced motion it is the
  * same progress, drawn the same way, and nothing is lost. Only the drain on
  * release is a transition (`fast`), which the stylesheet collapses.
  *
@@ -72,7 +73,11 @@ export function HoldToConfirm({
   const inactive = disabled || loading;
 
   const paint = useCallback((value: number) => {
-    button.current?.style.setProperty('--hold', String(value));
+    const node = button.current;
+    if (!node) return;
+    // At rest the stylesheet's own default (0) is the state, so no rule is kept for a button nobody is holding.
+    if (value > 0) setCssVars(node, { '--hold': value });
+    else clearCssVars(node);
   }, []);
 
   const stopFrames = useCallback(() => {
@@ -128,7 +133,13 @@ export function HoldToConfirm({
   );
 
   // A frame left running after unmount would call back into a component that is gone.
-  useEffect(() => stopFrames, [stopFrames]);
+  useEffect(() => {
+    const node = button.current;
+    return () => {
+      stopFrames();
+      if (node) clearCssVars(node);
+    };
+  }, [stopFrames]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Escape') {

@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState, type FormEvent } from 'react';
 import { BRAND, SECOND_LOCALE } from '@newax/shared';
@@ -151,7 +151,7 @@ export function OrderView({ number }: { number: string }) {
         ))}
       </ol>
 
-      <div className="rise d3 btn-row" style={{ justifyContent: 'center' }}>
+      <div className="rise d3 btn-row u-justify-center">
         <Link
           className="btn-gold"
           href={
@@ -175,11 +175,9 @@ export function OrderView({ number }: { number: string }) {
             className="photo"
           />
         </div>
-        <div className="stack" style={{ padding: 36, justifyContent: 'center', gap: 12 }}>
+        <div className="stack u-p-36 u-justify-center u-gap-12">
           <span className="eyebrow">{t('boxEyebrow')}</span>
-          <span className="serif" style={{ fontSize: 28 }}>
-            {t('boxTitle')}
-          </span>
+          <span className="serif u-fs-28">{t('boxTitle')}</span>
           <span className="bag-muted">{t('boxBody')}</span>
         </div>
       </div>

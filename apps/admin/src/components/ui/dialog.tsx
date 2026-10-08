@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { useExitTransition } from '@/hooks/use-exit-transition';
+import { clearCssVars, setCssVars } from '@/lib/dynamic-style';
 import { originOffset } from '@/lib/motion';
+import { lockScroll } from '@/lib/scroll-lock';
 
 /**
  * A modal dialog, with the behaviour every modal is supposed to have.
@@ -116,20 +118,15 @@ export function Dialog({
       { x: from.left + from.width / 2, y: from.top + from.height / 2 },
       { x: to.left + to.width / 2, y: to.top + to.height / 2 },
     );
-    panel.style.setProperty('--origin-dx', `${dx}px`);
-    panel.style.setProperty('--origin-dy', `${dy}px`);
+    setCssVars(panel, { '--origin-dx': `${dx}px`, '--origin-dy': `${dy}px` });
+    return () => clearCssVars(panel);
   }, [open, align]);
 
-  // Scroll lock. The cleanup restores the previous value rather than clearing
-  // it, so a dialog opened from inside another locked context does not free
-  // the page on the way out.
+  // Scroll lock. It is counted (`lockScroll`), so a dialog opened from inside
+  // another locked context does not free the page on the way out.
   useEffect(() => {
     if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previous;
-    };
+    return lockScroll();
   }, [open]);
 
   const onKeyDown = useCallback(

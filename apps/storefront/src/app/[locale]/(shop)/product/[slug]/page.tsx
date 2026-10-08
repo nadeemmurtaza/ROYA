@@ -95,7 +95,7 @@ export default async function ProductPage({ params }: Params) {
             <span aria-current="page">{product.name}</span>
           </nav>
 
-          <div className="stack" style={{ gap: 12 }}>
+          <div className="stack u-gap-12">
             <span className="eyebrow">{t(TYPE_KEY[type], { category: categoryName })}</span>
             <h1 className="serif product-name">{product.name}</h1>
             {intro ? <p className="product-intro">{intro}</p> : null}
@@ -113,7 +113,7 @@ export default async function ProductPage({ params }: Params) {
           <BuyBox productId={product.id} type={type} variants={product.variants} price={deposit ?? product.basePrice} />
 
           {facts.length > 0 ? (
-            <dl className="facts" style={{ gridTemplateColumns: `repeat(${facts.length}, minmax(0, 1fr))` }}>
+            <dl className="facts" data-count={facts.length}>
               {facts.map((fact) => (
                 <div key={fact.key} className="fact">
                   <dt>{t(fact.key)}</dt>

@@ -4,7 +4,8 @@ import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, 
 import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
-import { CHART_DRAW_MS, chartCursor, chartDrawProps, chartTooltipMotion, pointPopStyle } from './chart-motion';
+import { chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
+import { PopGroup } from './chart-pop';
 import { ChartTooltip } from './chart-tooltip';
 import { GRID, INK, INK_FAINT, SURFACE, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -124,17 +125,9 @@ export function RangeChart({
               // The capsules all grow together, so the averages all land together, as the capsules arrive
               // (the last point's delay), not one by one along an x axis that is not a line being drawn.
               dot={(props: { cx?: number; cy?: number; index?: number }) => (
-                <circle
-                  key={`avg-${props.index}`}
-                  className="chart-point"
-                  style={pointPopStyle(points.length - 1, points.length, CHART_DRAW_MS)}
-                  cx={props.cx}
-                  cy={props.cy}
-                  r={4}
-                  fill={SURFACE}
-                  stroke={INK}
-                  strokeWidth={2}
-                />
+                <PopGroup key={`avg-${props.index}`} index={points.length - 1} count={points.length}>
+                  <circle cx={props.cx} cy={props.cy} r={4} fill={SURFACE} stroke={INK} strokeWidth={2} />
+                </PopGroup>
               )}
             />
           </ComposedChart>

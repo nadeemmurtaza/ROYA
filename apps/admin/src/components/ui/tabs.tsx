@@ -2,6 +2,7 @@
 
 import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { clearCssVars, setCssVars } from '@/lib/dynamic-style';
 
 export interface TabItem {
   key: string;
@@ -69,9 +70,11 @@ export function Tabs({
     const place = () => {
       const tab = list.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
       if (!tab) return;
-      list.style.setProperty('--tab-x', `${tab.offsetLeft}px`);
-      list.style.setProperty('--tab-y', `${tab.offsetTop + tab.offsetHeight - 2}px`);
-      list.style.setProperty('--tab-w', String(tab.offsetWidth));
+      setCssVars(list, {
+        '--tab-x': `${tab.offsetLeft}px`,
+        '--tab-y': `${tab.offsetTop + tab.offsetHeight - 2}px`,
+        '--tab-w': tab.offsetWidth,
+      });
       list.dataset.slide = 'ready';
       // The first placement is a jump, not a glide from the corner.
       if (!placed.current) {
@@ -89,6 +92,14 @@ export function Tabs({
     list.querySelectorAll('[role="tab"]').forEach((tab) => observer.observe(tab));
     return () => observer.disconnect();
   }, [active, items.length]);
+
+  // The indicator's rule goes with the strip.
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    return () => {
+      if (list) clearCssVars(list);
+    };
+  }, []);
 
   if (items.length === 0) return null;
 

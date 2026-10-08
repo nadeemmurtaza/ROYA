@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { BRAND } from '@newax/shared';
@@ -181,14 +181,7 @@ export function BagView() {
                 <li key={line.id} className="bag-line fade">
                   <Link href={`/product/${line.slug}`} className="ph bag-thumb" aria-label={line.name}>
                     {line.imageUrl ? (
-                      <Image
-                        src={line.imageUrl}
-                        alt=""
-                        fill
-                        sizes="180px"
-                        className="photo"
-                        style={{ objectPosition: '50% 25%' }}
-                      />
+                      <Image src={line.imageUrl} alt="" fill sizes="180px" className="photo u-focus-25" />
                     ) : null}
                   </Link>
                   <div className="bag-line-info">

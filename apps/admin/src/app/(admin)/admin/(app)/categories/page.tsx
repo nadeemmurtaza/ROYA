@@ -18,6 +18,13 @@ interface Draft {
   isActive: boolean;
 }
 
+/**
+ * How far a nested row is indented: 1.25rem a level, as classes so the Tailwind
+ * scan sees each one. Six levels are the most a category tree is built to, and a
+ * deeper one holds the last step instead of running off the column.
+ */
+const INDENT = ['ps-0', 'ps-5', 'ps-10', 'ps-[3.75rem]', 'ps-20', 'ps-[6.25rem]'] as const;
+
 const BLANK: Draft = {
   slug: '',
   nameEn: '',
@@ -194,7 +201,7 @@ export default function AdminCategoriesPage() {
                     // Indent by depth, with a leader on nested rows so the
                     // hierarchy reads at a glance instead of having to be
                     // inferred from the parent picker.
-                    <div style={{ paddingInlineStart: `${depth * 1.25}rem` }}>
+                    <div className={INDENT[Math.min(depth, INDENT.length - 1)]}>
                       <span className="font-medium text-neutral-900">
                         {depth > 0 ? (
                           <span aria-hidden className="me-1 text-neutral-900/60">

@@ -5,7 +5,8 @@ import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { ChartMarker } from './chart-marker';
-import { CHART_DRAW_MS, chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion, pointPopStyle } from './chart-motion';
+import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
+import { PopGroup } from './chart-pop';
 import { ChartTooltip } from './chart-tooltip';
 import { GRID, INK, INK_FAINT, INK_SOFT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -112,10 +113,9 @@ export function PointLineChart({
                 const hot = payload != null && above(payload.value);
                 // Each mark pops on its own origin (the peak's label would pull the centre of a shared group
                 // upward and walk the dot as it grew), all on the same delay: as the line reaches the point.
-                const pop = pointPopStyle(index, points.length, CHART_DRAW_MS);
                 return (
                   <g key={`dot-${index}`}>
-                    <g className="chart-point" style={pop}>
+                    <PopGroup index={index} count={points.length}>
                       <ChartMarker
                         cx={cx}
                         cy={cy}
@@ -123,20 +123,13 @@ export function PointLineChart({
                         color={paletteColor(0)}
                         size={hot ? 5 : 4}
                       />
-                    </g>
+                    </PopGroup>
                     {index === peak ? (
-                      <text
-                        className="chart-point"
-                        style={pop}
-                        x={cx}
-                        y={cy - 12}
-                        textAnchor="middle"
-                        fontSize={12}
-                        fontWeight={600}
-                        fill={INK}
-                      >
-                        {formatValue(payload?.value ?? 0)}
-                      </text>
+                      <PopGroup index={index} count={points.length}>
+                        <text x={cx} y={cy - 12} textAnchor="middle" fontSize={12} fontWeight={600} fill={INK}>
+                          {formatValue(payload?.value ?? 0)}
+                        </text>
+                      </PopGroup>
                     ) : null}
                   </g>
                 );

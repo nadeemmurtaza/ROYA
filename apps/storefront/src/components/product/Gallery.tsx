@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Film } from '@/components/Film';
@@ -61,8 +61,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
               fill
               priority={view === 0}
               sizes="(max-width: 900px) 100vw, 55vw"
-              className="photo"
-              style={{ objectPosition: '50% 30%' }}
+              className="photo u-focus-30"
             />
           )}
         </div>

@@ -202,12 +202,22 @@ function TrendBars({ points }: { points: Array<{ monthKey: string; netIncomeMino
         return (
           <div key={point.monthKey} className="flex flex-1 flex-col items-center gap-1">
             <span className="text-xs tabular-nums text-neutral-900/70">{formatMoney(point.netIncomeMinor)}</span>
-            <div className="flex h-24 w-full items-end">
-              <div
-                className={isLoss ? 'w-full rounded-t bg-red-400' : 'w-full rounded-t bg-accent'}
-                style={{ height: `${Math.max(4, heightPercent)}%` }}
+            {/* The bar's height is data, so it is geometry in an SVG (a bar of at least 4 of 100), not a style. */}
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="h-24 w-full"
+            >
+              <rect
+                x="0"
+                width="100"
+                y={100 - Math.max(4, heightPercent)}
+                height={Math.max(4, heightPercent)}
+                className={isLoss ? 'fill-red-400' : 'fill-accent'}
               />
-            </div>
+            </svg>
             <span className="text-xs text-neutral-900/60">{point.monthKey}</span>
           </div>
         );

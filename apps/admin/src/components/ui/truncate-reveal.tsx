@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useState, type CSSProperties } from 'react';
+import { useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
+import { useCssVars } from '@/lib/dynamic-style';
 import { revealRun } from '@/lib/motion';
 
 /**
@@ -29,6 +30,9 @@ export function TruncateReveal({ text, className }: { text: string; className?: 
   const reduced = usePrefersReducedMotion();
   const box = useRef<HTMLSpanElement>(null);
   const [run, setRun] = useState<{ shift: number; durationMs: number } | null>(null);
+  const runVars = useCssVars<HTMLSpanElement>(
+    run ? { '--reveal-shift': `${run.shift}px`, '--reveal-duration': `${run.durationMs}ms` } : null,
+  );
 
   const start = () => {
     const el = box.current;
@@ -46,10 +50,7 @@ export function TruncateReveal({ text, className }: { text: string; className?: 
     >
       {run ? (
         // Only while running: an inline-block child has no ellipsis, so the plain text is what shows the cut the rest of the time.
-        <span
-          className="reveal-run"
-          style={{ '--reveal-shift': `${run.shift}px`, '--reveal-duration': `${run.durationMs}ms` } as CSSProperties}
-        >
+        <span ref={runVars} className="reveal-run">
           {text}
         </span>
       ) : (

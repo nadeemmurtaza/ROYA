@@ -307,6 +307,16 @@ html[dir='rtl'] :is(.btn-gold, .btn-line, .btn-ink) {
   object-fit: cover;
   display: block;
 }
+/* What next/image would have inlined on every <img>; see components/Image.tsx. */
+img[data-nimg] {
+  color: transparent;
+}
+img[data-nimg='fill'] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
 .zoom {
   position: absolute;
   inset: 0;
@@ -503,4 +513,9 @@ html[dir='rtl'] :is(.btn-gold, .btn-line, .btn-ink) {
     filter: none;
     transform: none;
   }
+}
+
+/* Added to <body> while an overlay is open, so the page behind it does not scroll. */
+body.scroll-locked {
+  overflow: hidden;
 }

@@ -83,10 +83,8 @@ function copyByCommand(text: string, origin: Origin): boolean {
   field.readOnly = true;
   field.tabIndex = -1;
   field.setAttribute('aria-hidden', 'true');
-  // A scratch element nobody sees, not a design value: it is in the viewport (iOS will not select what is not),
-  // takes no room, and cannot be hit.
-  field.style.cssText =
-    'position:fixed;inset-block-start:0;inset-inline-start:0;inline-size:1px;block-size:1px;padding:0;border:0;opacity:0;pointer-events:none;font-size:1rem';
+  // A scratch element nobody sees: `.copy-shim` in globals.css keeps it in the viewport and out of the way.
+  field.className = 'copy-shim';
 
   let copied = false;
   host.appendChild(field);

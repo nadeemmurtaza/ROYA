@@ -11,6 +11,7 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react';
+import { clearCssVars, setCssVars } from '@/lib/dynamic-style';
 import { placePopover } from '@/lib/popover-position';
 
 /**
@@ -36,8 +37,8 @@ import { placePopover } from '@/lib/popover-position';
  * own stacking context, which is the only place it can be above the dialog's
  * content. The placement arithmetic is the same either way.
  *
- * Placement is `placePopover`, applied imperatively to the element's style on
- * every scroll (capture, so a scrolling ancestor counts) and resize, coalesced
+ * Placement is `placePopover`, applied imperatively to the element's rule in the
+ * dynamic stylesheet (`lib/dynamic-style.ts`; no `style` attribute) on every scroll (capture, so a scrolling ancestor counts) and resize, coalesced
  * to one `requestAnimationFrame`. It is written to the DOM rather than held in
  * state because it changes at scroll rate and no React output depends on it.
  *
@@ -90,10 +91,12 @@ export function usePopover({ trigger, anchor: anchorRef, matchWidth = true, onCl
 
     // Measure the panel at its natural size: drop the previous cap first, otherwise
     // a panel that was squeezed once could never grow back when there is room again.
-    panel.style.removeProperty('--popover-max-height');
-    panel.style.removeProperty('--popover-max-width');
     const box = anchor.getBoundingClientRect();
-    panel.style.minWidth = matchWidth ? `${box.width}px` : '';
+    setCssVars(panel, {
+      '--popover-max-height': null,
+      '--popover-max-width': null,
+      'min-width': matchWidth ? `${box.width}px` : null,
+    });
     const rtl = getComputedStyle(panel).direction === 'rtl';
     const viewport = window.visualViewport;
     const result = placePopover({
@@ -103,19 +106,18 @@ export function usePopover({ trigger, anchor: anchorRef, matchWidth = true, onCl
       rtl,
     });
 
-    panel.style.setProperty('--popover-max-height', `${result.maxHeight}px`);
-    panel.style.setProperty('--popover-max-width', `${result.maxWidth}px`);
-    panel.style.insetInlineStart = `${result.inlineStart}px`;
-    panel.style.insetInlineEnd = 'auto';
-    panel.style.top = result.top === undefined ? 'auto' : `${result.top}px`;
-    panel.style.bottom = result.bottom === undefined ? 'auto' : `${result.bottom}px`;
+    setCssVars(panel, {
+      '--popover-max-height': `${result.maxHeight}px`,
+      '--popover-max-width': `${result.maxWidth}px`,
+      'inset-inline-start': `${result.inlineStart}px`,
+      'inset-inline-end': 'auto',
+      top: result.top === undefined ? 'auto' : `${result.top}px`,
+      bottom: result.bottom === undefined ? 'auto' : `${result.bottom}px`,
+      // It arrives out of the side the trigger is on: from above when it opens below.
+      '--origin-dy': result.flipped ? 'var(--motion-distance-small)' : 'calc(var(--motion-distance-small) * -1)',
+    });
     // Readable from outside (a browser check can see which way it opened without measuring).
     panel.dataset.placement = result.placement;
-    // It arrives out of the side the trigger is on: from above when it opens below.
-    panel.style.setProperty(
-      '--origin-dy',
-      result.flipped ? 'var(--motion-distance-small)' : 'calc(var(--motion-distance-small) * -1)',
-    );
   }, [trigger, anchorRef, matchWidth]);
 
   const schedule = useCallback(() => {
@@ -125,6 +127,14 @@ export function usePopover({ trigger, anchor: anchorRef, matchWidth = true, onCl
       place();
     });
   }, [place]);
+
+  // The panel's rule goes when the panel does.
+  useLayoutEffect(() => {
+    const panel = popoverRef.current;
+    return () => {
+      if (panel) clearCssVars(panel);
+    };
+  }, []);
 
   // Show and place before the first paint, so the panel is never seen at the wrong spot.
   useLayoutEffect(() => {

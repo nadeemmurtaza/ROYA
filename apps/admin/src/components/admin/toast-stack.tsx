@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import type { Toast } from '@/hooks/use-toast';
+import { useCssVars } from '@/lib/dynamic-style';
 
 /**
  * The fixed top-end toast stack every `useToast()` caller renders. Pulled
@@ -15,9 +16,10 @@ import type { Toast } from '@/hooks/use-toast';
  * the one exit duration `useToast` keeps it mounted), and carries a thin timer
  * line that runs down for as long as it will stay. The line is a `scaleX` on a
  * transform-origin at the inline start, so it drains the right way in Urdu too,
- * and its duration is the toast's own `duration` — the one inline style here,
- * because it is data rather than a design value. A toast with `duration: 0`
- * stays until dismissed and has no line, since there is nothing to count down.
+ * and its duration is the toast's own `duration`, written as a rule in the
+ * dynamic stylesheet (`TimerLine`) because it is data rather than a design
+ * value. A toast with `duration: 0` stays until dismissed and has no line,
+ * since there is nothing to count down.
  *
  * The wrapper is always present and is a polite live region: a region that
  * mounts with its first message is not announced reliably, so the region stays
@@ -48,15 +50,15 @@ export function ToastStack({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: 
           aria-label={`Dismiss: ${t.message}`}
         >
           {t.message}
-          {t.duration && t.duration > 0 && !t.leaving ? (
-            <span
-              aria-hidden="true"
-              className="toast-timer"
-              style={{ animationDuration: `${t.duration}ms` }}
-            />
-          ) : null}
+          {t.duration && t.duration > 0 && !t.leaving ? <TimerLine duration={t.duration} /> : null}
         </button>
       ))}
     </div>
   );
+}
+
+/** The thin line that drains for as long as the toast stays; `.toast-timer` in globals.css draws it. */
+function TimerLine({ duration }: { duration: number }) {
+  const ref = useCssVars<HTMLSpanElement>({ 'animation-duration': `${duration}ms` });
+  return <span ref={ref} aria-hidden="true" className="toast-timer" />;
 }

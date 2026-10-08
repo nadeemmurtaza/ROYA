@@ -301,9 +301,13 @@ html[dir='rtl'] .flip-rtl {
   animation: drift 24s ease-in-out infinite alternate;
 }
 .band-bg img {
+  opacity: 0;
   transition: opacity 1.8s ease;
   filter: grayscale(1) blur(5px) brightness(0.42);
   transform: scale(1.12);
+}
+.band-bg img.band-img-on {
+  opacity: 1;
 }
 .band-shade {
   position: absolute;
@@ -384,9 +388,45 @@ html[dir='rtl'] .flip-rtl {
   cursor: pointer;
   transition:
     transform 1.4s var(--ease-film),
-    opacity 1.2s,
-    border-color 1s,
-    box-shadow 1s;
+    opacity 1.4s,
+    border-color 1.4s,
+    box-shadow 1.4s;
+  /* --o is the card's place in the strip (0 is the active one, set by data-offset), --s its scale. */
+  --o: 0;
+  --s: 1;
+  transform: translateX(calc(var(--dir, 1) * var(--o) * var(--step))) scale(var(--s));
+  z-index: 10;
+}
+/* A card that wraps round the back jumps instead of sweeping across the front. */
+.scard-snap {
+  transition-duration: 0s;
+}
+/* Two cards either side are seen; the rest wait out of sight at the third place. */
+.scard[data-offset='-3'] {
+  --o: -3;
+  opacity: 0;
+  z-index: 7;
+}
+.scard[data-offset='-2'] {
+  --o: -2;
+  z-index: 8;
+}
+.scard[data-offset='-1'] {
+  --o: -1;
+  z-index: 9;
+}
+.scard[data-offset='1'] {
+  --o: 1;
+  z-index: 9;
+}
+.scard[data-offset='2'] {
+  --o: 2;
+  z-index: 8;
+}
+.scard[data-offset='3'] {
+  --o: 3;
+  opacity: 0;
+  z-index: 7;
 }
 .scard img {
   filter: grayscale(1) brightness(0.75);
@@ -398,6 +438,7 @@ html[dir='rtl'] .flip-rtl {
   filter: grayscale(0.3) brightness(0.95);
 }
 .scard-on {
+  --s: 1.22;
   border-color: rgb(var(--text-rgb) / 0.9);
   box-shadow: 0 40px 90px rgb(var(--bg-rgb) / 0.6);
 }
@@ -563,9 +604,27 @@ html[dir='rtl'] .morph-fill {
   }
 }
 .mimg {
+  opacity: 0;
+  transform: scale(1.14);
   transition:
     opacity 1.6s ease,
     transform 6s ease;
+}
+.mimg-on {
+  opacity: 1;
+  transform: scale(1.06);
+}
+.mimg-at-50-22 {
+  object-position: 50% 22%;
+}
+.mimg-at-50-50 {
+  object-position: 50% 50%;
+}
+.mimg-at-40-50 {
+  object-position: 40% 50%;
+}
+.mimg-at-50-40 {
+  object-position: 50% 40%;
 }
 .commission-copy {
   flex: 1 1 460px;

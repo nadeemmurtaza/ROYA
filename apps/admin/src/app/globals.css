@@ -1129,7 +1129,8 @@
   }
 
   [data-reveal='shown'] {
-    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) var(--reveal-delay, 0ms) backwards;
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle)
+      calc(var(--stagger, 0) * var(--motion-stagger-step)) backwards;
   }
 
   /* An element nobody scrolled to is still content: a printed page must not have holes in it. */
@@ -1311,7 +1312,7 @@
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
     animation: draw-path var(--motion-duration-slow) var(--motion-easing-settle) backwards;
-    animation-delay: calc(var(--draw-index, 0) * var(--motion-stagger-step));
+    animation-delay: calc(var(--stagger, 0) * var(--motion-stagger-step));
   }
 
   /*
@@ -1484,11 +1485,48 @@
     line-height: var(--reel-line);
   }
 
+  /*
+   * Which digit a strip shows (0 to 9) is its `data-d`, written by the markup and
+   * by CountUp; `data-snap` moves a strip to a starting digit without rolling.
+   */
+  .reel-strip[data-d='1'] {
+    --d: 1;
+  }
+  .reel-strip[data-d='2'] {
+    --d: 2;
+  }
+  .reel-strip[data-d='3'] {
+    --d: 3;
+  }
+  .reel-strip[data-d='4'] {
+    --d: 4;
+  }
+  .reel-strip[data-d='5'] {
+    --d: 5;
+  }
+  .reel-strip[data-d='6'] {
+    --d: 6;
+  }
+  .reel-strip[data-d='7'] {
+    --d: 7;
+  }
+  .reel-strip[data-d='8'] {
+    --d: 8;
+  }
+  .reel-strip[data-d='9'] {
+    --d: 9;
+  }
+
+  .reel-strip[data-snap] {
+    transition: none;
+  }
+
   .reel-strip {
     display: flex;
     flex-direction: column;
     transform: translateY(calc(var(--d, 0) * var(--reel-line) * -1));
-    transition: transform var(--motion-duration-sweep) var(--motion-easing-settle) var(--reel-delay, 0ms);
+    transition: transform var(--motion-duration-sweep) var(--motion-easing-settle)
+      calc(var(--stagger, 0) * var(--motion-stagger-step));
   }
 
   /*
@@ -1513,5 +1551,58 @@
     html {
       scroll-behavior: auto;
     }
+  }
+
+  /*
+   * A place in the capped stagger ramp (`staggerStep` in lib/motion.ts, MOT-6):
+   * 0 to `stagger.steps`. Whatever animates reads `--stagger` and multiplies it by
+   * `--motion-stagger-step`, so the delay lives here and never in a component.
+   */
+  [data-stagger='1'] {
+    --stagger: 1;
+  }
+  [data-stagger='2'] {
+    --stagger: 2;
+  }
+  [data-stagger='3'] {
+    --stagger: 3;
+  }
+  [data-stagger='4'] {
+    --stagger: 4;
+  }
+
+  /* Added to <body> by lockScroll() while a dialog or drawer is open. */
+  .scroll-locked {
+    overflow: hidden;
+  }
+
+  /*
+   * The scratch field `copyToClipboard` selects from when the Clipboard API is
+   * unavailable. Not a design value: it is in the viewport (iOS will not select
+   * what is not), takes no room, and cannot be hit.
+   */
+  .copy-shim {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 1rem;
+  }
+
+  /* What next/image would have inlined on every <img>; see components/ui/image.tsx. */
+  img[data-nimg] {
+    color: transparent;
+  }
+
+  img[data-nimg='fill'] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 }

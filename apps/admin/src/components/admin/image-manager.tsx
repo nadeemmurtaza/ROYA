@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/ui/image';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';

@@ -80,7 +80,7 @@ export function ReviewStep({
           <ChevronLeft size={16} />
           {t('backPayment')}
         </button>
-        <span className="stack" style={{ alignItems: 'flex-end', gap: 8 }}>
+        <span className="stack u-items-end u-gap-8">
           <button type="button" className="btn-gold" disabled={!agreed || placing} onClick={onPlace}>
             {placing ? (
               t('placing')

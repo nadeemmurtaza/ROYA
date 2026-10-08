@@ -589,6 +589,17 @@ html[dir='rtl'] .tab {
   line-height: 1.5;
   color: var(--text-body);
   text-align: center;
+  grid-template-columns: repeat(var(--facts, 1), minmax(0, 1fr));
+}
+/* One column per fact; a product carries between one and four. */
+.facts[data-count='2'] {
+  --facts: 2;
+}
+.facts[data-count='3'] {
+  --facts: 3;
+}
+.facts[data-count='4'] {
+  --facts: 4;
 }
 .fact {
   background: var(--bg);

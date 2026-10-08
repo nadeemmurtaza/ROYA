@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/ui/image';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';

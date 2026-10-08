@@ -1,4 +1,4 @@
-import { CHART_DRAW_MS, pointPopStyle } from './chart-motion';
+import { PopGroup } from './chart-pop';
 import { SURFACE } from './chart-theme';
 
 /** Where a marker sits along its line, so it can pop in as the line reaches it. */
@@ -31,9 +31,9 @@ interface MarkerProps {
 export function ChartMarker({ pop, ...marker }: MarkerProps & { pop?: MarkerPop }) {
   if (!pop) return <MarkerShape {...marker} />;
   return (
-    <g className="chart-point" style={pointPopStyle(pop.index, pop.count, CHART_DRAW_MS, pop.seriesIndex)}>
+    <PopGroup index={pop.index} count={pop.count} seriesIndex={pop.seriesIndex}>
       <MarkerShape {...marker} />
-    </g>
+    </PopGroup>
   );
 }
 

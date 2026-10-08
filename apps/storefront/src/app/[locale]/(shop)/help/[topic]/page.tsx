@@ -41,7 +41,7 @@ export default async function HelpPage({ params }: Props) {
       <p className="help-lead serif">{t(`${topic}.lead`)}</p>
       <p className="help-body">{t(`${topic}.body`)}</p>
       <p className="bag-muted">{t('more')}</p>
-      <Link className="btn-gold" href="/consultation" style={{ alignSelf: 'flex-start' }}>
+      <Link className="btn-gold u-self-start" href="/consultation">
         {t('contact')}
       </Link>
     </article>

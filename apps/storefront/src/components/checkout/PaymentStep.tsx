@@ -48,7 +48,7 @@ export function PaymentStep({ payments, paymentKey, onPick, onBack, onNext }: Pr
       ) : null}
 
       {payments.status === 'ready' && payments.items.length > 0 ? (
-        <div role="radiogroup" aria-labelledby="payment-title" className="stack" style={{ gap: 14 }}>
+        <div role="radiogroup" aria-labelledby="payment-title" className="stack u-gap-14">
           {payments.items.map((method) => {
             const on = method.key === paymentKey;
             return (
@@ -61,7 +61,7 @@ export function PaymentStep({ payments, paymentKey, onPick, onBack, onNext }: Pr
                 onClick={() => onPick(method.key)}
               >
                 <span className={`dot${on ? ' dot-on' : ''}`} aria-hidden="true" />
-                <span className="stack" style={{ gap: 6 }}>
+                <span className="stack u-gap-6">
                   <span className="serif opt-name">{methodLabel(method, locale)}</span>
                   <span className="opt-desc">{methodDescription(method, locale)}</span>
                 </span>

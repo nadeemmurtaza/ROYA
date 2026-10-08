@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { useExitTransition } from '@/hooks/use-exit-transition';
 import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
+import { lockScroll } from '@/lib/scroll-lock';
 import type { AuthUser, DeploymentMeta } from '@/types/api';
 import {
   NAV_GROUPS,
@@ -66,14 +67,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (isNavOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    if (!isNavOpen) return;
+    return lockScroll();
   }, [isNavOpen]);
 
   if (!checked || !user) {

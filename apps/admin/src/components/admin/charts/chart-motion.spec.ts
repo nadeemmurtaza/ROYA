@@ -11,7 +11,7 @@ import {
   chartTooltipMotion,
   cubicBezierCss,
   pointPopDelayMs,
-  pointPopStyle,
+  pointPopVars,
 } from './chart-motion';
 
 const { duration, easing, stagger } = BRAND.theme.motion;
@@ -134,10 +134,10 @@ describe('pointPopDelayMs', () => {
   });
 });
 
-describe('pointPopStyle', () => {
+describe('pointPopVars', () => {
   it('sets the --pop-delay that .chart-point reads, in ms', () => {
-    expect(pointPopStyle(0, 1)).toEqual({ '--pop-delay': '0ms' });
-    expect(pointPopStyle(3, 8, CHART_DRAW_MS, 1)).toEqual({
+    expect(pointPopVars(0, 1)).toEqual({ '--pop-delay': '0ms' });
+    expect(pointPopVars(3, 8, CHART_DRAW_MS, 1)).toEqual({
       '--pop-delay': `${pointPopDelayMs(3, 8, CHART_DRAW_MS, 1)}ms`,
     });
   });

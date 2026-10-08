@@ -1,12 +1,14 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, type TooltipValueType } from 'recharts';
+import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { formatDateShort, formatMoney } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { usePrefersReducedMotion } from './use-reduced-motion';
+import { ChartSwatch } from './chart-swatch';
+import { dayLabel } from './chart-label';
+import { ChartTooltip } from './chart-tooltip';
 import { GRID, INK, INK_FAINT, compactMoney, paletteColor } from './chart-theme';
 
 export interface ComparisonBucketPoint {
@@ -57,11 +59,14 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
           <Tooltip
             {...chartTooltipMotion(reduced)}
             cursor={chartCursor.crosshair}
-            contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
-            labelFormatter={(label: ReactNode) => formatDateShort(String(label), 'en', { withWeekday: true })}
-            formatter={(value: TooltipValueType | undefined, name: ReactNode) =>
-              [formatMoney(Number(value ?? 0)), name] as [string, ReactNode]
-            }
+            content={(props) => (
+              <ChartTooltip
+                active={props.active}
+                payload={props.payload}
+                label={dayLabel(props.active, props.label)}
+                formatValue={formatMoney}
+              />
+            )}
           />
           <Bar dataKey="purchases" name="Purchases" stackId="outflow" fill={paletteColor(2)} {...chartDrawProps(reduced, 0)} />
           <Bar dataKey="expenses" name="Expenses" stackId="outflow" fill={paletteColor(3)} {...chartDrawProps(reduced, 1)} />
@@ -93,20 +98,20 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
 
       <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-neutral-900/60" aria-hidden="true">
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-4" style={{ backgroundColor: paletteColor(0) }} />
+          <ChartSwatch color={paletteColor(0)} />
           Sales
         </li>
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5" style={{ backgroundColor: paletteColor(2) }} />
+          <ChartSwatch color={paletteColor(2)} shape="square" />
           Purchases
         </li>
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5" style={{ backgroundColor: paletteColor(3) }} />
+          <ChartSwatch color={paletteColor(3)} shape="square" />
           Expenses
         </li>
         {hasNet ? (
           <li className="flex items-center gap-1.5">
-            <span className="inline-block h-0.5 w-4 border-t-2 border-dashed" style={{ borderColor: INK }} />
+            <ChartSwatch color={INK} shape="dash" />
             Net
           </li>
         ) : null}

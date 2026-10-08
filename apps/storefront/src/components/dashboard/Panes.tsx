@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { Image } from '@/components/Image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState, type FormEvent } from 'react';
 import { BRAND, SECOND_LOCALE, intlTag, type Locale } from '@newax/shared';
@@ -22,7 +22,7 @@ function PaneState({ status, onRetry }: { status: 'loading' | 'error'; onRetry: 
       {t('loading')}
     </p>
   ) : (
-    <div className="stack" style={{ gap: 12, alignItems: 'flex-start' }}>
+    <div className="stack u-gap-12 u-items-start">
       <p className="field-error" role="alert">
         {t('loadFailed')}
       </p>
@@ -46,31 +46,22 @@ export function OrderRow({ order, locale }: { order: Order; locale: Locale }) {
   return (
     <li className="order-row">
       <span className="ph order-thumb">
-        {first?.imageUrl ? (
-          <Image
-            src={first.imageUrl}
-            alt=""
-            fill
-            sizes="96px"
-            className="photo"
-            style={{ objectPosition: '50% 25%' }}
-          />
-        ) : null}
+        {first?.imageUrl ? <Image src={first.imageUrl} alt="" fill sizes="96px" className="photo u-focus-25" /> : null}
       </span>
-      <span className="stack" style={{ gap: 6, minWidth: 0 }}>
+      <span className="stack u-gap-6 u-min-w-0">
         <span className="serif order-name">
           {name}
           {more > 0 ? <span className="bag-muted-sm"> +{more}</span> : null}
         </span>
-        <span className="bag-muted-sm" dir="ltr" style={{ textAlign: 'start' }}>
+        <span className="bag-muted-sm u-text-start" dir="ltr">
           {order.number}
         </span>
         <span className="bag-muted-sm">{t('orderOn', { date: dayFormat(locale, order.placedAt) })}</span>
-        <span style={{ fontSize: 14, color: 'var(--text3)' }}>
+        <span className="u-fs-14 u-c-text3">
           <Price minor={order.grandTotal} charged />
         </span>
       </span>
-      <span className="stack" style={{ gap: 12, alignItems: 'flex-end' }}>
+      <span className="stack u-gap-12 u-items-end">
         <span className="status-pill">{t(`status_${order.status}` as 'status_PENDING')}</span>
         <Link className="navlink" href={`/orders/${encodeURIComponent(order.number)}`}>
           {t('orderView')}
@@ -89,9 +80,7 @@ export function OrdersPane({ limit, showAll }: { limit?: number; showAll?: boole
   if (orders.length === 0) {
     return (
       <div className="card-box">
-        <span className="serif" style={{ fontSize: 26 }}>
-          {t('noOrders')}
-        </span>
+        <span className="serif u-fs-26">{t('noOrders')}</span>
         <span className="bag-muted">{t('noOrdersBody')}</span>
         <Link className="btn-gold" href="/collection">
           {t('noOrdersCta')}
@@ -103,9 +92,7 @@ export function OrdersPane({ limit, showAll }: { limit?: number; showAll?: boole
     <section className="card-box" aria-label={t('recent')}>
       {showAll ? (
         <div className="card-head">
-          <span className="serif" style={{ fontSize: 26 }}>
-            {t('recent')}
-          </span>
+          <span className="serif u-fs-26">{t('recent')}</span>
           <Link className="navlink" href={{ pathname: '/dashboard', query: { tab: 'orders' } }}>
             {t('latestMore')}
           </Link>
@@ -123,10 +110,8 @@ export function OrdersPane({ limit, showAll }: { limit?: number; showAll?: boole
 export function FittingsPane() {
   const t = useTranslations('dashboard');
   return (
-    <div className="card-box" style={{ alignItems: 'flex-start' }}>
-      <span className="bag-muted" style={{ maxWidth: 560 }}>
-        {t('fittingsBody')}
-      </span>
+    <div className="card-box u-items-start">
+      <span className="bag-muted u-max-w-560">{t('fittingsBody')}</span>
       <Link className="btn-gold" href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
         {t('fittingsCta')}
       </Link>
@@ -164,10 +149,8 @@ export function MeasurementsPane() {
   const second = locale === SECOND_LOCALE;
 
   return (
-    <div className="stack" style={{ gap: 28 }}>
-      <p className="bag-muted" style={{ maxWidth: 560 }}>
-        {t('measureBody')}
-      </p>
+    <div className="stack u-gap-28">
+      <p className="bag-muted u-max-w-560">{t('measureBody')}</p>
       {list.length === 0 ? (
         <div className="card-box">
           <span className="bag-muted">{t('measureNone')}</span>
@@ -180,9 +163,9 @@ export function MeasurementsPane() {
             ?.fields.slice()
             .sort((a, b) => a.order - b.order) ?? [];
         return (
-          <section key={profile.id} className="stack" style={{ gap: 14 }} aria-label={profile.label}>
+          <section key={profile.id} className="stack u-gap-14" aria-label={profile.label}>
             <div className="card-head">
-              <span className="serif" style={{ fontSize: 24 }}>
+              <span className="serif u-fs-24">
                 {profile.label}
                 <span className="bag-muted-sm">
                   {' '}
@@ -209,8 +192,7 @@ export function MeasurementsPane() {
       {list.length > 0 ? (
         <button
           type="button"
-          className="btn-line"
-          style={{ alignSelf: 'flex-start' }}
+          className="btn-line u-self-start"
           onClick={() => setShown((value) => !value)}
           aria-pressed={shown}
         >
@@ -242,10 +224,8 @@ export function WishlistPane() {
     );
   if (wishlist.items.length === 0) {
     return (
-      <div className="card-box" style={{ alignItems: 'flex-start' }}>
-        <span className="serif" style={{ fontSize: 26 }}>
-          {t('wishNone')}
-        </span>
+      <div className="card-box u-items-start">
+        <span className="serif u-fs-26">{t('wishNone')}</span>
         <span className="bag-muted">{t('wishBody')}</span>
         <Link className="btn-gold" href="/collection">
           {t('wishCta')}
@@ -254,10 +234,8 @@ export function WishlistPane() {
     );
   }
   return (
-    <div className="stack" style={{ gap: 20 }}>
-      <p className="bag-muted" style={{ maxWidth: 560 }}>
-        {t('wishBody')}
-      </p>
+    <div className="stack u-gap-20">
+      <p className="bag-muted u-max-w-560">{t('wishBody')}</p>
       <ul className="wish-grid">
         {wishlist.items.map((item) => {
           const known = catalogue.get(item.slug);
@@ -268,10 +246,8 @@ export function WishlistPane() {
                   <Image src={item.imageUrl} alt="" fill sizes="(max-width: 700px) 50vw, 240px" className="photo" />
                 ) : null}
               </Link>
-              <span className="serif" style={{ fontSize: 22 }}>
-                {known?.name ?? item.name}
-              </span>
-              <span style={{ fontSize: 14, color: 'var(--text3)' }}>{formatPrice(known?.basePrice ?? item.price)}</span>
+              <span className="serif u-fs-22">{known?.name ?? item.name}</span>
+              <span className="u-fs-14 u-c-text3">{formatPrice(known?.basePrice ?? item.price)}</span>
               <div className="bag-actions">
                 <Link className="lnk" href={`/product/${item.slug}`}>
                   {t('wishView')}
@@ -369,10 +345,8 @@ export function AddressesPane() {
   });
 
   return (
-    <div className="stack" style={{ gap: 24 }}>
-      <p className="bag-muted" style={{ maxWidth: 560 }}>
-        {t('addrBody')}
-      </p>
+    <div className="stack u-gap-24">
+      <p className="bag-muted u-max-w-560">{t('addrBody')}</p>
       {addresses.length === 0 && !adding ? (
         <div className="card-box">
           <span className="bag-muted">{t('addrNone')}</span>
@@ -384,7 +358,7 @@ export function AddressesPane() {
             <span className="eyebrow">
               {address.label || t('addrLabelPlaceholder')} {address.isDefault ? `· ${t('addrDefault')}` : ''}
             </span>
-            <span style={{ lineHeight: 1.7 }}>
+            <span className="u-lh-17">
               {address.fullName}
               <br />
               {address.line1}
@@ -395,7 +369,7 @@ export function AddressesPane() {
               <br />
               <bdi dir="ltr">{address.phone}</bdi>
             </span>
-            <div className="bag-actions" style={{ marginTop: 'auto' }}>
+            <div className="bag-actions u-mt-auto">
               {!address.isDefault ? (
                 <button type="button" className="lnk" onClick={() => void act(address.id, 'default')}>
                   {t('addrMakeDefault')}
@@ -465,7 +439,7 @@ export function AddressesPane() {
           </div>
         </form>
       ) : (
-        <button type="button" className="btn-line" style={{ alignSelf: 'flex-start' }} onClick={() => setAdding(true)}>
+        <button type="button" className="btn-line u-self-start" onClick={() => setAdding(true)}>
           {t('addrAdd')}
         </button>
       )}

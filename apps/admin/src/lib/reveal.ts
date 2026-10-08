@@ -1,12 +1,12 @@
 import { prefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
-import { staggerDelayMs } from '@/lib/motion';
+import { staggerStep } from '@/lib/motion';
 
 /**
  * Hides a group of elements and reveals each as it scrolls into view, staggered
  * within the batch that arrives together. DOM-only and imperative on purpose:
  * the elements belong to React, but whether they have been seen yet is not
- * state worth a render — it is one attribute and one custom property, written
- * to the node, read by `[data-reveal]` in globals.css.
+ * state worth a render — it is two attributes (`data-reveal`, `data-stagger`),
+ * written to the node, read by `[data-reveal]` in globals.css.
  *
  * Progressive in the strict sense. The server renders every element visible, so
  * with no scripting, with an observer-less browser, or under reduced motion
@@ -33,7 +33,7 @@ export function armReveal(items: readonly HTMLElement[]): () => void {
         .map((entry) => entry.target as HTMLElement)
         .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
       arriving.forEach((el, index) => {
-        el.style.setProperty('--reveal-delay', `${staggerDelayMs(index)}ms`);
+        el.dataset.stagger = String(staggerStep(index));
         el.dataset.reveal = 'shown';
         observer.unobserve(el);
       });
@@ -52,7 +52,7 @@ export function armReveal(items: readonly HTMLElement[]): () => void {
     observer.disconnect();
     for (const el of items) {
       delete el.dataset.reveal;
-      el.style.removeProperty('--reveal-delay');
+      delete el.dataset.stagger;
     }
   };
 }
