@@ -8,8 +8,9 @@ import { BRAND } from '@newax/shared';
  * colour literal (Law 1), so a rebrand is one file and the two themes cannot
  * drift apart.
  *
- *   :root                 the default theme (dark)
- *   [data-theme='light']  the light theme, set on <html>
+ *   :root                 the default theme, BRAND.storefront.defaultTheme (light)
+ *   [data-theme='light']  the light theme, set on <html> by a saved choice
+ *   [data-theme='dark']   the dark theme, set on <html> by a saved choice
  *   [data-keep='dark']    a section that stays dark inside the light theme
  *                         (the hero, the signature band, the closing banner)
  */
@@ -41,7 +42,7 @@ export function fontStack(font: { family: string; fallback: readonly string[] })
 }
 
 export function themeCss(): string {
-  const { themes, fonts, layout, motion } = BRAND.storefront;
+  const { themes, fonts, layout, motion, defaultTheme } = BRAND.storefront;
 
   const shared = [
     `--font-serif:${fontStack(fonts.serif)};`,
@@ -58,8 +59,10 @@ export function themeCss(): string {
   ].join('');
 
   return [
-    `:root{${shared}${themeVars(themes.dark)}color-scheme:dark;}`,
+    // The default is on :root so the page is right with no attribute at all (no script, or nothing saved).
+    `:root{${shared}${themeVars(themes[defaultTheme])}color-scheme:${defaultTheme};}`,
     `[data-theme='light']{${themeVars(themes.light)}color-scheme:light;}`,
+    `[data-theme='dark']{${themeVars(themes.dark)}color-scheme:dark;}`,
     `[data-keep='dark']{${themeVars(themes.dark)}color-scheme:dark;}`,
   ].join('\n');
 }
@@ -84,7 +87,7 @@ export function themeCssHref(): string {
 
 /**
  * Runs before first paint so a returning visitor never sees the wrong theme
- * flash. The default (dark) is already in the markup; this only switches when
+ * flash. The default (light) is already in the markup; this only switches when
  * a choice was saved. Wrapped in try/catch because storage can be blocked.
  */
 export const THEME_STORAGE_KEY = 'roya.theme';

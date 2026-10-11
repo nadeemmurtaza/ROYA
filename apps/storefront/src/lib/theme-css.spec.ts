@@ -17,6 +17,16 @@ describe('themeCss', () => {
     expect(css).toContain("[data-keep='dark']{");
   });
 
+  it('puts the brand’s default theme on :root and both named themes under their attribute', () => {
+    const { defaultTheme, themes } = BRAND.storefront;
+    const rule = (selector: string) => css.split('\n').find((line) => line.startsWith(`${selector}{`)) ?? '';
+    expect(rule(':root')).toContain(`--bg:${themes[defaultTheme].bg};`);
+    expect(rule(':root')).toContain(`color-scheme:${defaultTheme};`);
+    // A saved choice of the other theme must still win over :root.
+    expect(rule("[data-theme='dark']")).toContain(`--bg:${themes.dark.bg};`);
+    expect(rule("[data-theme='light']")).toContain(`--bg:${themes.light.bg};`);
+  });
+
   it('emits every role token for both themes with the brand’s own value', () => {
     for (const [name, theme] of Object.entries(BRAND.storefront.themes)) {
       expect(theme.bg).toMatch(/^#[0-9A-Fa-f]{6}$/);

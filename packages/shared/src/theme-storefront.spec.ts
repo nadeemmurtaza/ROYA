@@ -45,8 +45,8 @@ describe('the back office shape and type', () => {
     expect(BRAND.theme.fonts.logoStack[0]).toBe(fonts.logo.family);
   });
 
-  it('opens in the storefront theme', () => {
-    expect(BRAND.storefront.defaultTheme).toBe('dark');
+  it('opens in the storefront theme, which is light', () => {
+    expect(BRAND.storefront.defaultTheme).toBe('light');
   });
 
   it('keeps the storefront accent legible as ink on the page in both themes', () => {

@@ -1,6 +1,6 @@
 # Design tokens
 
-The design has two themes, dark (default) and light, and a parchment band that stays light inside both. Every colour, font family, page width and motion curve is a value in **`packages/shared/src/brand.ts` → `BRAND.storefront`**, and nowhere else. `src/lib/theme-css.ts` turns them into CSS custom properties; no stylesheet holds a colour literal, and `src/lib/theme-css.spec.ts` fails if one does, or if a stylesheet uses a custom property nothing defines.
+The design has two themes, light (default) and dark, and a parchment band that stays light inside both. Every colour, font family, page width and motion curve is a value in **`packages/shared/src/brand.ts` → `BRAND.storefront`**, and nowhere else. `src/lib/theme-css.ts` turns them into CSS custom properties; no stylesheet holds a colour literal, and `src/lib/theme-css.spec.ts` fails if one does, or if a stylesheet uses a custom property nothing defines.
 
 ## Roles, not colours
 
@@ -8,8 +8,9 @@ Both themes have the same keys: `bg`, `bgRaised`, `bgSunken`, `text`, `text2`…
 
 | CSS                                | From                                                                                                                                    |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `:root`                            | `themes.dark`                                                                                                                           |
-| `[data-theme='light']` on `<html>` | `themes.light`                                                                                                                          |
+| `:root`                            | `themes[defaultTheme]` (light), so a page with nothing saved is right with no attribute at all                                          |
+| `[data-theme='light']` on `<html>` | `themes.light`, from a saved choice                                                                                                     |
+| `[data-theme='dark']` on `<html>`  | `themes.dark`, from a saved choice                                                                                                      |
 | `[data-keep='dark']` on a section  | `themes.dark` again: the hero, the signature strip, the closing banner and any text laid over a photograph stay dark in the light theme |
 
 The theme is chosen before first paint by a tiny script reading `localStorage['roya.theme']` (so a returning visitor never sees a flash), toggled from the top bar, and defaults to `BRAND.storefront.defaultTheme`.

@@ -798,8 +798,8 @@ const storefrontLight = {
 } as const;
 
 const storefront = {
-  /** The design opens in dark; light is a toggle, remembered per visitor. */
-  defaultTheme: 'dark',
+  /** The shop opens in light; dark is a toggle, remembered per visitor. */
+  defaultTheme: 'light',
   /**
    * The pieces the storefront names by catalogue slug: the flagship the Home
    * hero and the full-width section point at, a second one the search overlay
