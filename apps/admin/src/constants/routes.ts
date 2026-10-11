@@ -186,5 +186,24 @@ export const ROUTES = {
     /** `new` is a real id here: the editor route handles creating and editing. */
     emailAccount: (id: string) => `/admin/email-accounts/${id}`,
 
+    // Routes for screens carried over from the Blueprint carve (settlements, bank
+    // facilities, org structure, invoices, transfers, merchant payables and the
+    // organisation tree). Additive: nothing above this line was changed.
+    settlements: '/admin/settlements',
+    settlementBatch: (id: string) => `/admin/settlements/${id}`,
+    bankFacilities: '/admin/bank-facilities',
+    bankFacility: (id: string) => `/admin/bank-facilities/${id}`,
+    orgStructure: '/admin/org-structure',
+    orgUnitAccess: (unitId: string) => `/admin/org-structure/${unitId}/access`,
+    invoices: '/admin/invoices',
+    invoicesOverdue: '/admin/invoices?overdue=true',
+    transferNew: '/admin/transfers/new',
+    transfer: (id: string) => `/admin/transfers/${id}`,
+    merchantPayable: (id: string) => `/admin/merchant-payables/${id}`,
+    organizationOrg: (orgId: string) => `/admin/o/${orgId}`,
+    organizationBrand: (brandId: string) => `/admin/b/${brandId}`,
+    organizationBranch: (branchId: string) => `/admin/br/${branchId}`,
+    organizationAccess: (orgId: string) => `/admin/o/${orgId}/access`,
+    organizationPolicyQuarantine: (orgId: string) => `/admin/o/${orgId}/policy-quarantine`,
   },
 } as const;

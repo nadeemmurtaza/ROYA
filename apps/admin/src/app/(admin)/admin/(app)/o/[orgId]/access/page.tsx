@@ -1,0 +1,232 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+import { adminFetch } from '@/lib/admin-client';
+import type { AdminScopeWithHolder, AdminUser, MyScope } from '@/types/api';
+import { PageHeader, DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
+
+type Level = 'ORG' | 'BRAND' | 'BRANCH';
+
+interface Draft {
+  userId: string;
+  level: Level;
+  retailBrandId: string;
+  branchNodeId: string;
+}
+
+const BLANK: Draft = { userId: '', level: 'BRANCH', retailBrandId: '', branchNodeId: '' };
+
+/**
+ * Who is a super admin, a brand admin, or a branch admin (RETAIL-ERP.md
+ * R10, WO-18.6) — the one screen that writes an `AdminScope` row. Reachable
+ * only by an ORG-scoped holder of `organization.manage`; the API refuses
+ * everyone else (`OrganizationService.assertOrgWide()`), so this page's own
+ * job is to make the *legal* action easy, not to be the security boundary.
+ *
+ * No role for "brand admin" or "branch admin" exists anywhere in this
+ * system (R10) — granting someone BRAND scope on Khaadi is the entire
+ * mechanism that makes them "Khaadi's admin". What they may *do* once
+ * scoped is the separate, already-existing Team & Access screen
+ * (/admin/users) — this page only decides *where* their access reaches.
+ */
+export default function AdminScopesPage() {
+  const [scope, setScope] = useState<MyScope | null>(null);
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [grants, setGrants] = useState<AdminScopeWithHolder[]>([]);
+  const [draft, setDraft] = useState<Draft>(BLANK);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    try {
+      const [scopeResult, usersResult, grantsResult] = await Promise.all([
+        adminFetch<MyScope>('/organization/me/scope'),
+        adminFetch<AdminUser[]>('/admin/users'),
+        adminFetch<AdminScopeWithHolder[]>('/organization/admin-scopes'),
+      ]);
+      setScope(scopeResult);
+      setUsers(usersResult);
+      setGrants(grantsResult);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not load the admin roster');
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  async function grant(event: React.FormEvent) {
+    event.preventDefault();
+    setError(null);
+    setBusy(true);
+
+    try {
+      await adminFetch('/organization/admin-scopes', {
+        method: 'POST',
+        body: {
+          userId: draft.userId,
+          level: draft.level,
+          retailBrandId: draft.level === 'ORG' ? undefined : draft.retailBrandId || undefined,
+          branchNodeId: draft.level === 'BRANCH' ? draft.branchNodeId || undefined : undefined,
+        },
+      });
+      setDraft(BLANK);
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not grant that scope');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function revoke(id: string) {
+    setError(null);
+    try {
+      await adminFetch(`/organization/admin-scopes/${id}`, { method: 'DELETE' });
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not revoke that grant');
+    }
+  }
+
+  if (!scope) return <Loading />;
+
+  const brandName = (id: string | null) => scope.brands.find((brand) => brand.id === id)?.name ?? id ?? '—';
+  const branchLabel = (id: string | null) => scope.nodes.find((node) => node.id === id)?.label ?? id ?? '—';
+  const holderName = (holder: AdminScopeWithHolder['user']) =>
+    [holder.firstName, holder.lastName].filter(Boolean).join(' ') || holder.email || holder.id;
+
+  return (
+    <>
+      <PageHeader
+        title="Admin access"
+        description="Who is a super admin, a brand admin, or a branch admin. What they may do once scoped is set from Team & Access."
+      />
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
+        <DataTable
+          rows={grants}
+          rowKey={(row) => row.id}
+          emptyLabel="No admin scope granted yet. Every deployment starts with none — grant the first one."
+          columns={[
+            {
+              header: 'Admin',
+              cell: (row) => (
+                <>
+                  <span className="font-medium text-neutral-900">{holderName(row.user)}</span>
+                  <p className="text-xs text-neutral-900/60">{row.user.email}</p>
+                </>
+              ),
+            },
+            {
+              header: 'Scope',
+              muted: true,
+              cell: (row) => (
+                <>
+                  {row.level === 'ORG' && 'Super admin — every brand and branch'}
+                  {row.level === 'BRAND' && `Brand admin — ${brandName(row.retailBrandId)}`}
+                  {row.level === 'BRANCH' &&
+                    `Branch admin — ${branchLabel(row.branchNodeId)} (${brandName(row.retailBrandId)})`}
+                </>
+              ),
+            },
+            {
+              header: '',
+              align: 'end',
+              cell: (row) => (
+                <button type="button" onClick={() => revoke(row.id)} className="btn-text text-feedback-negative">
+                  Revoke
+                </button>
+              ),
+            },
+          ]}
+        />
+
+        <form onSubmit={grant} className="space-y-4">
+          <h2 className="eyebrow">Grant scope</h2>
+
+          <div>
+            <label className="field-label" htmlFor="grant-user">
+              User
+            </label>
+            <Select
+              id="grant-user"
+              label="User"
+              required
+              placeholder="Choose a user…"
+              value={draft.userId}
+              onChange={(next) => setDraft({ ...draft, userId: next })}
+              options={users.map((user) => ({
+                value: user.id,
+                label: [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone || '',
+              }))}
+            />
+          </div>
+
+          <div>
+            <label className="field-label" htmlFor="grant-level">
+              Level
+            </label>
+            <Select
+              id="grant-level"
+              label="Level"
+              value={draft.level}
+              onChange={(next) => setDraft({ ...draft, level: next as Level })}
+              options={[
+                { value: 'BRANCH', label: 'Branch admin' },
+                { value: 'BRAND', label: 'Brand admin' },
+                { value: 'ORG', label: 'Super admin (ORG)' },
+              ]}
+            />
+          </div>
+
+          {draft.level !== 'ORG' ? (
+            <div>
+              <label className="field-label" htmlFor="grant-brand">
+                Brand
+              </label>
+              <Select
+                id="grant-brand"
+                label="Brand"
+                required
+                placeholder="Choose a brand…"
+                value={draft.retailBrandId}
+                onChange={(next) => setDraft({ ...draft, retailBrandId: next })}
+                options={scope.brands.map((brand) => ({ value: brand.id, label: brand.name }))}
+              />
+            </div>
+          ) : null}
+
+          {draft.level === 'BRANCH' ? (
+            <div>
+              <label className="field-label" htmlFor="grant-branch">
+                Branch
+              </label>
+              <Select
+                id="grant-branch"
+                label="Branch"
+                required
+                placeholder="Choose a branch…"
+                value={draft.branchNodeId}
+                onChange={(next) => setDraft({ ...draft, branchNodeId: next })}
+                options={scope.nodes.map((node) => ({ value: node.id, label: node.label }))}
+              />
+            </div>
+          ) : null}
+
+          <button type="submit" disabled={busy} className="btn-primary w-full">
+            {busy ? 'Granting…' : 'Grant'}
+          </button>
+        </form>
+      </div>
+    </>
+  );
+}
