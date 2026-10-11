@@ -210,7 +210,8 @@ html[dir='rtl'] .ar-link {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgb(var(--bg-rgb) / 0.96);
+  background: rgb(var(--bg-rgb) / 0.985);
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
   padding: 32px var(--gutter);
@@ -240,6 +241,11 @@ html[dir='rtl'] .ar-link {
   padding: 12px 0;
   outline: none;
   border-radius: 0;
+}
+.search-input::-webkit-search-cancel-button {
+  /* The browser's own clear button is a loud white cross; Escape and the close button already leave. */
+  appearance: none;
+  display: none;
 }
 .search-input:focus-visible {
   border-block-end-color: var(--accent);
