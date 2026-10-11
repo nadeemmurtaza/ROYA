@@ -44,6 +44,34 @@ Checked here, on Cloudflare's own runtime (workerd, through `wrangler dev`) agai
 5. Run the **Database** workflow first if the database is not migrated (README, Database setup).
 6. Actions, Cloudflare, Run workflow. It checks the secrets, deploys the three Workers in order, and fails unless the API, the storefront and the back office each answer 200.
 
+## Deploying from the Cloudflare dashboard
+
+The alternative to the GitHub workflow: Cloudflare builds from the Git connection itself, so no API token and no GitHub secrets are needed. Create **three projects**, in this order, with Workers & Pages, Create, Import a repository. All three build the production branch `main`. The API project needs the Workers Paid plan.
+
+| Setting                                      | `roya-api`                                                                                                                                                                                              | `roya-storefront`                                    | `roya-admin`                                         |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| Project name (must equal `name` in wrangler) | `roya-api`                                                                                                                                                                                              | `roya-storefront`                                    | `roya-admin`                                         |
+| Root directory                               | `/` (the repo root)                                                                                                                                                                                     | `apps/storefront`                                    | `apps/admin`                                         |
+| Build command                                | leave empty                                                                                                                                                                                             | `pnpm --filter @newax/shared build && pnpm cf:build` | `pnpm --filter @newax/shared build && pnpm cf:build` |
+| Deploy command                               | `pnpm --filter @newax/api-edge exec wrangler deploy`                                                                                                                                                    | `npx wrangler deploy`                                | `npx wrangler deploy`                                |
+| Build variables                              | none                                                                                                                                                                                                    | `API_INTERNAL_URL`, `NEXT_PUBLIC_SITE_URL`           | `API_INTERNAL_URL`, `NEXT_PUBLIC_SITE_URL`           |
+| Runtime, Settings, Variables and Secrets     | secrets `DATABASE_URL`, `REDIS_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `APP_ENCRYPTION_KEY`; variables `MODULES`, `STOREFRONT_URL`, `PAYMENT_PROVIDERS`, `COURIER_PROVIDERS`, `STORAGE_DRIVER` | `API_INTERNAL_URL`                                   | none                                                 |
+
+Values (replace `SUB` with your workers.dev subdomain):
+
+- `API_INTERNAL_URL` is `https://roya-api.SUB.workers.dev/api/v1`. The storefront needs it in **both** places: a build variable is not visible to the running Worker, so it is set once for the build (the `/api/v1` proxy is registered then) and once at run time (server components read it).
+- `NEXT_PUBLIC_SITE_URL` and the API's `STOREFRONT_URL` are `https://roya-storefront.SUB.workers.dev`.
+- `MODULES` is the line from `.env.example`; unset, only always-on modules load. `PAYMENT_PROVIDERS` is `bank_transfer`, `COURIER_PROVIDERS` is `manual`, `STORAGE_DRIVER` is `local` (see Not done).
+- `DATABASE_URL` is the Supabase transaction pooler with `&pgbouncer=true&connection_limit=1&schema=roya`. `REDIS_URL` is a hosted Redis TCP address.
+
+Why these choices:
+
+- **The API project's root is the repo root.** Its Worker configuration is in `apps/api-edge`, but the image it builds comes from `apps/api/Dockerfile` and the whole repository, and Cloudflare requires the Dockerfile to sit under the root directory.
+- **Deploy order.** The API first, so its address exists; then the storefront; then the back office. Each front end bakes the API address in at build, so deploy it again if the API address ever changes.
+- **Variables survive deploys.** All three configs set `keep_vars`, so a deploy does not delete variables set in the dashboard. Secrets are never deleted.
+
+Not checked: the whole dashboard route. In particular that Workers Builds builds the API image within its limits, and that the project names are accepted.
+
 ## Decisions and their numbers
 
 | Parameter                        | Value                      | Why                                                                                                                 | If it is wrong                                                               |

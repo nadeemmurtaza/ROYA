@@ -3,6 +3,9 @@
   "name": "roya-storefront",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-01",
+  // Keep variables set in the Cloudflare dashboard (Settings, Variables and Secrets) across deploys.
+  // Without this each deploy deletes them; secrets are never deleted either way.
+  "keep_vars": true,
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "roya-storefront" }],
