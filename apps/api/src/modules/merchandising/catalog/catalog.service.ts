@@ -6,6 +6,20 @@ import { paginated, type PaginatedResult } from '../../../core/common/dto/pagina
 import type { ProductQueryDto } from './dto/product-query.dto';
 
 /** A product flattened into one locale, ready for the storefront. */
+/**
+ * An image's alt text in the asked-for language: that language's row, else the
+ * image's own `alt` column (the default language, and what an image has before
+ * anyone translates it).
+ *
+ * Not `pickTranslation`: its last resort is "whatever row exists", which for an
+ * image translated into the second language only returned that language to an
+ * English reader (Arabic alt text on the English site) instead of the English
+ * column the comment on the schema says is the fallback.
+ */
+export function imageAlt(translations: ReadonlyArray<{ locale: string; alt: string }>, locale: string, base: string | null): string | null {
+  return translations.find((row) => row.locale === locale)?.alt ?? base;
+}
+
 export interface LocalisedProduct {
   id: string;
   slug: string;
@@ -331,9 +345,7 @@ export async function localise(
     stitchingAvailable: product.stitchingAvailable,
     images: product.images.map((image) => ({
       url: image.url,
-      // Bilingual alt text (WO-3.6) with the pre-migration column as a
-      // fallback for an image whose locale row a human has not filled in yet.
-      alt: pickTranslation(image.translations, locale)?.alt ?? image.alt,
+      alt: imageAlt(image.translations, locale, image.alt),
       isPrimary: image.isPrimary,
     })),
     metaTitle: translation?.metaTitle ?? null,

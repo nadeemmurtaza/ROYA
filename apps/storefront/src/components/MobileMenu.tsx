@@ -37,7 +37,7 @@ export function MobileMenu() {
       {open ? (
         <nav id={panelId} className="nav-mob-panel" aria-label={t('mobile')}>
           {NAV.map((item) => (
-            <Link key={item.key} className="navlink" href={item.href}>
+            <Link key={item.key} className="navlink" href={item.href} onClick={() => setOpen(false)}>
               {t(`nav.${item.key}`)}
             </Link>
           ))}
