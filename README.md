@@ -76,6 +76,10 @@ One Vercel project runs the three apps as services of the root [`vercel.json`](v
 
 Set per environment in the project: everything the API needs (see Deploy above) including a Postgres with pgvector, a Redis and `STORAGE_DRIVER=s3` (a function has no durable disk), and `NEXT_PUBLIC_SITE_URL` plus `STOREFRONT_URL` for the public origin. The API's scheduled jobs and its outbox dispatcher run in-process, which a function does not keep alive: see item 7 in [`docs/OPEN-QUESTIONS.md`](docs/OPEN-QUESTIONS.md) before relying on this for production.
 
+### On Cloudflare
+
+Three Workers: the storefront and the back office through the OpenNext adapter (`apps/storefront`, `apps/admin`), and the API as a container behind a Worker (`apps/api-edge`, built from `apps/api/Dockerfile`). [`.github/workflows/cloudflare.yml`](.github/workflows/cloudflare.yml) deploys all three from GitHub, so the Cloudflare token lives in a repository secret. Secrets, token permissions, the numbers chosen, what was verified on Cloudflare's runtime and what only a first deploy can confirm are in [`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md).
+
 Before launch work through [`docs/OPEN-QUESTIONS.md`](docs/OPEN-QUESTIONS.md): the TRN, bank details, domain, Arabic review and the choice of a card gateway are not decided by code.
 
 ## Upgrading the engine

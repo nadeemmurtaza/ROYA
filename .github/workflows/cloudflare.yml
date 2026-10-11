@@ -1,0 +1,177 @@
+name: Cloudflare
+
+# Manual only: Actions tab -> Cloudflare -> Run workflow.
+#
+# Deploys the three apps as Cloudflare Workers: the API (as a container behind a Worker, apps/api-edge),
+# the storefront and the back office (Next.js through the OpenNext adapter). Setup, secrets and what is
+# and is not verified: docs/CLOUDFLARE.md. Migrations are not run here; use the Database workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      api:
+        description: 'Deploy the API container'
+        type: boolean
+        default: true
+      storefront:
+        description: 'Deploy the storefront'
+        type: boolean
+        default: true
+      admin:
+        description: 'Deploy the back office'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# One deploy at a time, never cancelled half-way: a half-deployed set of Workers points at each other's old URLs.
+concurrency:
+  group: cloudflare
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Install, three builds and an image build and push. Bounds a hung step, not a normal run.
+    timeout-minutes: 45
+    steps:
+      - name: Check the secrets and the account subdomain
+        id: urls
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SUBDOMAIN: ${{ vars.CLOUDFLARE_WORKERS_SUBDOMAIN }}
+          DEPLOY_API: ${{ inputs.api }}
+          API_DATABASE_URL: ${{ secrets.API_DATABASE_URL }}
+          API_REDIS_URL: ${{ secrets.API_REDIS_URL }}
+          API_JWT_ACCESS_SECRET: ${{ secrets.API_JWT_ACCESS_SECRET }}
+          API_JWT_REFRESH_SECRET: ${{ secrets.API_JWT_REFRESH_SECRET }}
+          API_APP_ENCRYPTION_KEY: ${{ secrets.API_APP_ENCRYPTION_KEY }}
+        run: |
+          fail() { echo "::error::$1"; exit 1; }
+          [ -n "$CLOUDFLARE_API_TOKEN" ] || fail "Secret CLOUDFLARE_API_TOKEN is not set."
+          [ -n "$CLOUDFLARE_ACCOUNT_ID" ] || fail "Secret CLOUDFLARE_ACCOUNT_ID is not set."
+          [ -n "$SUBDOMAIN" ] || fail "Repository variable CLOUDFLARE_WORKERS_SUBDOMAIN is not set (Settings -> Secrets and variables -> Actions -> Variables). It is the part before .workers.dev: Cloudflare dashboard -> Workers & Pages -> Overview."
+          case "$SUBDOMAIN" in
+            *[!a-z0-9-]*|-*|*-) fail "CLOUDFLARE_WORKERS_SUBDOMAIN must be lowercase letters, digits and hyphens only (the part before .workers.dev), not a full address." ;;
+          esac
+          if [ "$DEPLOY_API" = "true" ]; then
+            [ -n "$API_DATABASE_URL" ] || fail "Secret API_DATABASE_URL is not set."
+            [ -n "$API_REDIS_URL" ] || fail "Secret API_REDIS_URL is not set (without Redis, sign-in answers 503)."
+            [ -n "$API_JWT_ACCESS_SECRET" ] || fail "Secret API_JWT_ACCESS_SECRET is not set."
+            [ -n "$API_JWT_REFRESH_SECRET" ] || fail "Secret API_JWT_REFRESH_SECRET is not set."
+            [ -n "$API_APP_ENCRYPTION_KEY" ] || fail "Secret API_APP_ENCRYPTION_KEY is not set."
+            [ "${#API_APP_ENCRYPTION_KEY}" -eq 32 ] || fail "API_APP_ENCRYPTION_KEY must be exactly 32 characters (openssl rand -base64 24 | head -c 32)."
+            [ "${#API_JWT_ACCESS_SECRET}" -ge 32 ] || fail "API_JWT_ACCESS_SECRET must be at least 32 characters."
+            [ "${#API_JWT_REFRESH_SECRET}" -ge 32 ] || fail "API_JWT_REFRESH_SECRET must be at least 32 characters."
+            case "$API_DATABASE_URL" in
+              postgres://*|postgresql://*) ;;
+              *) fail "API_DATABASE_URL must start with postgres:// or postgresql://." ;;
+            esac
+            case "$API_DATABASE_URL" in
+              *pgbouncer=true*) ;;
+              *) echo "::warning::API_DATABASE_URL has no pgbouncer=true. If it points at the Supabase transaction pooler (port 6543) add &pgbouncer=true&connection_limit=1." ;;
+            esac
+          fi
+          {
+            echo "api=https://roya-api.${SUBDOMAIN}.workers.dev"
+            echo "storefront=https://roya-storefront.${SUBDOMAIN}.workers.dev"
+            echo "admin=https://roya-admin.${SUBDOMAIN}.workers.dev"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @newax/shared build
+
+      - name: Deploy the API container
+        if: ${{ inputs.api }}
+        working-directory: apps/api-edge
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          STOREFRONT_URL: ${{ steps.urls.outputs.storefront }}
+          API_DATABASE_URL: ${{ secrets.API_DATABASE_URL }}
+          API_REDIS_URL: ${{ secrets.API_REDIS_URL }}
+          API_JWT_ACCESS_SECRET: ${{ secrets.API_JWT_ACCESS_SECRET }}
+          API_JWT_REFRESH_SECRET: ${{ secrets.API_JWT_REFRESH_SECRET }}
+          API_APP_ENCRYPTION_KEY: ${{ secrets.API_APP_ENCRYPTION_KEY }}
+        run: |
+          # One source of truth for the module list: the repo's own .env.example.
+          MODULES="$(grep '^MODULES=' ../../.env.example | sed -E 's/^MODULES="?([^"]*)"?$/\1/')"
+          [ -n "$MODULES" ] || { echo "::error::MODULES not found in .env.example"; exit 1; }
+          pnpm exec wrangler deploy \
+            --var "MODULES:${MODULES}" \
+            --var "STOREFRONT_URL:${STOREFRONT_URL}" \
+            --var "PAYMENT_PROVIDERS:bank_transfer" \
+            --var "COURIER_PROVIDERS:manual" \
+            --var "STORAGE_DRIVER:local"
+          # Secrets go in a file only this step can read, never on a command line.
+          umask 077
+          SECRETS_FILE="$RUNNER_TEMP/api-secrets.json"
+          jq -n \
+            --arg db "$API_DATABASE_URL" --arg redis "$API_REDIS_URL" \
+            --arg ja "$API_JWT_ACCESS_SECRET" --arg jr "$API_JWT_REFRESH_SECRET" \
+            --arg ek "$API_APP_ENCRYPTION_KEY" \
+            '{DATABASE_URL:$db, REDIS_URL:$redis, JWT_ACCESS_SECRET:$ja, JWT_REFRESH_SECRET:$jr, APP_ENCRYPTION_KEY:$ek}' \
+            > "$SECRETS_FILE"
+          pnpm exec wrangler secret bulk "$SECRETS_FILE"
+          rm -f "$SECRETS_FILE"
+
+      - name: Deploy the storefront
+        if: ${{ inputs.storefront }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Both read at build (the /api/v1 proxy is registered then) and at run time (server components).
+          API_INTERNAL_URL: ${{ steps.urls.outputs.api }}/api/v1
+          NEXT_PUBLIC_SITE_URL: ${{ steps.urls.outputs.storefront }}
+        run: |
+          pnpm --filter @newax/storefront cf:build
+          pnpm --filter @newax/storefront exec wrangler deploy \
+            --var "API_INTERNAL_URL:${API_INTERNAL_URL}" \
+            --var "NEXT_PUBLIC_SITE_URL:${NEXT_PUBLIC_SITE_URL}"
+
+      - name: Deploy the back office
+        if: ${{ inputs.admin }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          API_INTERNAL_URL: ${{ steps.urls.outputs.api }}/api/v1
+          # The back office's "View store" links and canonical URLs point at the storefront.
+          NEXT_PUBLIC_SITE_URL: ${{ steps.urls.outputs.storefront }}
+        run: |
+          pnpm --filter @newax/admin cf:build
+          pnpm --filter @newax/admin exec wrangler deploy \
+            --var "API_INTERNAL_URL:${API_INTERNAL_URL}"
+
+      # A deploy that answers nothing is not a deploy. The container may need a minute to start, so retry
+      # for up to 5 minutes (30 tries, 10 seconds apart) before failing.
+      - name: Smoke test
+        env:
+          API: ${{ steps.urls.outputs.api }}
+          STOREFRONT: ${{ steps.urls.outputs.storefront }}
+          ADMIN: ${{ steps.urls.outputs.admin }}
+          DEPLOY_API: ${{ inputs.api }}
+          DEPLOY_STOREFRONT: ${{ inputs.storefront }}
+          DEPLOY_ADMIN: ${{ inputs.admin }}
+        run: |
+          check() {
+            name="$1"; url="$2"
+            for i in $(seq 1 30); do
+              code="$(curl -s -o /dev/null -m 20 -w '%{http_code}' "$url" || true)"
+              if [ "$code" = "200" ]; then echo "ok    $name ($url)"; echo "- $name: $url" >> "$GITHUB_STEP_SUMMARY"; return 0; fi
+              sleep 10
+            done
+            echo "::error::$name did not answer 200 at $url (last status $code)"; return 1
+          }
+          echo "### Cloudflare" >> "$GITHUB_STEP_SUMMARY"
+          status=0
+          [ "$DEPLOY_API" = "true" ] && { check "API" "$API/api/v1/health/ready" || status=1; }
+          [ "$DEPLOY_STOREFRONT" = "true" ] && { check "Storefront" "$STOREFRONT/en" || status=1; }
+          [ "$DEPLOY_ADMIN" = "true" ] && { check "Back office" "$ADMIN/admin/login" || status=1; }
+          exit $status

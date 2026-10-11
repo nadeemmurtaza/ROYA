@@ -39,3 +39,8 @@ dump.rdb
 # Claude Code agent worktrees: machine-local scratch state
 .claude/worktrees/
 .next-*/
+
+# Cloudflare (OpenNext build output, local worker state, local secrets)
+.open-next/
+.wrangler/
+.dev.vars

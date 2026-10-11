@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "roya-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "containers": [
+    {
+      "class_name": "RoyaApi",
+      // The same image `docker build -f apps/api/Dockerfile .` makes, built from the repo root.
+      "image": "../api/Dockerfile",
+      "image_build_context": "../..",
+      // One instance: the API runs its scheduled jobs in-process, so a second would run them twice.
+      "max_instances": 1,
+      // 1 GiB of memory. Nest plus Prisma's engine idle well under this; if a deploy shows the
+      // container restarting for memory, raise it to "standard-1" (4 GiB) and redeploy.
+      "instance_type": "basic"
+    }
+  ],
+  "durable_objects": { "bindings": [{ "name": "ROYA_API", "class_name": "RoyaApi" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoyaApi"] }],
+  // Every 5 minutes, which keeps the container awake (see `sleepAfter` in src/index.ts).
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "observability": { "enabled": true }
+}
