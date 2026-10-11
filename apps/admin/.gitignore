@@ -1,0 +1,6 @@
+.next/
+next-env.d.ts
+
+# Inherited from the Blueprint's previous client (its logo and fabric placeholders).
+# Nothing in src references them; kept out of ROYA's history until the owner decides.
+/public/
