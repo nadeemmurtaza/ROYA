@@ -1,0 +1,105 @@
+name: Database
+
+# Manual only: Actions tab -> Database -> Run workflow.
+#
+# Applies the committed Prisma migrations to the database named by the
+# DATABASE_URL_MIGRATE secret and, when asked, creates the first admin. It runs
+# on GitHub's network because a Supabase database is not reachable from every
+# development sandbox. Setup, secrets and recovery: README -> "Database setup".
+#
+# Safe to run again: `migrate deploy` skips what is applied, and the seed never
+# resets an existing user's password.
+on:
+  workflow_dispatch:
+    inputs:
+      seed_admin:
+        description: 'Also create the first admin (needs the SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD secrets)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One run at a time, and never cancel one half-way: a cancelled migration leaves
+# the database between two versions.
+concurrency:
+  group: database
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    # 117 migrations apply in seconds on an empty database; the rest is install
+    # and network. 15 minutes only bounds a hung connection.
+    timeout-minutes: 15
+    steps:
+      - name: Check the secrets and the connection string
+        env:
+          DATABASE_URL_MIGRATE: ${{ secrets.DATABASE_URL_MIGRATE }}
+          SEED_ADMIN: ${{ inputs.seed_admin }}
+          SEED_ADMIN_EMAIL: ${{ secrets.SEED_ADMIN_EMAIL }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.SEED_ADMIN_PASSWORD }}
+        run: |
+          fail() { echo "::error::$1"; exit 1; }
+          [ -n "$DATABASE_URL_MIGRATE" ] || fail "Secret DATABASE_URL_MIGRATE is not set (Settings -> Secrets and variables -> Actions)."
+          case "$DATABASE_URL_MIGRATE" in
+            postgres://*|postgresql://*) ;;
+            *) fail "DATABASE_URL_MIGRATE must start with postgres:// or postgresql://." ;;
+          esac
+          # Migrations need a session connection: the transaction pooler (Supabase port 6543, pgbouncer=true)
+          # does not keep the advisory lock or the prepared statements Prisma migrate relies on.
+          case "$DATABASE_URL_MIGRATE" in
+            *pgbouncer=true*|*:6543/*) fail "DATABASE_URL_MIGRATE points at the transaction pooler. Use the session pooler (port 5432) or the direct connection." ;;
+          esac
+          case "$DATABASE_URL_MIGRATE" in
+            *schema=*) ;;
+            *) echo "::warning::DATABASE_URL_MIGRATE has no schema= parameter, so the tables go in the public schema, which Supabase exposes through its REST API. Add ?schema=roya (or turn the Data API off) before storing real data." ;;
+          esac
+          if [ "$SEED_ADMIN" = "true" ]; then
+            [ -n "$SEED_ADMIN_EMAIL" ] || fail "Secret SEED_ADMIN_EMAIL is not set."
+            [ -n "$SEED_ADMIN_PASSWORD" ] || fail "Secret SEED_ADMIN_PASSWORD is not set."
+            [ "${#SEED_ADMIN_PASSWORD}" -ge 12 ] || fail "SEED_ADMIN_PASSWORD must be at least 12 characters."
+          fi
+
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @newax/shared build
+
+      - name: Migration status before (informational)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_MIGRATE }}
+        # Exits non-zero while migrations are pending; that is the expected first-run state.
+        run: pnpm --filter @newax/api exec prisma migrate status || true
+
+      - name: Apply migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_MIGRATE }}
+        run: pnpm db:deploy
+
+      - name: Seed the first admin
+        if: ${{ inputs.seed_admin }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_MIGRATE }}
+          # Production mode seeds the catalogue and the admin only, never the demo accounts,
+          # and refuses to run without an explicit password.
+          NODE_ENV: production
+          SEED_ADMIN_EMAIL: ${{ secrets.SEED_ADMIN_EMAIL }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.SEED_ADMIN_PASSWORD }}
+        run: pnpm --filter @newax/api db:seed
+
+      - name: Migration status after (must be up to date)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_MIGRATE }}
+        run: |
+          pnpm --filter @newax/api exec prisma migrate status
+          {
+            echo "### Database"
+            echo "- Migrations: up to date"
+            echo "- Admin seeded: ${{ inputs.seed_admin }}"
+          } >> "$GITHUB_STEP_SUMMARY"
