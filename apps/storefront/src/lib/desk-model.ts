@@ -15,10 +15,11 @@ export const DESK_PERMISSION = {
   orders: 'orders.manage',
   payments: 'payments.approve',
   requests: 'crm.manage',
+  commissions: 'commissions.manage',
   dispatch: 'fulfilment.manage',
 } as const;
 
-export const DESK_SECTIONS = ['orders', 'payments', 'requests'] as const;
+export const DESK_SECTIONS = ['orders', 'payments', 'commissions', 'requests'] as const;
 export type DeskSection = (typeof DESK_SECTIONS)[number];
 
 /** The sections a signed-in person has the permission for, in the desk's order. */

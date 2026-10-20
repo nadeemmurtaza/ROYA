@@ -8,13 +8,15 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { whatsappUrl } from '@/lib/brand-contact';
 import { deskSections } from '@/lib/desk-model';
 import { useSession } from '@/providers/session';
-import { AddressesPane, FittingsPane, MeasurementsPane, OrdersPane, WishlistPane } from './Panes';
+import { CommissionPane, CommissionSummary, FittingsPane } from './CommissionPane';
+import { AddressesPane, MeasurementsPane, OrdersPane, WishlistPane } from './Panes';
 
-const TABS = ['overview', 'orders', 'fittings', 'measurements', 'wishlist', 'addresses'] as const;
+const TABS = ['overview', 'orders', 'commission', 'fittings', 'measurements', 'wishlist', 'addresses'] as const;
 type Tab = (typeof TABS)[number];
 const TAB_LABEL: Record<Tab, string> = {
   overview: 'tabOverview',
   orders: 'tabOrders',
+  commission: 'tabCommission',
   fittings: 'tabFittings',
   measurements: 'tabMeasurements',
   wishlist: 'tabWishlist',
@@ -140,6 +142,7 @@ export function Dashboard() {
                 </a>
               </section>
             </div>
+            <CommissionSummary />
             <OrdersPane limit={3} showAll />
           </>
         ) : (
@@ -147,15 +150,18 @@ export function Dashboard() {
             <h1 className="serif dash-title">
               {tab === 'orders'
                 ? t('ordersTitle')
-                : tab === 'fittings'
-                  ? t('fittingsTitle')
-                  : tab === 'measurements'
-                    ? t('measureTitle')
-                    : tab === 'wishlist'
-                      ? t('wishTitle')
-                      : t('addrTitle')}
+                : tab === 'commission'
+                  ? t('commissionTitle')
+                  : tab === 'fittings'
+                    ? t('fittingsTitle')
+                    : tab === 'measurements'
+                      ? t('measureTitle')
+                      : tab === 'wishlist'
+                        ? t('wishTitle')
+                        : t('addrTitle')}
             </h1>
             {tab === 'orders' ? <OrdersPane /> : null}
+            {tab === 'commission' ? <CommissionPane /> : null}
             {tab === 'fittings' ? <FittingsPane /> : null}
             {tab === 'measurements' ? <MeasurementsPane /> : null}
             {tab === 'wishlist' ? <WishlistPane /> : null}

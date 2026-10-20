@@ -107,18 +107,6 @@ export function OrdersPane({ limit, showAll }: { limit?: number; showAll?: boole
   );
 }
 
-export function FittingsPane() {
-  const t = useTranslations('dashboard');
-  return (
-    <div className="card-box u-items-start">
-      <span className="bag-muted u-max-w-560">{t('fittingsBody')}</span>
-      <Link className="btn-gold" href={{ pathname: '/consultation', query: { kind: 'atelier' } }}>
-        {t('fittingsCta')}
-      </Link>
-    </div>
-  );
-}
-
 interface Profile {
   id: string;
   label: string;

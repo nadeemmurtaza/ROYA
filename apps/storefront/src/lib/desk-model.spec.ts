@@ -22,6 +22,7 @@ describe('deskSections', () => {
   it('opens a section only for the permission it is built on', () => {
     expect(deskSections(['orders.manage'])).toEqual(['orders']);
     expect(deskSections(['crm.manage', 'payments.approve'])).toEqual(['payments', 'requests']);
+    expect(deskSections(['commissions.manage'])).toEqual(['commissions']);
   });
 
   it('opens nothing to a client, a seamstress or an anonymous visitor', () => {

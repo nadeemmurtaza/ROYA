@@ -3,6 +3,7 @@ import { AccountingModule } from './money/accounting/accounting.module';
 import { AddressesModule } from './sales/addresses/addresses.module';
 import { CartModule } from './sales/cart/cart.module';
 import { CatalogModule } from './merchandising/catalog/catalog.module';
+import { CommissionModule } from './sales/commission/commission.module';
 import { CollectionsModule } from './merchandising/collections/collections.module';
 import { ContentModule } from './merchandising/content/content.module';
 import { CrmModule } from './customers/crm/crm.module';
@@ -131,6 +132,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'promotions', module: PromotionsModule },
   { name: 'giftcards', module: GiftCardsModule },
   { name: 'wishlist', module: WishlistModule },
+  // ROYA — the commission tracker (docs/ENGINE-FORKS.md). Imports no other
+  // module: it reads core's Order by Prisma query and notifies through the
+  // global NotificationsService.
+  { name: 'commission', module: CommissionModule },
   { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default — a deployment turns it on once it wants a real GL

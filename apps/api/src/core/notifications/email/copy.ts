@@ -167,6 +167,12 @@ export interface EmailCopy {
     heading: string;
     stages: Record<string, string>;
   };
+  /** The bespoke commission's progress: ROYA's own stages, not the workshop's. */
+  commission: {
+    subject: (title: string, stage: string) => string;
+    heading: string;
+    stages: Record<string, string>;
+  };
   totals: {
     subtotal: string;
     stitching: string;
@@ -254,6 +260,17 @@ const en: EmailCopy = {
       QC: 'being checked',
       READY: 'ready',
       DISPATCHED: 'on its way',
+    },
+  },
+  commission: {
+    subject: (title, stage) => `${title}: ${stage}`,
+    heading: 'Your gown has moved on',
+    stages: {
+      CONSULTATION: 'in consultation',
+      DESIGN: 'being designed',
+      CORSET: 'in the corset stage',
+      FLORALS: 'having its florals sculpted',
+      FITTING: 'ready for its final fitting',
     },
   },
   orderShipped: {
@@ -475,6 +492,17 @@ const ar: EmailCopy = {
       QC: 'قيد الفحص',
       READY: 'جاهز',
       DISPATCHED: 'في الطريق إليكم',
+    },
+  },
+  commission: {
+    subject: (title, stage) => `${title}: ${stage}`,
+    heading: 'تقدّم العمل على فستانكِ',
+    stages: {
+      CONSULTATION: 'في مرحلة الاستشارة',
+      DESIGN: 'قيد التصميم',
+      CORSET: 'في مرحلة الكورسيه',
+      FLORALS: 'تُنحَت زهوره الآن',
+      FITTING: 'جاهز للبروفة الأخيرة',
     },
   },
   orderShipped: {

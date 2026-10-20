@@ -10,16 +10,23 @@ import { useSession } from '@/providers/session';
 import { LocaleSwitch } from '../LocaleSwitch';
 import { ThemeToggle } from '../ThemeToggle';
 
-const HREF: Record<DeskSection, string> = { orders: '/desk', payments: '/desk/payments', requests: '/desk/requests' };
+const HREF: Record<DeskSection, string> = {
+  orders: '/desk',
+  payments: '/desk/payments',
+  commissions: '/desk/commissions',
+  requests: '/desk/requests',
+};
 const LABEL: Record<DeskSection, string> = {
   orders: 'tabOrders',
   payments: 'tabPayments',
+  commissions: 'tabCommissions',
   requests: 'tabRequests',
 };
 
 /** Which section a desk address belongs to. The order page is part of Orders. */
 function sectionOf(pathname: string): DeskSection {
   if (pathname.startsWith('/desk/payments')) return 'payments';
+  if (pathname.startsWith('/desk/commissions')) return 'commissions';
   if (pathname.startsWith('/desk/requests')) return 'requests';
   return 'orders';
 }

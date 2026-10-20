@@ -271,3 +271,38 @@ export interface Lead {
   lostReason: string | null;
   createdAt: string;
 }
+
+/** The atelier's route for a bespoke gown, in order (the engine's `CommissionStage`). */
+export type CommissionStage = 'CONSULTATION' | 'DESIGN' | 'CORSET' | 'FLORALS' | 'FITTING';
+export type AppointmentKind = 'ATELIER' | 'HOME' | 'VIDEO';
+export type AppointmentStatus = 'REQUESTED' | 'CONFIRMED' | 'DONE' | 'CANCELLED';
+
+export interface CommissionEvent {
+  id: string;
+  stage: CommissionStage;
+  note: string | null;
+  mediaUrl: string | null;
+  mediaKind: 'image' | 'video' | null;
+  createdAt: string;
+}
+
+export interface CommissionAppointment {
+  id: string;
+  kind: AppointmentKind;
+  startsAt: string;
+  status: AppointmentStatus;
+  note: string | null;
+}
+
+/** A commission as its client sees it (`GET /commissions/mine`). The atelier's read adds the order and account ids. */
+export interface Commission {
+  id: string;
+  orderNumber: string;
+  title: string;
+  stage: CommissionStage;
+  promisedAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  events: CommissionEvent[];
+  appointments: CommissionAppointment[];
+}

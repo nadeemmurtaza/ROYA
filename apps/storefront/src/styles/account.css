@@ -523,3 +523,89 @@ html[dir='rtl'] .status-pill {
   flex-wrap: wrap;
   gap: 8px 32px;
 }
+
+/* ── Commission track ───────────────────────────────── */
+.commission-track {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  border-block-start: 1px solid rgb(var(--line-rgb) / 0.22);
+  border-inline-start: 1px solid rgb(var(--line-rgb) / 0.22);
+}
+/* Each cell draws its own far edges, so a short last row leaves blank space, not a filled block. */
+.track-step {
+  background: var(--bg);
+  border-block-end: 1px solid rgb(var(--line-rgb) / 0.22);
+  border-inline-end: 1px solid rgb(var(--line-rgb) / 0.22);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.track-step[data-state='next'] {
+  background: var(--bg-raised);
+}
+.track-step[data-state='next'] .track-name {
+  color: var(--text-muted);
+}
+.track-mark {
+  inline-size: 12px;
+  block-size: 12px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+}
+.track-step[data-state='done'] .track-mark {
+  background: var(--accent);
+}
+.track-step[data-state='now'] .track-mark {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgb(var(--line-rgb) / 0.3);
+}
+.track-name {
+  font-size: 22px;
+}
+.track-state {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+html[dir='rtl'] .track-state {
+  font-size: 13px;
+}
+.track-step[data-state='next'] .track-state {
+  color: var(--text-faint);
+}
+.track-note {
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.track-media {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.fitting-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fitting-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 20px;
+}

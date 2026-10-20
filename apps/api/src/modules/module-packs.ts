@@ -121,6 +121,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   search: 'core',
   reviews: 'core',
   wishlist: 'core',
+  commission: 'core',
   loyalty: 'core',
   'notification-preferences': 'core',
   tracking: 'core',

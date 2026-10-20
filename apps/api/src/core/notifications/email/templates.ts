@@ -171,6 +171,12 @@ export interface CampaignEmailData {
   expiresAt?: string | null;
 }
 
+export interface CommissionEmailData {
+  garment?: string | null;
+  stage: string;
+  reference?: string | null;
+}
+
 export interface StitchingEmailData {
   garment?: string | null;
   stage: string;
@@ -962,6 +968,30 @@ function renderStitching(
   };
 }
 
+function renderCommission(data: CommissionEmailData, locale: Locale, ctx: EmailContext): RenderedEmail {
+  const t = copyFor(locale);
+  const stageWord = t.commission.stages[data.stage] ?? data.stage.toLowerCase();
+  const subject = t.commission.subject(data.garment ?? '', stageWord);
+
+  const body = [
+    heading(t.commission.heading, locale),
+    paragraph(subject, locale),
+    data.reference ? button(t.viewOrder, orderUrl(ctx, locale, data.reference), locale) : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: data.reference ?? undefined,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject, html, text: htmlToText(html) };
+}
+
 /**
  * Template key -> renderer.
  *
@@ -1104,6 +1134,11 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'stitching.stage_changed': renderStitching as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'commission.stage_changed': renderCommission as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

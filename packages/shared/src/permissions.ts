@@ -193,6 +193,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'low',
   },
   {
+    key: 'commissions.manage',
+    label: 'Run the commission tracker: open it, move a gown between stages, confirm fittings',
+    category: 'Sales',
+    sensitivity: 'low',
+  },
+  {
     key: 'production.manage',
     label: 'Manage bills of materials and work orders',
     category: 'Production',
@@ -972,6 +978,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
     permissions: [
       'orders.manage',
+      'commissions.manage',
       'payments.approve',
       'pos.manage',
       'pos.operate',
@@ -1231,6 +1238,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'pricing.price-lists.manage',
     'pricing.assignments.manage',
     'payments.approve',
+    'commissions.manage',
     'pos.operate',
     'pos.dashboard.view',
     'stitching.jobs.view_queue',
@@ -1341,6 +1349,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'pricing.price-lists.manage',
     'pricing.assignments.manage',
     'payments.approve',
+    'commissions.manage',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_all',

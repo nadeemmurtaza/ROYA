@@ -1,0 +1,85 @@
+// ROYA — the commission tracker (docs/OPEN-QUESTIONS.md 2.3, docs/ENGINE-FORKS.md).
+//
+// A bespoke gown is sold as its deposit, so the order alone cannot say how the
+// gown is coming along. A Commission follows one order through the atelier's
+// stages; every move is appended as an event (with a note and, if the atelier
+// wishes, a photograph or film), and fittings are appointments on it.
+//
+// `orderId` and `userId` are plain scalars, not relations, the same choice
+// StitchingJob makes: this module names core's tables without putting a field
+// back on them.
+
+enum CommissionStage {
+  CONSULTATION
+  DESIGN
+  CORSET
+  FLORALS
+  FITTING
+}
+
+enum CommissionAppointmentKind {
+  ATELIER
+  HOME
+  VIDEO
+}
+
+enum CommissionAppointmentStatus {
+  REQUESTED
+  CONFIRMED
+  DONE
+  CANCELLED
+}
+
+model Commission {
+  id          String          @id @default(cuid())
+  /// One commission per order.
+  orderId     String          @unique
+  orderNumber String
+  userId      String?
+  /// What is being made, as the client knows it ("Mehr").
+  title       String
+  stage       CommissionStage @default(CONSULTATION)
+  promisedAt  DateTime?
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  events       CommissionEvent[]
+  appointments CommissionAppointment[]
+
+  @@index([userId, createdAt])
+  @@index([stage])
+}
+
+/// Appended, never updated: the client's progress track reads this.
+model CommissionEvent {
+  id           String          @id @default(cuid())
+  commissionId String
+  stage        CommissionStage
+  note         String?
+  /// Storage key or URL of a photograph or film of the gown at this stage.
+  mediaUrl     String?
+  mediaKind    String? // 'image' | 'video'
+  actorId      String?
+  createdAt    DateTime        @default(now())
+
+  commission Commission @relation(fields: [commissionId], references: [id], onDelete: Cascade)
+
+  @@index([commissionId, createdAt])
+}
+
+model CommissionAppointment {
+  id           String                      @id @default(cuid())
+  commissionId String
+  kind         CommissionAppointmentKind
+  startsAt     DateTime
+  status       CommissionAppointmentStatus @default(REQUESTED)
+  note         String?
+  createdAt    DateTime                    @default(now())
+  updatedAt    DateTime                    @updatedAt
+
+  commission Commission @relation(fields: [commissionId], references: [id], onDelete: Cascade)
+
+  @@index([commissionId, startsAt])
+  @@index([status, startsAt])
+}

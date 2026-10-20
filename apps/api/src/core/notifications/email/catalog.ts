@@ -357,6 +357,14 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     triggerDescription: 'Sent on other tracked stitching-stage changes.',
     sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: sampleOrderNumber },
   },
+  {
+    key: 'commission.stage_changed',
+    label: 'Commission Progress',
+    category: 'Stitching',
+    trigger: 'automatic',
+    triggerDescription: 'Sent when the atelier moves a bespoke commission on to its next stage.',
+    sampleData: { garment: 'Mehr', stage: 'CORSET', reference: sampleOrderNumber },
+  },
 ];
 
 /**
